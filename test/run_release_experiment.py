@@ -13,6 +13,7 @@ import os
 import shlex
 import subprocess
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -100,6 +101,14 @@ def build_command(args: argparse.Namespace, config: dict[str, Any]) -> list[str]
     except KeyError as exc:
         raise SystemExit(f"Unknown method preset: {args.method}") from exc
 
+    framework = args.framework or method.get("framework", "dynamic")
+    if method.get("framework") and method["framework"] != framework:
+        raise SystemExit(f"{args.method} requires --framework {method['framework']}")
+    if args.fixed_rounds is not None and (framework != "fixed" or args.fixed_rounds < 1):
+        raise SystemExit("--fixed-rounds must be positive and requires --framework fixed")
+    if args.limit is not None and args.limit < 1:
+        raise SystemExit("--limit must be positive")
+
     pool_name = args.pool or method.get("pool") or benchmark.get("default_pool")
     if not pool_name:
         raise SystemExit("No metric pool configured for this benchmark/method.")
@@ -116,6 +125,10 @@ def build_command(args: argparse.Namespace, config: dict[str, Any]) -> list[str]
     output_dir = Path(args.output_dir)
     if not output_dir.is_absolute():
         output_dir = REPO_ROOT / output_dir
+    # Each launch owns a separate result directory; framework/model runs cannot
+    # overwrite or mix previously produced answers and token totals.
+    stamp = "<run-time>" if args.dry_run else datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
+    output_dir = output_dir / (args.model_profile or "custom") / framework / stamp
     if not args.dry_run:
         output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -137,18 +150,46 @@ def build_command(args: argparse.Namespace, config: dict[str, Any]) -> list[str]
         embedding_cache_file,
         "--max_turns",
         str(args.max_turns if args.max_turns is not None else benchmark.get("max_turns", 7)),
+        "--framework",
+        framework,
     ]
 
+    if args.fixed_rounds is not None:
+        cmd.extend(["--fixed_rounds", str(args.fixed_rounds)])
+
+    baseline = method.get("args", {}).get("baseline_only", False)
+    retrieval = method.get("args", {}).get("retrieval_mode", "direct")
+    needs_embedding = not baseline and not method.get("args", {}).get("use_simple_audit") and retrieval != "random"
+    needed = {"reasoning"}
+    if framework == "dynamic":
+        needed.add("selector")
+    if not baseline:
+        needed.add("supervisor")
+    if needs_embedding:
+        needed.add("embedding")
+
     for key, env_name, required in ENDPOINTS:
-        value = os.environ.get(env_name)
+        role = key.split("_", 1)[0]
+        value = os.environ.get(env_name) if role in needed else None
+        required = required and role in needed
         if not value and not required:
-            value = "EMPTY"
+            value = "http://localhost:1/v1" if key.endswith("_url") else ("unused" if key.endswith("_model") else "EMPTY")
         if required and not value:
             if args.dry_run:
                 value = f"<{env_name}>"
             else:
                 raise SystemExit(f"Missing required environment variable: {env_name}")
         cmd.extend(["--" + key, value])
+
+    if not args.dry_run:
+        needed_files = [script, input_file]
+        if not baseline:
+            needed_files.append(metric_pool_file)
+        if needs_embedding:
+            needed_files.append(embedding_cache_file)
+        for filename in needed_files:
+            if not Path(filename).is_file():
+                raise SystemExit(f"Required file not found: {filename}. For embedding caches, run test/metrics_pool/two_pool/embed_metrics-trigger.py first.")
 
     if args.limit is not None:
         cmd.extend(["--limit", str(args.limit)])
@@ -165,6 +206,8 @@ def main() -> int:
     parser.add_argument("--benchmark", choices=sorted(config["benchmarks"]), help="Benchmark id.")
     parser.add_argument("--method", choices=sorted(config["method_presets"]), help="Method preset id.")
     parser.add_argument("--model-profile", choices=sorted(config["model_profiles"]), default=None)
+    parser.add_argument("--framework", choices=["dynamic", "fixed"], default=None)
+    parser.add_argument("--fixed-rounds", type=int, default=None, help="Complete FullGraph rounds (fixed only; default 1).")
     parser.add_argument("--pool", choices=sorted(config["metric_pools"]), default=None)
     parser.add_argument("--output-dir", default="test/results_release")
     parser.add_argument("--in-file", default=None)

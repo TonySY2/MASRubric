@@ -1,3 +1,4 @@
+from AgentDropout.usage import tracked_create, tracked_embedding_create
 #--- START OF FILE supervisor_reasoning_pick_metric.py ---
 
 from autogen_ext.models.openai import OpenAIChatCompletionClient
@@ -420,7 +421,7 @@ class Supervisor():
         if missing_texts:
             print(f"[Supervisor] Calculating {len(missing_texts)} missing embeddings...")
             try:
-                response = self.embedding_client.embeddings.create(model=self.embedding_model, input=missing_texts)
+                response = tracked_embedding_create(self.embedding_client.embeddings.create, stage="embedding_pool_setup", source="Supervisor", model=self.embedding_model, input=missing_texts)
                 for i, data_item in enumerate(response.data):
                     target_idx = missing_indices[i]
                     vectors_list[target_idx] = np.array(data_item.embedding, dtype=np.float32)
@@ -529,7 +530,8 @@ class Supervisor():
             candidates=self._format_metric_candidates(candidates, include_risk=False),
         )
         try:
-            completion = await self._model_client.chat.completions.create(
+            completion = await tracked_create(
+                self._model_client.chat.completions.create, stage="supervisor_rerank", source="Supervisor",
                 model=self.model,
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.0,
@@ -573,7 +575,8 @@ class Supervisor():
             k = min(k, len(self.metrics))
             return random.sample(self.metrics, k)
 
-        summary_resp = await self._model_client.chat.completions.create(
+        summary_resp = await tracked_create(
+            self._model_client.chat.completions.create, stage="supervisor_summary", source="Supervisor",
             model=self.model,
             messages=[{"role": "user", "content": SUMMARY_TEMPLATE.format(task=task, agent_output=output)}],
             temperature=0.0,
@@ -591,7 +594,7 @@ class Supervisor():
         print(f"Generated Search Query: {query_text}")
 
 
-        emb_resp = self.embedding_client.embeddings.create(model=self.embedding_model, input=[query_text])
+        emb_resp = tracked_embedding_create(self.embedding_client.embeddings.create, stage="embedding_query", source="Supervisor", model=self.embedding_model, input=[query_text])
         query_emb = np.array(emb_resp.data[0].embedding, dtype=np.float32)
         if self.retrieval_mode == "rerank":
             print(f"[Supervisor] Mode: Rerank Search (Top-{self.retrieve_p} -> <=Top-{self.select_q}).")
@@ -637,7 +640,8 @@ class Supervisor():
            
             for attempt in range(5):
                 try:
-                    completion = await self._model_client.chat.completions.create(
+                    completion = await tracked_create(
+                        self._model_client.chat.completions.create, stage="supervisor_audit", source="Supervisor", metadata={"audit_attempt": attempt + 1},
                         model=self.model,
                         messages=[{"role": "user", "content": prompt}],
                         temperature=0.0,
@@ -672,7 +676,8 @@ class Supervisor():
 
         for attempt in range(5):
             try:
-                completion = await self._model_client.chat.completions.create(
+                completion = await tracked_create(
+                    self._model_client.chat.completions.create, stage="supervisor_audit_batch", source="Supervisor", metadata={"audit_attempt": attempt + 1},
                     model=self.model,
                     messages=[{"role": "user", "content": prompt}],
                     temperature=0.0,

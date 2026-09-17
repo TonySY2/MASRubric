@@ -1,3 +1,4 @@
+from AgentDropout.usage import safe_request_usage, tracked_create
 import os
 from typing import AsyncGenerator, Sequence, Dict, List, Any, Tuple
 
@@ -5,7 +6,6 @@ from autogen_agentchat.agents import BaseChatAgent
 from autogen_agentchat.base import Response
 from autogen_agentchat.messages import BaseAgentEvent, BaseChatMessage, TextMessage
 from autogen_core import CancellationToken
-from autogen_core.models import RequestUsage
 from AgentDropout.prompt.prompt_set_registry import PromptSetRegistry
 from project_datasets.gsm8k_dataset import gsm_get_predict # GSM8K-specific import
 from AgentDropout.tools.coding.python_executor import execute_code_get_return
@@ -95,7 +95,8 @@ class MathSolver(BaseChatAgent):
         final_judgements = []
         
         while current_attempt < max_attempts:
-            completion = await self._model_client.chat.completions.create(
+            completion = await tracked_create(
+                self._model_client.chat.completions.create, stage="reasoning", source=self.name, metadata={"agent_attempt": current_attempt + 1},
                 model=self.model,
                 messages=conversation,
                 temperature=0.7,
@@ -147,7 +148,7 @@ class MathSolver(BaseChatAgent):
 
             current_attempt += 1
             
-        usage = RequestUsage(prompt_tokens=completion.usage.prompt_tokens, completion_tokens=completion.usage.completion_tokens)
+        usage = safe_request_usage(completion)
         response_message = TextMessage(
             content=final_response_dict.get('content', ''), 
             source=self.name, 

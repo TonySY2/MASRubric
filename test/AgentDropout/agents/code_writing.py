@@ -1,3 +1,4 @@
+from AgentDropout.usage import safe_request_usage, tracked_create
 import os
 from typing import AsyncGenerator, Sequence, Dict, List, Any, Tuple
 
@@ -5,7 +6,6 @@ from autogen_agentchat.agents import BaseChatAgent
 from autogen_agentchat.base import Response
 from autogen_agentchat.messages import BaseAgentEvent, BaseChatMessage, TextMessage
 from autogen_core import CancellationToken
-from autogen_core.models import RequestUsage
 from AgentDropout.prompt.prompt_set_registry import PromptSetRegistry
 from AgentDropout.tools.coding.python_executor import PyExecutor
 from AgentDropout.agents.agent_registry import AgentRegistry
@@ -106,7 +106,8 @@ class CodeWriting(BaseChatAgent):
             yield Response(chat_message=response_message)
             return
 
-        completion = await self._model_client.chat.completions.create(
+        completion = await tracked_create(
+            self._model_client.chat.completions.create, stage="reasoning", source=self.name,
             model=self.model,
             messages=[
                 {"role": "system", "content": system_prompt},
@@ -115,7 +116,7 @@ class CodeWriting(BaseChatAgent):
             temperature=0.7,
         )
         response = completion.choices.message
-        usage = RequestUsage(prompt_tokens=completion.usage.prompt_tokens, completion_tokens=completion.usage.completion_tokens)
+        usage = safe_request_usage(completion)
         response_message = TextMessage(content=response.content, source=self.name, models_usage=usage)
         
         self._message_history.append(response_message)

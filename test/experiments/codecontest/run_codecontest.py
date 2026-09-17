@@ -10,7 +10,9 @@ from AgentDropout.agents import AgentRegistry
 from AgentDropout.agents.supervisor_reasoning_pick_metric import Supervisor
 from AgentDropout.agents.final_decision import FinalWriteCodeMBPP
 from autogen_agentchat.teams import SelectorGroupChat
-from autogen_ext.models.openai import OpenAIChatCompletionClient
+from AgentDropout.usage import TrackedOpenAIChatCompletionClient, set_usage_phase
+from AgentDropout.teams import create_team
+from AgentDropout.run_support import UsageRun, attach_usage, mark_sample_failed, sample_id
 from autogen_agentchat.conditions import MaxMessageTermination, TextMentionTermination
 from autogen_agentchat.ui import Console
 import asyncio
@@ -32,6 +34,8 @@ def log_message(msg: str, log_file: str = None):
 
 # ==============================================================================
 def load_global_resources(metric_file, cache_file):
+    if args.baseline_only or args.use_simple_audit:
+        return [], np.array([])
     print(f"Loading Global Resources...")
     print(f" - Metrics: {metric_file}")
     print(f" - Cache:   {cache_file}")
@@ -229,19 +233,21 @@ def init_team(preloaded_metrics, preloaded_embeddings) -> Tuple[SelectorGroupCha
     """
 
     from openai import Timeout
-    model_client = OpenAIChatCompletionClient(
+    model_client = TrackedOpenAIChatCompletionClient(
         model=args.selector_model, 
         api_key=args.selector_key, 
         base_url=args.selector_url,
         http_client_args={"timeout": Timeout(120.0, connect=10.0)},
         max_retries=3,
-    )
+    ) if args.framework == "dynamic" else None
 
     text_mention_termination = TextMentionTermination("TERMINATE")
     max_messages_termination = MaxMessageTermination(max_messages=args.max_turns)
     termination = text_mention_termination | max_messages_termination
 
-    team = SelectorGroupChat(
+    team = create_team(
+        framework=args.framework,
+        fixed_rounds=args.fixed_rounds,
         participants=participants,
         model_client=model_client,
         termination_condition=termination,
@@ -272,7 +278,8 @@ async def reasoning(question, team: SelectorGroupChat, decision_maker: FinalWrit
         supervisor.reset()
         supervisor.prune_flag = False 
         await Console(team.run_stream(task=question))
-        history_messages = supervisor.get_messages_above_threshold()
+        history_messages = (team.final_messages if args.framework == "fixed"
+                            else supervisor.get_messages_above_threshold())
     else:
         print(f"\n>>> [Phase 1] Adversarial Audit Mode")
         await team.reset()
@@ -280,16 +287,19 @@ async def reasoning(question, team: SelectorGroupChat, decision_maker: FinalWrit
         supervisor.prune_flag = True 
         await Console(team.run_stream(task=question))
         
-        history_messages = supervisor.get_messages_above_threshold()
+        history_messages = (team.final_messages if args.framework == "fixed"
+                            else supervisor.get_messages_above_threshold())
  
-        if len(history_messages) <= 1:
+        if args.framework == "dynamic" and len(history_messages) <= 1:
             print(f"\n⚠️ Fallback Triggered!")
             await team.reset()
             supervisor.reset()
+            set_usage_phase("fallback")
             original_prune_flag = supervisor.prune_flag
             supervisor.prune_flag = False 
             await Console(team.run_stream(task=question))
-            history_messages = supervisor.get_messages_above_threshold()
+            history_messages = (team.final_messages if args.framework == "fixed"
+                            else supervisor.get_messages_above_threshold())
             supervisor.prune_flag = original_prune_flag
 
     print("\n" + "=" * 50)
@@ -312,6 +322,7 @@ async def reasoning(question, team: SelectorGroupChat, decision_maker: FinalWrit
 
 # ==============================================================================
 def write_to_file(out_file, data_id, data):
+    data = attach_usage(data)
     exist_data = {}
     if os.path.exists(out_file):
         try:
@@ -357,6 +368,7 @@ async def run_sample(data, out_file, team, decision_maker, role_map, supervisor,
                 executor = CodeContestExecutor(timeout=2)
                 is_solved, execution_result, error = executor.execute(answer, tests)
             except Exception as e:
+                mark_sample_failed(e)
                 is_solved = False
                 execution_result = "Executor Error"
                 error = str(e)
@@ -379,6 +391,7 @@ async def run_sample(data, out_file, team, decision_maker, role_map, supervisor,
         )
         
     except Exception as e:
+        mark_sample_failed(e)
         log_message(f"!!!!!! [CRITICAL ERROR] Task {instance_id}: {e} !!!!!!", log_file_path)
         traceback.print_exc()
 
@@ -431,10 +444,14 @@ async def main():
     
     start_time = time.time()
     
+    usage_run = UsageRun(args.out_file, framework=args.framework,
+                         configuration={"fixed_rounds": args.fixed_rounds, "baseline_only": args.baseline_only})
     for instance in tqdm(adapted_data, desc="Processing"):
-        team, decision_maker, role_map, supervisor = init_team(global_metrics, global_embeddings)
-        await run_sample(instance, args.out_file, team, decision_maker, role_map, supervisor, FINAL_LOG_FILE)
+        with usage_run.sample(sample_id(instance)):
+            team, decision_maker, role_map, supervisor = init_team(global_metrics, global_embeddings)
+            await run_sample(instance, args.out_file, team, decision_maker, role_map, supervisor, FINAL_LOG_FILE)
     
+    usage_run.raise_if_failed()
     total_time = time.time() - start_time
     print(f"\n🎉 Done in {total_time:.2f}s")
 
@@ -481,6 +498,8 @@ if __name__ == "__main__":
     parser.add_argument("--select_q", type=int, default=None)
     parser.add_argument("--exact_select_q", action="store_true")
     parser.add_argument("--batch_audit_metrics", action="store_true")
+    parser.add_argument("--framework", choices=["dynamic", "fixed"], default="dynamic")
+    parser.add_argument("--fixed_rounds", type=int, default=None)
     args = parser.parse_args()
 
     asyncio.run(main())

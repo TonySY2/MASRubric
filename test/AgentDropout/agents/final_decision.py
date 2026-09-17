@@ -1,8 +1,9 @@
+from AgentDropout.usage import safe_request_usage, tracked_create
 from AgentDropout.agents.agent_registry import AgentRegistry
 from AgentDropout.prompt.prompt_set_registry import PromptSetRegistry
 from autogen_ext.models.openai import OpenAIChatCompletionClient
 from autogen_agentchat.messages import TextMessage
-from autogen_core.models import UserMessage, SystemMessage, RequestUsage
+from autogen_core.models import UserMessage, SystemMessage
 from typing import List, Dict
 from openai import AsyncOpenAI
 from AgentDropout.tools.coding.python_executor import PyExecutor
@@ -61,7 +62,8 @@ class FinalWriteCodeMBPP:
     
     async def run_decision(self, history_messages: List[TextMessage], role_map: Dict[str, str], task: str) -> TextMessage:
         system_prompt, user_prompt = self._process_inputs(history_messages, role_map, task)
-        completion = await self._model_client.chat.completions.create(
+        completion = await tracked_create(
+            self._model_client.chat.completions.create, stage="final_decision", source=self.name,
             model=self.model,
             messages=[
                 {"role": "system", "content": system_prompt},
@@ -70,7 +72,7 @@ class FinalWriteCodeMBPP:
             temperature=0.0,
         )
         response = completion.choices[0].message
-        usage = RequestUsage(prompt_tokens=completion.usage.prompt_tokens, completion_tokens=completion.usage.completion_tokens)
+        usage = safe_request_usage(completion)
         response_message = TextMessage(content=response.content, source=self.name, models_usage=usage)
         return response_message
 
@@ -124,7 +126,8 @@ class FinalWriteCode:
     
     async def run_decision(self, history_messages: List[TextMessage], role_map: Dict[str, str], task: str) -> TextMessage:
         system_prompt, user_prompt = self._process_inputs(history_messages, role_map, task)
-        completion = await self._model_client.chat.completions.create(
+        completion = await tracked_create(
+            self._model_client.chat.completions.create, stage="final_decision", source=self.name,
             model=self.model,
             messages=[
                 {"role": "system", "content": system_prompt},
@@ -133,7 +136,7 @@ class FinalWriteCode:
             temperature=0.0, 
         )
         response = completion.choices[0].message
-        usage = RequestUsage(prompt_tokens=completion.usage.prompt_tokens, completion_tokens=completion.usage.completion_tokens)
+        usage = safe_request_usage(completion)
         response_message = TextMessage(content=response.content, source=self.name, models_usage=usage)
         return response_message
 
@@ -175,7 +178,8 @@ class FinalRefer():
         system_prompt, user_prompt = self._process_inputs(history_messages, role_map, task)
 
 
-        completion = await self._model_client.chat.completions.create(
+        completion = await tracked_create(
+            self._model_client.chat.completions.create, stage="final_decision", source=self.name,
             model=self.model,
             messages=[
                 {"role": "system", "content": system_prompt},
@@ -186,7 +190,7 @@ class FinalRefer():
         )
         response = completion.choices[0].message
         # response_message = TextMessage(content=response.content, source=self.name, models_usage=response.usage)
-        response_message = TextMessage(content=response.content, source=self.name, models_usage=RequestUsage(prompt_tokens=completion.usage.prompt_tokens, completion_tokens=completion.usage.completion_tokens))
+        response_message = TextMessage(content=response.content, source=self.name, models_usage=safe_request_usage(completion))
         
         return response_message
         

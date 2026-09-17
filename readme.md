@@ -117,6 +117,31 @@ For the 14B math table, use the same benchmark/method presets with 14B served
 models in the endpoint environment. For the 8B code table, use
 `--method adv2_code_main --model-profile code_8b`.
 
+## Fixed framework and token usage
+
+The default framework remains `dynamic`. Add `--framework fixed` to use the
+historical FullGraph schedule: five agents, all forward DAG edges, and one
+complete round. `--fixed-rounds N` controls complete fixed rounds; `--max-turns`
+controls dynamic chat only. Fixed runs reuse the release agents/prompts, pass
+only accepted predecessor outputs downstream, and aggregate the last round.
+They do not use a selector or the dynamic framework's whole-task fallback.
+
+```bash
+# Fixed MAS baseline, then Fixed MAS + ADv2 (use adv2_code_main for code).
+python test/run_release_experiment.py --benchmark gsm8k --method fixed_baseline --limit 2
+python test/run_release_experiment.py --benchmark gsm8k --method adv2_math_main --framework fixed --limit 2
+```
+
+Token accounting is automatic for both frameworks. Results contain per-question
+`token_usage`; the printed `*.usage.summary.json` contains run totals, alongside
+per-call `*.usage.jsonl` and per-sample `*.samples.jsonl`. Each launch has its own
+output directory under `test/results_release/<model-profile>/<framework>/`.
+Counts include selector, all reasoning/rectification attempts, summary, rerank,
+audit, final decision, and dynamic fallback. LLM and embedding tokens are separate.
+Missing provider usage stays `null` with `complete: false`; `observed_*` fields
+show known partial sums. These are response-usage measurements; transport retries
+for which the provider supplies no usage cannot be reconstructed.
+
 ## Indicator Pools
 
 The math and code indicator-pool JSON files are bundled in this repository:

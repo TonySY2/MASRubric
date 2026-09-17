@@ -237,6 +237,13 @@
         "pass_rate": 1.0,
         "retries_times": 3
       }
+    },
+    "fixed_baseline": {
+      "description": "Fixed FullGraph MAS baseline without audit or pruning.",
+      "framework": "fixed",
+      "args": {
+        "baseline_only": true
+      }
     }
   },
   "model_profiles": {

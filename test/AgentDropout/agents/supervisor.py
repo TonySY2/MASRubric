@@ -1,3 +1,4 @@
+from AgentDropout.usage import tracked_create
 from autogen_ext.models.openai import OpenAIChatCompletionClient
 from autogen_agentchat.messages import TextMessage
 from typing import Dict
@@ -94,7 +95,8 @@ class Supervisor():
                     # response = await self._model_client.create(
                     #     messages=input_messages,
                     # )
-                    completion = await self._model_client.chat.completions.create(
+                    completion = await tracked_create(
+                        self._model_client.chat.completions.create, stage="supervisor_audit", source="Supervisor", metadata={"audit_attempt": cur_attempt + 1},
                         model=self.model,
                         messages=[{"role": "user", "content": prompt}],
                         temperature=0.0,

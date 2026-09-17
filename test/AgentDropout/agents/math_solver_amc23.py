@@ -1,3 +1,4 @@
+from AgentDropout.usage import safe_request_usage, tracked_create
 #--- START OF FILE math_solver_math500.py ---
 
 import os
@@ -11,7 +12,6 @@ from autogen_agentchat.agents import BaseChatAgent
 from autogen_agentchat.base import Response
 from autogen_agentchat.messages import BaseAgentEvent, BaseChatMessage, TextMessage
 from autogen_core import CancellationToken
-from autogen_core.models import RequestUsage
 from AgentDropout.prompt.prompt_set_registry import PromptSetRegistry
 from AgentDropout.agents.agent_registry import AgentRegistry
 
@@ -114,7 +114,8 @@ class MathSolverAmc23(BaseChatAgent):
                 stop_token_ids = []
        
 
-                completion = await self._model_client.chat.completions.create(
+                completion = await tracked_create(
+                    self._model_client.chat.completions.create, stage="reasoning", source=self.name, metadata={"agent_attempt": current_attempt + 1},
                     model=self.model,
                     messages=current_conversation,
                     temperature=0.7,
@@ -191,9 +192,9 @@ class MathSolverAmc23(BaseChatAgent):
             current_attempt += 1
 
     
-        usage = RequestUsage(prompt_tokens=0, completion_tokens=0)
+        usage = None
         if 'completion' in locals():
-             usage = RequestUsage(prompt_tokens=completion.usage.prompt_tokens, completion_tokens=completion.usage.completion_tokens)
+             usage = safe_request_usage(completion)
 
         response_message = TextMessage(
             content=final_response_dict.get('content', ''), 

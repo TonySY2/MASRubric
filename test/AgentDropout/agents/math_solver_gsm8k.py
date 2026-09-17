@@ -1,3 +1,4 @@
+from AgentDropout.usage import safe_request_usage, tracked_create
 import os
 from typing import AsyncGenerator, Sequence, Dict, List, Any, Tuple, Union
 import json
@@ -9,7 +10,6 @@ from autogen_agentchat.agents import BaseChatAgent
 from autogen_agentchat.base import Response
 from autogen_agentchat.messages import BaseAgentEvent, BaseChatMessage, TextMessage
 from autogen_core import CancellationToken
-from autogen_core.models import RequestUsage
 from AgentDropout.prompt.prompt_set_registry import PromptSetRegistry
 from AgentDropout.agents.agent_registry import AgentRegistry
 from AgentDropout.agents.supervisor import Supervisor 
@@ -102,7 +102,8 @@ class MathSolverGsm8k(BaseChatAgent):
                 current_conversation.append({"role": "user", "content": last_feedback})
             
             try:
-                completion = await self._model_client.chat.completions.create(
+                completion = await tracked_create(
+                    self._model_client.chat.completions.create, stage="reasoning", source=self.name, metadata={"agent_attempt": current_attempt + 1},
                     model=self.model,
                     messages=current_conversation,
                     temperature=0.7,
@@ -175,9 +176,9 @@ class MathSolverGsm8k(BaseChatAgent):
         # ---------------------------------------------------------
 
 
-        usage = RequestUsage(prompt_tokens=0, completion_tokens=0)
+        usage = None
         if 'completion' in locals():
-             usage = RequestUsage(prompt_tokens=completion.usage.prompt_tokens, completion_tokens=completion.usage.completion_tokens)
+             usage = safe_request_usage(completion)
 
         response_message = TextMessage(
             content=final_response_dict.get('content', ''), 

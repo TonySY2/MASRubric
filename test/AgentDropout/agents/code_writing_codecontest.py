@@ -1,3 +1,4 @@
+from AgentDropout.usage import safe_request_usage, tracked_create
 import os
 from typing import AsyncGenerator, Sequence, Dict, List, Any, Tuple, Union
 import logging
@@ -10,7 +11,6 @@ from autogen_agentchat.agents import BaseChatAgent
 from autogen_agentchat.base import Response
 from autogen_agentchat.messages import BaseAgentEvent, BaseChatMessage, TextMessage
 from autogen_core import CancellationToken
-from autogen_core.models import RequestUsage
 from AgentDropout.prompt.prompt_set_registry import PromptSetRegistry
 from AgentDropout.agents.agent_registry import AgentRegistry
 from AgentDropout.agents.supervisor import Supervisor
@@ -28,6 +28,7 @@ class CodeWritingCodecontest(BaseChatAgent):
         supervisor: Supervisor = None,
         role:str = None,
         message_history: List[BaseChatMessage] = None,
+        reflection_time: int = 3,
     ):
         self.prompt_set = PromptSetRegistry.get(domain)
         self.role = self.prompt_set.get_role() if role is None else role
@@ -39,6 +40,7 @@ class CodeWritingCodecontest(BaseChatAgent):
         self._model_client = AsyncOpenAI(api_key=api_key, base_url=base_url)
         self._system_message = self.prompt_set.get_constraint(self.role) 
         self.role_map = {}
+        self.reflection_time = reflection_time
         self.supervisor: Supervisor = supervisor
         
 
@@ -100,7 +102,7 @@ class CodeWritingCodecontest(BaseChatAgent):
         ]
 
         current_attempt = 0
-        max_attempts = 4 
+        max_attempts = self.reflection_time + 1
         
         session_metrics = None
         last_agent_content = None
@@ -118,7 +120,8 @@ class CodeWritingCodecontest(BaseChatAgent):
 
             try:
        
-                completion = await self._model_client.chat.completions.create(
+                completion = await tracked_create(
+                    self._model_client.chat.completions.create, stage="reasoning", source=self.name, metadata={"agent_attempt": current_attempt + 1},
                     model=self.model,
                     messages=current_conversation,
                     temperature=0.7,
@@ -180,9 +183,9 @@ class CodeWritingCodecontest(BaseChatAgent):
 
         # ---------------------------------------------------------
         
-        usage = RequestUsage(prompt_tokens=0, completion_tokens=0)
+        usage = None
         if 'completion' in locals():
-             usage = RequestUsage(prompt_tokens=completion.usage.prompt_tokens, completion_tokens=completion.usage.completion_tokens)
+             usage = safe_request_usage(completion)
 
         response_message = TextMessage(
             content=final_response_dict.get('content', ''), 
