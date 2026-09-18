@@ -4,6 +4,10 @@ __pycache__/
 .mypy_cache/
 
 test/results_release/
+paper/results/
+paper/assets/pools/**/*.jsonl
+paper/assets/datasets/livecode/*.jsonl
+.venv-*/
 train/results-*/
 *.log
 

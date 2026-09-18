@@ -384,8 +384,7 @@ async def run_sample(data, out_file, team, decision_maker, role_map, supervisor,
 
 async def main():
     if not os.path.exists(args.in_file):
-        print(f"[ERROR] Input file not found: {args.in_file}")
-        return
+        raise FileNotFoundError(f"Input file not found: {args.in_file}")
 
     print(f"[INFO] Loading data from {args.in_file}...")
     try:
@@ -402,8 +401,7 @@ async def main():
             print(f"[INFO] Limit applied: {len(input_data)} tasks.")
             
     except Exception as e:
-        print(f"[ERROR] Data load failed: {e}")
-        return
+        raise RuntimeError(f"Data load failed: {args.in_file}") from e
         
     global_metrics, global_embeddings = load_global_resources(
         args.metric_pool_file, 

@@ -4,6 +4,13 @@ This snapshot follows the 2026-05-25 paper-facing tables. Scores are percentages
 main paper tables report accuracy only; token accounting is kept out of this
 public table snapshot.
 
+These are archived scores, not measurements from the current release launcher.
+Use `test/run_paper_main.py` for supported historical main-method runs; see
+[the experiment matrix](experiment_matrix.md) for method coverage. The release
+`fixed` framework does not establish equivalence with the historical Fixed-MAS
+experiments, and the comparison methods listed here are not all runnable through
+the release presets.
+
 The PRM rows use `Qwen2.5-Math-7B-PRM800K` with best-of-3 process-reward
 selection.
 
@@ -11,22 +18,37 @@ selection.
 
 | Method | GSM8K | MATH500 | AQuA | AMC23 | Easy Avg | OlymB | OlymE | OlymH | AIME24 | AIME25 | Hard Avg | All Avg |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| Single Agent | 87.64 | 74.80 | 83.86 | 62.50 | 77.20 | 47.56 | 13.33 | 20.00 | 20.00 | 16.00 | 23.38 | 47.30 |
+| Single Agent | 87.64 | 74.80 | 83.86 | 62.50 | 77.20 | 47.56 | 20.00 | 16.00 | 13.33 | 20.00 | 23.38 | 47.30 |
 | CoT | 93.71 | 79.40 | 84.65 | 67.50 | 81.32 | 43.85 | 20.00 | 23.33 | 24.00 | 15.00 | 25.24 | 50.16 |
-| Fixed-MAS | 93.18 | 77.40 | 85.04 | 65.00 | 80.16 | 49.62 | 26.67 | 20.00 | 31.25 | 17.50 | 29.01 | 51.74 |
+| Fixed-MAS | 93.18 | 77.40 | 85.04 | 65.00 | 80.16 | 49.62 | 31.25 | 17.50 | 26.67 | 20.00 | 29.01 | 51.74 |
 | Fixed-MAS + Self-Refine | 93.03 | 77.00 | 83.46 | 65.00 | 79.62 | 51.30 | 23.33 | 20.00 | 26.25 | 26.25 | 29.43 | 51.74 |
 | Fixed-MAS + PRM | 94.47 | 79.20 | 82.28 | 70.00 | 81.49 | 51.15 | 23.75 | 13.75 | 26.67 | 23.33 | 27.73 | 51.62 |
 | Fixed-MAS + Multi-TAG | 93.78 | 76.20 | 83.07 | 70.00 | 80.76 | 48.55 | 26.67 | 23.33 | 20.00 | 17.50 | 27.21 | 51.01 |
-| Fixed-MAS + ADv1 | 93.56 | 78.20 | 83.86 | 75.00 | 82.66 | 49.16 | 33.33 | 13.33 | 25.00 | 20.00 | 28.16 | 52.38 |
-| Fixed-MAS + ADv2 | 93.63 | 77.00 | 84.65 | 67.50 | 80.70 | 49.16 | 30.00 | 23.33 | 32.50 | 23.75 | 31.75 | 53.50 |
-| Dynamic-MAS | 91.66 | 78.00 | 85.43 | 62.50 | 79.40 | 48.15 | 30.00 | 20.00 | 26.00 | 16.00 | 28.03 | 50.86 |
+| Fixed-MAS + ADv1 | 93.56 | 78.20 | 83.86 | 75.00 | 82.66 | 49.16 | 25.00 | 20.00 | 33.33 | 13.33 | 28.16 | 52.38 |
+| Fixed-MAS + ADv2 | 93.63 | 77.00 | 84.65 | 67.50 | 80.70 | 49.16 | 32.50 | 23.75 | 30.00 | 23.33 | 31.75 | 53.50 |
+| Dynamic-MAS | 91.66 | 78.00 | 85.43 | 62.50 | 79.40 | 48.15 | 26.00 | 16.00 | 30.00 | 20.00 | 28.03 | 50.86 |
 | Dynamic-MAS + Self-Refine | 91.51 | 83.40 | 85.04 | 62.50 | 80.61 | 49.19 | 23.33 | 10.00 | 20.00 | 15.00 | 23.50 | 48.89 |
 | Dynamic-MAS + PRM | 93.18 | 79.60 | 87.80 | 60.00 | 80.14 | 50.30 | 23.00 | 15.00 | 26.67 | 26.67 | 28.33 | 51.36 |
 | Dynamic-MAS + Multi-TAG | 92.04 | 81.00 | 85.83 | 62.50 | 80.34 | 48.74 | 30.00 | 16.67 | 27.00 | 18.00 | 28.08 | 51.31 |
-| Dynamic-MAS + ADv2 | 91.66 | 79.60 | 83.86 | 70.00 | 81.28 | 52.44 | 30.00 | 26.67 | 32.00 | 17.00 | 31.62 | 53.69 |
+| Dynamic-MAS + ADv2 | 91.66 | 79.60 | 83.86 | 70.00 | 81.28 | 52.44 | 32.00 | 17.00 | 30.00 | 26.67 | 31.62 | 53.69 |
 
 `OlymB`, `OlymE`, and `OlymH` denote OlympiadBench, OlymMATH Easy, and
 OlymMATH Hard.
+
+Column correction (2026-09-18): the `OlymE/OlymH` and `AIME24/AIME25` pairs
+were transposed in six rows: Single Agent, Fixed-MAS, Fixed-MAS + ADv1,
+Fixed-MAS + ADv2, Dynamic-MAS, and Dynamic-MAS + ADv2. Their dataset labels
+are now aligned with the frozen `main_method_reference_20260711` archive's
+`docs/2026-05-15-收官实验总表-传递版-逐任务token版-分母补齐副本.md`
+(task-token copy generated 2026-05-18), under its "数学主表" section. This
+correction only reassigns the existing values to their documented datasets;
+the values and averages are unchanged. Other Table 1 rows were retained from
+the release snapshot and have not been reconciled against that source.
+
+The frozen source counts missing ordinary-run samples against the full benchmark
+denominator and explicitly preserves the historical FullGraph/V1 `N-20`
+denominators where applicable. A full-input run or a first-N smoke subset must
+not be treated as the same evaluation population without checking those records.
 
 ## Table 2: 14B Math
 
@@ -54,6 +76,11 @@ MAS to a Qwen3-14B system.
 LiveCodeBench.
 
 ## Table 4: Math Ablations
+
+The column order and ADv2 values below agree with the frozen source's
+"数学消融" section. They were not swapped to match the formerly mislabeled
+Table 1 row. Preset availability alone does not establish equivalence with
+these historical ablation runs.
 
 | Method | GSM8K | MATH500 | AQuA | AMC23 | OlymB | OlymE | OlymH | AIME24 | AIME25 | Average |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |

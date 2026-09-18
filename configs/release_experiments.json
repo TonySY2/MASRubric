@@ -3,17 +3,23 @@
     "math_deduped": {
       "metric_pool_file": "test/metrics_pool/two_pool/deduped-mixed_metrics_two_pool.json",
       "embedding_cache_file": "test/metrics_pool/two_pool/deduped-mixed_two_pool-trigger.jsonl",
-      "note": "Small public math indicator pool. Generate the embedding cache before running if it is absent."
+      "note": "Small public math indicator pool. Generate the embedding cache before running if it is absent.",
+      "metric_pool_file_env": "AGENTDROPOUT_METRIC_POOL_FILE",
+      "embedding_cache_file_env": "AGENTDROPOUT_EMBEDDING_CACHE_FILE"
     },
     "math_nondedup": {
       "metric_pool_file": "test/metrics_pool/two_pool/mixed_metrics_two_pool.json",
       "embedding_cache_file": "test/metrics_pool/two_pool/mixed_embeddings_cache_two_pool.jsonl",
-      "note": "Bundled non-deduplicated math indicator pool for the pool-control ablation. Generate the embedding cache before running if it is absent."
+      "note": "Bundled non-deduplicated math indicator pool for the pool-control ablation. Generate the embedding cache before running if it is absent.",
+      "metric_pool_file_env": "AGENTDROPOUT_METRIC_POOL_FILE",
+      "embedding_cache_file_env": "AGENTDROPOUT_EMBEDDING_CACHE_FILE"
     },
     "code_mixed": {
       "metric_pool_file": "test/metrics_pool/code_mixed/deduplicated_metrics_pool.json",
       "embedding_cache_file": "test/metrics_pool/code_mixed/deduplicated_embeddings-trigger.jsonl",
-      "note": "Bundled mixed code indicator pool. Generate the embedding cache before running if it is absent."
+      "note": "Bundled mixed code indicator pool. Generate the embedding cache before running if it is absent.",
+      "metric_pool_file_env": "AGENTDROPOUT_METRIC_POOL_FILE",
+      "embedding_cache_file_env": "AGENTDROPOUT_EMBEDDING_CACHE_FILE"
     }
   },
   "benchmarks": {
@@ -170,14 +176,14 @@
       }
     },
     "adv2_math_top3": {
-      "description": "Table 4 retrieved-indicator ablation: top20 -> <=top3.",
+      "description": "Table 4 retrieved-indicator ablation: top20 -> <=top3, pass 3/3.",
       "pool": "math_deduped",
       "args": {
         "retrieval_mode": "rerank",
         "retrieve_p": 20,
         "select_q": 3,
         "batch_audit_metrics": true,
-        "pass_rate": 0.6,
+        "pass_rate": 1.0,
         "retries_times": 3
       }
     },

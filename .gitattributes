@@ -1,0 +1,2 @@
+# Preserve whitespace in recovered source, including historical multiline prompts.
+paper/runtime/** -whitespace

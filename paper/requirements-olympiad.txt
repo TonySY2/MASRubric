@@ -1,0 +1,5 @@
+# Separate environment for the recovered OlympiadBench grader.
+# latex2sympy2 requires ANTLR 4.7.2, which conflicts with math-verify 0.9.0.
+# Do not install this file and requirements.txt into the same environment.
+-r requirements-core.txt
+latex2sympy2==1.9.1

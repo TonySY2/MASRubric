@@ -1,0 +1,380 @@
+{
+  "source_package": "main_method_reference_20260711",
+  "recovered_on": "2026-09-18",
+  "reference_caveat": "The reference package was frozen after the historical main runs; its README records later workspace development. This is the recovered execution chain, not proof of a byte-identical source snapshot for each April/May run.",
+  "preserved": [
+    "agent and supervisor prompts",
+    "metric selection and audit parsers",
+    "retry and final-answer logic",
+    "profile-aware retrieval",
+    "grader implementations"
+  ],
+  "adaptations": [
+    "Removed historical credentials and private server path defaults",
+    "Changed default hosted selector endpoint to localhost",
+    "API keys come from role-specific environment variables",
+    "Excluded unrelated GPU/service launchers and unused source files",
+    "Added original benchmark parser and code grader dependencies absent from the reference package"
+  ],
+  "temperature_caveat": "Retains temperatures and chat-template behavior from recovered source, including differences between individual final-decision implementations; the reference README shorthand does not override executable code.",
+  "external_dependencies_source": "migrated 26.4.9 workspace project_datasets/{aqua,gsm8k}_dataset.py and original evaluation-standard paper_code_eval.py",
+  "olympiad_grader_source": "Original 139 reference_packages/main_method_reference_20260711/source_workspace/experiments/olympiad/grader.py, content equality confirmed with migrated AC workspace grader.py using direct byte comparison",
+  "mbpp_few_shot_source": "Original AutoGen-3/project_datasets/mbpp-sanitized/mbpp_train.jsonl; bundled training split, preserving the original loader's first three valid prompt/code examples",
+  "code_profile_coverage": {
+    "metrics": 2545,
+    "metrics_with_match_profile": 0,
+    "behavior": "Profile-aware path enabled; missing metric profiles normalize to any. Do not interpret enabling this path as evidence of effective hard filtering."
+  },
+  "files": [
+    {
+      "path": "AgentDropout/__init__.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/agents/__init__.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/agents/adversarial_agent.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/agents/agent_mode_helpers.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/agents/agent_registry.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/agents/analyze_agent.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/agents/code_writing.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/agents/code_writing_codecontest.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/agents/code_writing_humaneval.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/agents/code_writing_livecode.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/agents/code_writing_mbpp.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/agents/final_decision.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": true
+    },
+    {
+      "path": "AgentDropout/agents/math_grader.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/agents/math_solver.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/agents/math_solver_aime24.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/agents/math_solver_aime25.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/agents/math_solver_amc23.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/agents/math_solver_aqua.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/agents/math_solver_gsm8k.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/agents/math_solver_math500.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/agents/math_solver_olymMATH.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/agents/math_solver_olympiad.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/agents/math_solver_svamp.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/agents/supervisor.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/agents/supervisor_reasoning_pick_metric.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/atomic_trace.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/profileaware_metrics.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/prompt/__init__.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/prompt/aime24_prompt_set.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/prompt/aime25_prompt_set.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/prompt/amc23_prompt_set.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/prompt/aqua_prompt_set.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/prompt/codecontest_prompt_set.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/prompt/common.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/prompt/gsm8k_prompt_set.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/prompt/humaneval_prompt_set.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/prompt/livecode_prompt_set.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/prompt/math500_prompt_set.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/prompt/math_prompt_set.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/prompt/math_team_variant.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/prompt/mathc_prompt_set.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/prompt/mbpp_prompt_set.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": true
+    },
+    {
+      "path": "AgentDropout/prompt/mmlu_prompt_set.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/prompt/olymMATH_prompt_set.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/prompt/olympiad_prompt_set.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/prompt/prompt_set.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/prompt/prompt_set_registry.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/prompt/svamp_prompt_set.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/prompt/teamv2_math_prompt_variants.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/tools/coding/executor_types.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/tools/coding/executor_utils.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/tools/coding/python_executor.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/tools/search/wiki.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "AgentDropout/usage_tracking.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "experiments/aime24/run_aime24.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": true
+    },
+    {
+      "path": "experiments/aime25/run_aime25.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": true
+    },
+    {
+      "path": "experiments/amc23/run_amc23.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": true
+    },
+    {
+      "path": "experiments/gsm8k/run_gsm8k.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": true
+    },
+    {
+      "path": "experiments/math500/run_math500.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": true
+    },
+    {
+      "path": "experiments/olymMATH/run_olymMATH.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": true
+    },
+    {
+      "path": "experiments/olympiad/run_olympiad.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": true
+    },
+    {
+      "path": "experiments/run_aqua_adversarial_reasoning_pick_metric_reflection.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": true
+    },
+    {
+      "path": "grader.py",
+      "source": "supplemental_original_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "logger.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "paper_code_eval.py",
+      "source": "supplemental_original_workspace",
+      "infrastructure_adapted": true
+    },
+    {
+      "path": "project_datasets/aqua_dataset.py",
+      "source": "supplemental_original_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "project_datasets/gsm8k_dataset.py",
+      "source": "supplemental_original_workspace",
+      "infrastructure_adapted": false
+    },
+    {
+      "path": "scripts/run_v2_code_eval.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": true
+    },
+    {
+      "path": "scripts/v2_code_common.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": true
+    },
+    {
+      "path": "sitecustomize.py",
+      "source": "main_method_reference_20260711/source_workspace",
+      "infrastructure_adapted": false
+    }
+  ]
+}

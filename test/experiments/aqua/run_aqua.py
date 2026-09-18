@@ -295,8 +295,7 @@ async def run_sample(data, out_file, team, decision_maker, role_map, supervisor,
 
 async def main():
     if not os.path.exists(args.in_file):
-        print(f"[ERROR] Input file not found: {args.in_file}")
-        return
+        raise FileNotFoundError(f"Input file not found: {args.in_file}")
 
     print(f"[INFO] Loading data from {args.in_file}...")
     with open(args.in_file, 'r') as f:

@@ -38,9 +38,10 @@ multi-agent systems without retraining the base agents. During MAS execution it:
 ## Repository Layout
 
 ```text
-configs/release_experiments.json  Paper-facing benchmarks, pools, and method presets.
-docs/experiment_matrix.md          How to run the current main and ablation configurations.
-docs/release_results.md            Current Table 1 / Table 2 / Table 3 / Table 4 snapshot.
+test/run_paper_main.py             Historical main-method reproduction entry point.
+configs/release_experiments.json   Release benchmarks, pools, and method presets.
+docs/experiment_matrix.md          Main-table coverage and release configuration guide.
+docs/release_results.md            Historical Table 1 / Table 2 / Table 3 / Table 4 snapshot.
 test/                             Test-time inference, benchmark loaders, and public launcher.
 train/                            Training-time collection and indicator-pool construction.
 image/readme/                     README figures.
@@ -60,7 +61,48 @@ pip install -r requirements.txt
 The runners use OpenAI-compatible chat and embedding endpoints. Local vLLM
 servers can use `EMPTY` keys when authentication is disabled.
 
-## Quick Start
+## Main-table reproduction
+
+Start with the dedicated historical main-method entry point:
+
+```bash
+python test/run_paper_main.py --list
+python test/run_paper_main.py --help
+python test/run_paper_main.py --suite math_8b --benchmark gsm8k --method adv2 --dry-run
+```
+
+This entry point uses a separate runtime recovered from the frozen experiments;
+it does not forward to the release presets. Its supported runs follow the
+recovered experiment settings. See
+[the experiment matrix](docs/experiment_matrix.md) for coverage and limitations.
+The [main-method runbook](docs/paper_main_reproduction.md) covers the exact
+model roles, external assets, two grader environments, and source boundaries.
+The result tables are historical records, not scores measured by a fresh run of
+this release. Matching a method name or a few retrieval flags does not establish
+equivalence: agent prompts, audit rules, model settings, input subsets, and
+evaluation denominators also matter.
+
+After setting the endpoint variables below, check the bundled historical assets
+and a matching external embedding cache:
+
+```bash
+python test/run_paper_main.py \
+  --suite math_8b --benchmark gsm8k --method adv2 \
+  --assets-root paper/assets \
+  --embedding-cache-file /path/to/math_pool_embeddings.jsonl \
+  --preflight
+```
+
+For a two-question smoke run, replace `--preflight` with `--limit 2`. The
+preflight reads the full input file even for a smoke run, so pass the full
+archived dataset and let `--limit` select records. Code runs require the code
+pool's matching cache, not the math cache.
+
+The release launcher below remains available for development and new experiments.
+Its fixed framework is a reconstruction using the release agents; it is not an
+equivalent runner for the historical Table 1 Fixed-MAS rows.
+
+## Release Quick Start
 
 Set endpoint variables:
 
@@ -97,7 +139,7 @@ python test/run_release_experiment.py \
   --dry-run
 ```
 
-Run the current math main configuration on a small subset:
+Run the release math configuration on a small smoke subset:
 
 ```bash
 python test/run_release_experiment.py \
@@ -113,18 +155,22 @@ The old per-benchmark shell scripts are now thin wrappers over the same launcher
 bash test/run-gsm8k.sh --method adv2_math_main --model-profile math_8b --limit 2
 ```
 
-For the 14B math table, use the same benchmark/method presets with 14B served
-models in the endpoint environment. For the 8B code table, use
-`--method adv2_code_main --model-profile code_8b`.
+In the release launcher, `--model-profile` is an output-directory label only: it
+does not select, load, or validate a model. All actual served model names come
+from the endpoint environment. Use `--method adv2_code_main --model-profile
+code_8b` for the release code configuration. Use the historical entry point above
+when reproducing a supported main-table experiment.
 
 ## Fixed framework and token usage
 
 The default framework remains `dynamic`. Add `--framework fixed` to use the
-historical FullGraph schedule: five agents, all forward DAG edges, and one
+reconstructed FullGraph-style schedule: five agents, all forward DAG edges, and one
 complete round. `--fixed-rounds N` controls complete fixed rounds; `--max-turns`
 controls dynamic chat only. Fixed runs reuse the release agents/prompts, pass
 only accepted predecessor outputs downstream, and aggregate the last round.
 They do not use a selector or the dynamic framework's whole-task fallback.
+These scheduling properties have offline tests; historical prompt, audit, data,
+and score equivalence has not been established for this reconstructed runner.
 
 ```bash
 # Fixed MAS baseline, then Fixed MAS + ADv2 (use adv2_code_main for code).
@@ -154,12 +200,14 @@ test/metrics_pool/code_mixed/deduplicated_metrics_pool.json
 
 Precomputed embedding caches can exceed GitHub's single-file size limit. They
 are optional release artifacts: either generate them locally, or host them
-outside the repository and pass them at runtime. `AGENTDROPOUT_METRIC_POOL_FILE`
-is mainly for optional local overrides:
+outside the repository and pass them at runtime. For optional local overrides,
+pass explicit launcher arguments:
 
 ```bash
-export AGENTDROPOUT_METRIC_POOL_FILE="/path/to/pool.json"
-export AGENTDROPOUT_EMBEDDING_CACHE_FILE="/path/to/pool_embeddings.jsonl"
+python test/run_release_experiment.py \
+  --benchmark gsm8k --method adv2_math_main \
+  --metric-pool-file /path/to/pool.json \
+  --embedding-cache-file /path/to/pool_embeddings.jsonl
 ```
 
 For example, to generate the mixed code embedding cache:

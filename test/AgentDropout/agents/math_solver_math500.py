@@ -181,6 +181,8 @@ class MathSolverMath500(BaseChatAgent):
                 
                 logging.warning(f"Agent '{self.name}' API request failed. Error: {e}")
                 if current_attempt < max_attempts - 1:
+                    # Network failures consume the same bounded attempt budget.
+                    current_attempt += 1
                     await asyncio.sleep(5)
                     continue
                 else:

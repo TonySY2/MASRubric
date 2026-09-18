@@ -1,0 +1,4 @@
+# Default paper runtime, including the original OlymMATH math_verify grader.
+# Use a separate environment for OlympiadBench; see requirements-olympiad.txt.
+-r requirements-core.txt
+math-verify==0.9.0
