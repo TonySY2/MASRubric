@@ -38,7 +38,9 @@ multi-agent systems without retraining the base agents. During MAS execution it:
 ## Repository Layout
 
 ```text
-test/run_paper_main.py             Historical main-method reproduction entry point.
+test/run_paper_main.py             Main-table experiment launcher.
+configs/paper_main.json            Main-table datasets, models, and method settings.
+paper/runtime/                    Runtime for main-table experiments.
 configs/release_experiments.json   Release benchmarks, pools, and method presets.
 docs/experiment_matrix.md          Main-table coverage and release configuration guide.
 docs/release_results.md            Historical Table 1 / Table 2 / Table 3 / Table 4 snapshot.
@@ -63,7 +65,8 @@ servers can use `EMPTY` keys when authentication is disabled.
 
 ## Main-table reproduction
 
-Start with the dedicated historical main-method entry point:
+Use `test/run_paper_main.py` for the Dynamic-MAS main method. It supports nine
+math benchmarks (`math_8b`, `math_14b`) and four code benchmarks (`code_8b`):
 
 ```bash
 python test/run_paper_main.py --list
@@ -71,19 +74,12 @@ python test/run_paper_main.py --help
 python test/run_paper_main.py --suite math_8b --benchmark gsm8k --method adv2 --dry-run
 ```
 
-This entry point uses a separate runtime recovered from the frozen experiments;
-it does not forward to the release presets. Its supported runs follow the
-recovered experiment settings. See
-[the experiment matrix](docs/experiment_matrix.md) for coverage and limitations.
-The [main-method runbook](docs/paper_main_reproduction.md) covers the exact
-model roles, external assets, two grader environments, and source boundaries.
-The result tables are historical records, not scores measured by a fresh run of
-this release. Matching a method name or a few retrieval flags does not establish
-equivalence: agent prompts, audit rules, model settings, input subsets, and
-evaluation denominators also matter.
+See the [runbook](docs/paper_main_reproduction.md) for model settings, datasets,
+embedding caches, and grader setup, and the
+[experiment matrix](docs/experiment_matrix.md) for supported methods.
 
-After setting the endpoint variables below, check the bundled historical assets
-and a matching external embedding cache:
+After setting the endpoint variables below, check the bundled assets and a
+matching external embedding cache:
 
 ```bash
 python test/run_paper_main.py \
@@ -93,14 +89,12 @@ python test/run_paper_main.py \
   --preflight
 ```
 
-For a two-question smoke run, replace `--preflight` with `--limit 2`. The
-preflight reads the full input file even for a smoke run, so pass the full
-archived dataset and let `--limit` select records. Code runs require the code
-pool's matching cache, not the math cache.
+For a two-question smoke run, replace `--preflight` with `--limit 2`; keep the
+full dataset as input. Use the cache for the selected math or code pool.
+LiveCodeBench's 400-record input file is external; preparation is covered in
+the runbook.
 
-The release launcher below remains available for development and new experiments.
-Its fixed framework is a reconstruction using the release agents; it is not an
-equivalent runner for the historical Table 1 Fixed-MAS rows.
+The release launcher below provides additional settings for new experiments.
 
 ## Release Quick Start
 
@@ -169,8 +163,8 @@ complete round. `--fixed-rounds N` controls complete fixed rounds; `--max-turns`
 controls dynamic chat only. Fixed runs reuse the release agents/prompts, pass
 only accepted predecessor outputs downstream, and aggregate the last round.
 They do not use a selector or the dynamic framework's whole-task fallback.
-These scheduling properties have offline tests; historical prompt, audit, data,
-and score equivalence has not been established for this reconstructed runner.
+This fixed runner is intended for new experiments; the historical Fixed-MAS
+comparison rows are not covered by the main-table launcher.
 
 ```bash
 # Fixed MAS baseline, then Fixed MAS + ADv2 (use adv2_code_main for code).

@@ -28,6 +28,10 @@
           "selector": "Qwen3.5-9B",
           "embedding": "Qwen3-Embedding-8B"
         }
+      },
+      "final_decision": {
+        "class": "FinalRefer",
+        "temperature": 0.7
       }
     },
     "math500": {
@@ -46,6 +50,10 @@
           "selector": "Qwen3.5-9B",
           "embedding": "Qwen3-Embedding-8B"
         }
+      },
+      "final_decision": {
+        "class": "FinalRefer",
+        "temperature": 0.7
       }
     },
     "aqua": {
@@ -64,6 +72,10 @@
           "selector": "Qwen3.5-9B",
           "embedding": "Qwen3-Embedding-8B"
         }
+      },
+      "final_decision": {
+        "class": "FinalRefer",
+        "temperature": 0.7
       }
     },
     "amc23": {
@@ -82,6 +94,10 @@
           "selector": "Qwen3.5-9B",
           "embedding": "Qwen3-Embedding-8B"
         }
+      },
+      "final_decision": {
+        "class": "FinalRefer",
+        "temperature": 0.7
       }
     },
     "olympiad": {
@@ -100,6 +116,10 @@
           "selector": "Qwen3.5-9B",
           "embedding": "Qwen3-Embedding-8B"
         }
+      },
+      "final_decision": {
+        "class": "FinalRefer",
+        "temperature": 0.7
       }
     },
     "olymmath_easy": {
@@ -118,6 +138,10 @@
           "selector": "Qwen3.5-9B",
           "embedding": "Qwen3-Embedding-8B"
         }
+      },
+      "final_decision": {
+        "class": "FinalRefer",
+        "temperature": 0.7
       }
     },
     "olymmath_hard": {
@@ -136,6 +160,10 @@
           "selector": "Qwen3.5-9B",
           "embedding": "Qwen3-Embedding-8B"
         }
+      },
+      "final_decision": {
+        "class": "FinalRefer",
+        "temperature": 0.7
       }
     },
     "aime24": {
@@ -154,6 +182,10 @@
           "selector": "Qwen3.5-9B",
           "embedding": "Qwen3-Embedding-8B"
         }
+      },
+      "final_decision": {
+        "class": "FinalRefer",
+        "temperature": 0.7
       }
     },
     "aime25": {
@@ -172,6 +204,10 @@
           "selector": "Qwen3.5-9B",
           "embedding": "Qwen3-Embedding-8B"
         }
+      },
+      "final_decision": {
+        "class": "FinalRefer",
+        "temperature": 0.7
       }
     },
     "mbpp": {
@@ -190,6 +226,10 @@
           "selector": "Qwen3.5-9B",
           "embedding": "Qwen3-Embedding-8B"
         }
+      },
+      "final_decision": {
+        "class": "FinalWriteCodeMBPP",
+        "temperature": 0.0
       }
     },
     "humaneval": {
@@ -208,6 +248,10 @@
           "selector": "Qwen3.5-9B",
           "embedding": "Qwen3-Embedding-8B"
         }
+      },
+      "final_decision": {
+        "class": "FinalWriteCode",
+        "temperature": 0.0
       }
     },
     "codecontest": {
@@ -226,6 +270,10 @@
           "selector": "Qwen3.5-9B",
           "embedding": "Qwen3-Embedding-8B"
         }
+      },
+      "final_decision": {
+        "class": "FinalWriteCode",
+        "temperature": 0.0
       }
     },
     "livecode": {
@@ -244,6 +292,10 @@
           "selector": "Qwen3.5-9B",
           "embedding": "Qwen3-Embedding-8B"
         }
+      },
+      "final_decision": {
+        "class": "FinalWriteCode",
+        "temperature": 0.0
       }
     }
   }

@@ -163,6 +163,7 @@ def build_plan(args, config, benchmark, out_dir):
         "fixed_environment": {k: v for k, v in env.items() if k.startswith("AGENTDROPOUT_") and not k.endswith("_API_KEY")},
         "command": safe_cmd, "result_file": str(result),
         "sampling_note": "Preserved runtime sampling; no seed was recorded for the source runs.",
+        "final_decision": spec["final_decision"],
         "historical_reference": spec["historical"],
         "model_override_allowed": args.allow_model_override,
     }

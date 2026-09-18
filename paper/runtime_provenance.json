@@ -16,7 +16,7 @@
     "Excluded unrelated GPU/service launchers and unused source files",
     "Added original benchmark parser and code grader dependencies absent from the reference package"
   ],
-  "temperature_caveat": "Retains temperatures and chat-template behavior from recovered source, including differences between individual final-decision implementations; the reference README shorthand does not override executable code.",
+  "temperature_caveat": "Code final: 0.0 (FinalWriteCodeMBPP and FinalWriteCode). Math final: 0.7 (FinalRefer). Request-level regression coverage is in tests/test_paper_runtime_integration.py.",
   "external_dependencies_source": "migrated 26.4.9 workspace project_datasets/{aqua,gsm8k}_dataset.py and original evaluation-standard paper_code_eval.py",
   "olympiad_grader_source": "Original 139 reference_packages/main_method_reference_20260711/source_workspace/experiments/olympiad/grader.py, content equality confirmed with migrated AC workspace grader.py using direct byte comparison",
   "mbpp_few_shot_source": "Original AutoGen-3/project_datasets/mbpp-sanitized/mbpp_train.jsonl; bundled training split, preserving the original loader's first three valid prompt/code examples",

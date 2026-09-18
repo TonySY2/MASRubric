@@ -1,23 +1,13 @@
-# Running the recovered main method
+# Running main-method experiments
 
-Use `test/run_paper_main.py` for the recovered Dynamic-MAS + ADv2 execution
-chain. The separate `test/run_release_experiment.py` remains the portable release
-implementation and fixed-framework extension. A matching method name or a few
-matching numeric arguments does not establish that these implementations are
-equivalent.
+Use `test/run_paper_main.py` for Dynamic-MAS + ADv2 math and code experiments.
+`configs/paper_main.json` lists the 13 tasks, model roles, final temperatures,
+and historical reference results.
 
-## What was recovered
+## Experiment settings
 
-The source is `main_method_reference_20260711`: its source workspace, per-task
-configurations and summaries, indicator pools, datasets, and the separate code
-grader. `paper/runtime_provenance.json` lists the selected source files and the
-portability changes. `configs/paper_main.json` maps the 13 tasks to their source
-runs, full denominators, correct counts, and actual model-role names.
-
-The reference package itself states that its workspace had development changes
-after the April/May source runs. This release recovers that documented reference;
-it cannot certify that the July snapshot is byte-for-byte the code executed in
-April/May. No full model benchmark has been rerun as part of this repair.
+The runtime and assets come from `main_method_reference_20260711`.
+Source-file provenance is listed in `paper/runtime_provenance.json`.
 
 | Setting | Math main | Code main |
 | --- | --- | --- |
@@ -30,20 +20,16 @@ April/May. No full model benchmark has been rerun as part of this repair.
 | Retrieval | top 20, select 1–5 | direct top 3, profile-aware query path |
 | Audit | Batch, pass fraction 0.6 | Batch, pass fraction 1.0 |
 | Turns / rectification | 7 / 3 | 7 / 3 |
+| Final temperature | 0.7 (`FinalRefer`) | 0.0 (`FinalWriteCodeMBPP` / `FinalWriteCode`) |
 | Pool size | 2,000 | 2,545 |
 
-The code reference pool has **zero explicit `match_profile` entries**. The
-preserved supervisor normalizes absent profiles to `any/any`. Although its
-profile-aware query and filtering code are enabled, this does not establish
-effective interface filtering for those generic indicators. The launcher reports
-coverage and a warning; it does not invent profiles or replace the original pool.
+The bundled code pool has no explicit `match_profile` entries. These indicators
+use the supervisor's `any/any` defaults and apply across interfaces. Preflight
+reports profile coverage when a different pool is supplied.
 
-Sampling parameters come from the preserved source rather than the reference
-README's blanket prose. For example, the recovered code final-decision classes
-use temperature 0.0, whereas the reference README says 0.7. The selector does
-not explicitly set temperature. No source seed or fully pinned serving/chat
-template configuration was recorded. Service defaults remain a reproducibility
-boundary.
+Each run manifest records the final class and its temperature. The selector uses
+the service's sampling defaults; no seed is set. Use the same model weights and
+serving/chat-template configuration when comparing runs.
 
 ## Install the two grader environments
 
@@ -137,17 +123,12 @@ do not receive a completed-suite macro score. Historical usage logs retain their
 original schema; they do not inherit the release runtime's complete/observed
 token-accounting contract.
 
-## Scope of the result claims
+## Supported scope
 
-The recovered source records support Dynamic-MAS + ADv2 math 8B and code 8B.
-`--method baseline` is a comparison on that same recovered runtime, and
-`--suite math_14b` is a model-transfer entrypoint. Neither is certified here as
-the exact source of its separately published historical row. The original
-FullGraph/V1 rows and other comparison methods need their own source/configuration
-mapping; the release `--framework fixed` extension must not be relabeled as their
-historical reproduction.
-
-The corrected published-table column assignments and historical denominator
-notes are in [release_results.md](release_results.md). Source-run missing outputs
-were counted as incorrect, including 5/165 CodeContests problems; rerunning should
-attempt the complete dataset rather than reproduce the historical omissions.
+The archived source maps to Dynamic-MAS + ADv2 math 8B and code 8B.
+`--method baseline` and `--suite math_14b` provide comparisons on this runtime.
+Historical Fixed-MAS and other comparison methods are outside this entry point.
+The July source archive includes later development, so historical scores in
+[release_results.md](release_results.md) remain reference results rather than
+a guarantee of identical new-run accuracy. Evaluate the complete datasets;
+missing outputs count as incorrect.

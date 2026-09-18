@@ -100,6 +100,7 @@ class PlanTests(unittest.TestCase):
                             self.assertEqual(parsed.pass_rate, 1.0 if spec["domain"] == "code" else 0.6)
                             self.assertEqual(Path(parsed.in_file), Path(manifest["dataset"]))
                             self.assertEqual(missing, [])
+                            self.assertEqual(manifest["final_decision"], spec["final_decision"])
                             if spec["domain"] == "code":
                                 self.assertEqual(parsed.task, benchmark)
                                 self.assertTrue(parsed.force_direct_search)

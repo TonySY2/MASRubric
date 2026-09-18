@@ -60,6 +60,91 @@ def metric(name, shape="any", io_contract="any"):
                               "match_hint": "Verify the interface and returned numeric value."}}
 
 
+class PaperFinalTemperatureTests(unittest.TestCase):
+    def test_final_requests_use_historical_temperatures_and_code4_routing(self):
+        # Import the recovered runtime in a separate interpreter: the other
+        # integration tests also import the public package named AgentDropout.
+        script = r"""
+import asyncio
+import inspect
+import json
+from pathlib import Path
+import sys
+
+runtime = Path(sys.argv[1]).resolve()
+sys.path[:0] = [str(runtime), str(runtime / "scripts")]
+from AgentDropout.agents import AgentRegistry
+from v2_code_common import ensure_task_name
+
+async def main():
+    resolved = []
+    for benchmark in ("mbpp", "humaneval", "codecontest", "livecode", "gsm8k"):
+        if benchmark == "gsm8k":
+            agent_name, domain = "FinalRefer", "gsm8k"
+        else:
+            spec = ensure_task_name(benchmark)
+            agent_name, domain = spec.decision_agent_name, spec.domain_name
+        decision = AgentRegistry.get(
+            agent_name, name="DecisionMaker", model="gpt-4o",
+            api_key="local-test", base_url=sys.argv[2], domain=domain,
+        )
+        try:
+            answer = await decision.run_decision([], {}, "What is 1+1?")
+            resolved.append({
+                "benchmark": benchmark,
+                "class": type(decision).__name__,
+                "module": str(Path(inspect.getfile(type(decision))).resolve()),
+                "source": answer.source,
+            })
+        finally:
+            await decision._model_client.close()
+    print(json.dumps(resolved))
+
+asyncio.run(main())
+"""
+        environment = {
+            name: value for name, value in os.environ.items()
+            if not name.startswith("AGENTDROPOUT_")
+        }
+        environment.update(PYTHONUTF8="1", PYTHONIOENCODING="utf-8",
+                           NO_PROXY="127.0.0.1,localhost")
+        for name in ("HTTP_PROXY", "HTTPS_PROXY", "ALL_PROXY", "http_proxy", "https_proxy", "all_proxy"):
+            environment.pop(name, None)
+        runtime = ROOT / "paper/runtime"
+        expected = [
+            ("mbpp", "FinalWriteCodeMBPP", 0.0),
+            ("humaneval", "FinalWriteCode", 0.0),
+            ("codecontest", "FinalWriteCode", 0.0),
+            ("livecode", "FinalWriteCode", 0.0),
+            ("gsm8k", "FinalRefer", 0.7),
+        ]
+        config = json.loads((ROOT / "configs/paper_main.json").read_text(encoding="utf-8"))
+        with FakeModelEndpoint() as endpoint:
+            completed = subprocess.run(
+                [sys.executable, "-I", "-c", script, str(runtime), endpoint.url],
+                cwd=ROOT, env=environment, capture_output=True, text=True,
+                encoding="utf-8", errors="replace", timeout=60,
+            )
+            self.assertEqual(completed.returncode, 0, completed.stdout + completed.stderr)
+            resolved = json.loads(completed.stdout.strip().splitlines()[-1])
+            self.assertEqual(len(resolved), len(expected))
+            self.assertEqual(len(endpoint.calls), len(expected))
+            for (benchmark, agent_name, temperature), decision, call in zip(expected, resolved, endpoint.calls):
+                with self.subTest(benchmark=benchmark):
+                    self.assertEqual(decision["benchmark"], benchmark)
+                    self.assertEqual(decision["class"], agent_name)
+                    self.assertEqual(decision["source"], "DecisionMaker")
+                    self.assertEqual(Path(decision["module"]),
+                                     (runtime / "AgentDropout/agents/final_decision.py").resolve())
+                    self.assertTrue(call["path"].endswith("/chat/completions"))
+                    self.assertEqual(call["body"]["model"], "gpt-4o")
+                    # This is the JSON received over HTTP, after the real SDK
+                    # has applied request arguments, rather than an AST check.
+                    self.assertEqual(call["body"]["temperature"], temperature)
+                    self.assertEqual(config["benchmarks"][benchmark]["final_decision"],
+                                     {"class": decision["class"], "temperature": call["body"]["temperature"]})
+
+
 class PaperRuntimeIntegrationTests(unittest.TestCase):
     def run_fixture(self, benchmark, endpoint, directory):
         config = json.loads((ROOT / "configs/paper_main.json").read_text(encoding="utf-8"))
