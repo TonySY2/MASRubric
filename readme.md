@@ -14,49 +14,74 @@
 </p>
 
 <p align="center">
-  <a href="https://arxiv.org/abs/2602.23258">Preprint (earlier title)</a> &nbsp;|&nbsp;
+  <a href="#paper-and-citation">Manuscript</a> &nbsp;|&nbsp;
   <a href="docs/paper_main_reproduction.md">Runbook</a> &nbsp;|&nbsp;
   <a href="docs/experiment_matrix.md">Experiments</a> &nbsp;|&nbsp;
-  <a href="#citation">Citation</a>
+  <a href="#reported-results">Reported results</a>
 </p>
 
 ## Overview
 
-MASRubric builds a bank of diagnostic criteria from failed multi-agent
-trajectories, retrieves a contextual rubric for each intermediate message, and
-decides whether to **Pass**, **Revise**, or **Withhold** it. A separate auditor
-provides feedback; the reasoning agent revises its own output. Base models remain
-frozen, and the criterion bank stays fixed during inference. Reference answers
-are used for offline mining and benchmark grading, and are withheld from the
-online auditor.
+MASRubric audits intermediate messages before errors propagate through a
+multi-agent system. It distills recurring reasoning pitfalls from failed
+trajectories into a reusable criterion bank, then retrieves a context-specific
+rubric for each message. The auditor's verdict controls whether that message is
+passed downstream, revised by its author, or withheld.
 
-1. **Learn from failures.** Collect unsuccessful multi-agent trajectories and
-   distill reusable diagnostic criteria into a compact bank.
-2. **Retrieve a rubric.** Select criteria relevant to the current task and
-   intermediate message.
-3. **Audit before broadcast.** Pass accepted messages, request targeted revisions,
-   and withhold messages that still fail after the revision budget.
+The framework addresses three requirements for useful test-time rubrics:
+
+- **Test-time ready:** reusable criteria apply to unseen inputs without a
+  reference answer or human-written criterion at inference time.
+- **Situation-specific:** each message is checked against criteria whose
+  applicability conditions match its reasoning context.
+- **Actionable:** criterion-level judgments lead to **Pass**, **Revise**, or
+  **Withhold** decisions before the message reaches downstream agents.
 
 <p align="center">
-  <img src="image/readme/masrubric-overview.png" alt="Agent-level dropout and MASRubric message-level auditing" width="1000">
+  <img src="image/readme/masrubric-overview.png" alt="Existing rubrics versus MASRubric on test-time readiness, situation specificity, and actionable decisions" width="1000">
 </p>
 
-<p align="center"><em>From agent-level dropout to message-level auditing: retrieve a rubric, revise the message, and control what reaches downstream agents.</em></p>
+<p align="center"><em>Figure 1 from the MASRubric manuscript: existing rubrics and MASRubric compared against the three requirements.</em></p>
+
+## Method
+
+1. **Mine criteria from failures.** Run a source MAS on training queries, retain
+   failed trajectories, and identify recurring agent-level pitfalls. Each
+   criterion records a name, diagnostic definition, applicability condition,
+   and inspection directive.
+2. **Compact the bank.** Retrieve semantically similar criteria and use an LLM
+   to eliminate duplicate error patterns. The resulting bank stays fixed
+   during inference.
+3. **Retrieve a contextual rubric.** Match the message's reasoning situation to
+   applicability conditions, then select the relevant criteria.
+4. **Audit and intervene.** Aggregate binary criterion judgments into a
+   satisfaction rate. Pass messages meeting the threshold; otherwise return
+   diagnostic feedback to the original agent for revision, or withhold the
+   message when its revision budget is exhausted.
+
+Reference answers support offline failure collection and rubric mining. The
+online auditor operates without them.
 
 <p align="center">
   <img src="image/readme/masrubric-framework.png" alt="Offline criterion-bank construction and online MASRubric information flow" width="1100">
 </p>
 
-<p align="center"><em>MASRubric combines offline criterion-bank construction with online retrieval, auditing, and Pass / Revise / Withhold decisions.</em></p>
+<p align="center"><em>Figure 2 from the MASRubric manuscript. Lower: offline rubric mining and two-stage deduplication. Upper: contextual retrieval, criterion-level auditing, and Pass / Revise / Withhold decisions.</em></p>
 
-## Paper
+## Reported results
 
-The public preprint is available under the project's earlier title,
-[**AgentDropoutV2: Optimizing Information Flow in Multi-Agent Systems via
-Test-Time Rectify-or-Reject Pruning**](https://arxiv.org/abs/2602.23258).
-Its latest posted version is v2, dated May 28, 2026. This repository now uses
-the MASRubric name; the [citation](#citation) retains the preprint's title and
-author metadata.
+The current MASRubric manuscript reports the following average accuracies with
+Qwen3-8B reasoning agents (Tables 1 and 2):
+
+| Evaluation | Underlying MAS | + MASRubric | Gain |
+| --- | ---: | ---: | ---: |
+| Fixed-MAS, 9 math benchmarks | 51.15% | 52.74% | +1.59 points |
+| Dynamic-MAS, 9 math benchmarks | 50.86% | 53.69% | +2.83 points |
+| Dynamic-MAS, 4 code benchmarks | 46.63% | 48.37% | +1.74 points |
+
+These are manuscript-reported results. New runs produce their own measurements;
+the release's supported reproduction scope is described in the
+[runbook](docs/paper_main_reproduction.md#supported-scope-and-runtime-behavior).
 
 ## Quick start
 
@@ -119,8 +144,8 @@ OlympiadBench grader, external assets, and output interpretation.
 The reference launcher covers nine math tasks and four code tasks. The banks
 contain 2,000 math criteria and 2,545 code criteria. Twelve evaluation datasets
 are bundled; LiveCodeBench's matching 400-problem file and embedding caches must
-be supplied or generated separately. Precomputed experiment outputs and result
-tables are excluded; new runs write their own measurements.
+be supplied or generated separately. Raw experiment outputs are excluded; new
+runs write their own measurements.
 
 ## Additional experiments
 
@@ -155,20 +180,10 @@ results, logs, caches, and local credentials are ignored by Git. Review any
 manually added outputs before sharing them, as they can contain prompts, paths,
 and endpoint configuration.
 
-## Citation
+## Paper and citation
 
-For the public preprint, use its arXiv citation:
-
-```bibtex
-@misc{wang2026agentdropoutv2optimizinginformationflow,
-  title={AgentDropoutV2: Optimizing Information Flow in Multi-Agent Systems via Test-Time Rectify-or-Reject Pruning},
-  author={Yutong Wang and Siyuan Xiong and Xuebo Liu and Wenkang Zhou and Liang Ding and Miao Zhang and Min Zhang},
-  year={2026},
-  eprint={2602.23258},
-  archivePrefix={arXiv},
-  primaryClass={cs.AI},
-  url={https://arxiv.org/abs/2602.23258}
-}
-```
+This repository presents **MASRubric: Auditing Information Flow in Multi-Agent
+Systems with Failure-Distilled Pitfall Rubrics**. Its public preprint link and
+citation will be added when the manuscript update is available.
 
 This codebase builds on [AgentDropout](https://github.com/wangzx1219/AgentDropout).

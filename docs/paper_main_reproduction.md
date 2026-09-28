@@ -33,8 +33,9 @@ dependencies cannot silently switch the run to string comparison.
 ## Assets and endpoints
 
 Twelve evaluation datasets, the MBPP training examples, and the two criterion
-banks are included under `paper/assets/`. The 400-record LiveCodeBenchV1 input
-is external. Place it at
+banks are included under `paper/assets/`. The banks contain 2,000 math and 2,545
+code criteria, matching the current manuscript's Table 5. The 400-record
+LiveCodeBenchV1 input is external. Place it at
 `paper/assets/datasets/livecode/livecodebench_v1.jsonl`, or use `--in-file` for a
 single LiveCodeBench run. Use the matching 400-problem evaluation set when
 comparing with the paper; a different export changes the evaluation population.
@@ -138,23 +139,29 @@ missing outputs count as incorrect.
 
 The configurable runtime in `test/masrubric/` also provides a fixed DAG and
 intervention presets through `test/run_release_experiment.py`. This extension
-has not been established as equivalent to the paper's historical Fixed-MAS
-implementation or every comparison and ablation method. See the
+has not been established as equivalent to the Fixed-MAS experiments reported
+in the current manuscript or every comparison and ablation method. See the
 [experiment matrix](experiment_matrix.md) for its available presets.
 
-The reference launcher's message limit of 7 counts the initial user task plus
-at most 6 agent messages. Math uses 20 retrieval candidates, up to 5 selected
-criteria, and a satisfaction threshold of 0.6. Code uses direct top-3 retrieval
-and a threshold of 1.0; its final-answer temperature is 0.0. Math final-answer
-temperature is 0.7. These code settings differ from the paper's general setup
-(20 candidates, up to 5 selected criteria, threshold 0.6, and temperature 0.7
-for other models). Renaming or running the artifact does not establish that
-every manuscript result has been reproduced.
+The current manuscript reports six chat turns (§4.1). This artifact sets its
+message limit to 7, counting the initial user task plus at most 6 agent messages.
+The manuscript also specifies a three-revision budget, 20 retrieval candidates,
+up to 5 selected criteria for math and 3 for code, and satisfaction thresholds
+of 0.6 and 1.0, respectively. The artifact matches those rubric-size limits,
+revision budgets, and thresholds. Satisfaction is measured over the selected
+criteria; the math threshold is 3/5 only when five criteria are selected.
+
+Two code-path differences remain: direct top-3 retrieval replaces the
+coarse-to-fine selection described in §3.3, and the final-answer temperature is
+0.0 while §4.1 states 0.7 for non-auditor models. Math final-answer temperature
+is 0.7. These implementation differences should be considered when comparing
+new runs with manuscript results.
 
 Batch audits use the diagnostic definition, applicability condition, and
-inspection directive. Single-criterion audits and per-criterion fallback use
-the applicability condition and inspection directive. The preserved runtime
-accepts an empty judgment set; API or parsing failures can yield empty or
+inspection directive. The manuscript's judgment stage uses only the
+applicability condition and inspection directive (§3.3; Figure 7), as do the
+artifact's single-criterion audits and per-criterion fallback. The preserved
+runtime accepts an empty judgment set; API or parsing failures can yield empty or
 partial judgments. Inspect these separately from successful criterion checks.
 The dynamic runtime restarts a task without intervention when at most one usable
 message remains; the fixed runtime does not use this whole-task fallback.

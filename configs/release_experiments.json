@@ -116,7 +116,7 @@
       }
     },
     "masrubric_math_main": {
-      "description": "Main math setting: top20 -> <=top5, batch audit, pass 3/5.",
+      "description": "Main math setting: top20 -> <=top5, batch audit, 60% satisfaction threshold.",
       "pool": "math_deduped",
       "args": {
         "retrieval_mode": "rerank",
@@ -176,7 +176,7 @@
       }
     },
     "masrubric_math_top3": {
-      "description": "Extension retrieved-criterion ablation: top20 -> <=top3, pass 3/3.",
+      "description": "Extension retrieved-criterion ablation: top20 -> <=top3, 100% satisfaction threshold.",
       "pool": "math_deduped",
       "args": {
         "retrieval_mode": "rerank",
@@ -234,7 +234,7 @@
       }
     },
     "masrubric_code_main": {
-      "description": "Main code setting: mixed code pool + direct top3, batch audit, pass 3/3.",
+      "description": "Main code setting: mixed code pool + direct top3, batch audit, 100% satisfaction threshold.",
       "pool": "code_mixed",
       "args": {
         "retrieval_mode": "direct",

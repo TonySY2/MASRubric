@@ -146,10 +146,11 @@ bash test/run-gsm8k.sh --method masrubric_math_main --model-profile math_8b --li
 
 These presets use the separate release runtime. Their values below are
 executable settings, not a claim that each preset reproduces a paper row.
-For example, the three-criterion preset also changes the threshold to 1.0,
-and there is no one-revision preset corresponding to the new Table 3 row.
+For example, the three-criterion preset also changes the threshold to 1.0;
+the current manuscript's Table 3 varies criterion count with the default 0.6
+threshold. There is no preset for Table 3's one-revision row.
 The release `fixed` framework is an extension and has not been established as
-equivalent to the paper's Fixed-MAS implementation.
+equivalent to the Fixed-MAS experiments reported in the current manuscript.
 
 | Preset | Release configuration | Main arguments |
 | --- | --- | --- |
