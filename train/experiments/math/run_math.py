@@ -7,9 +7,9 @@ import time
 import traceback
 import json
 import re
-from AgentDropout.agents import AgentRegistry
-from AgentDropout.agents.supervisor import Supervisor
-from AgentDropout.agents.final_decision import FinalRefer
+from masrubric.agents import AgentRegistry
+from masrubric.agents.supervisor import Supervisor
+from masrubric.agents.final_decision import FinalRefer
 from autogen_agentchat.teams import SelectorGroupChat
 from autogen_ext.models.openai import OpenAIChatCompletionClient
 from autogen_agentchat.conditions import MaxMessageTermination, TextMentionTermination
@@ -20,7 +20,7 @@ from openai import AsyncOpenAI
 from tqdm import tqdm
 
 try:
-    from AgentDropout.agents.math_grader import MathGrader
+    from masrubric.agents.math_grader import MathGrader
 except ImportError:
     print("[FATAL] ")
     sys.exit(1)

@@ -1,277 +1,114 @@
-# AgentDropoutV2
+# MASRubric
 
-This repository anonymously releases code, data, and reproducibility materials
-for **AgentDropoutV2: Optimizing Information Flow in Multi-Agent Systems via
-Test-Time Rectify-or-Reject Pruning**.
+Research code for **MASRubric: Auditing Information Flow in Multi-Agent Systems
+with Failure-Distilled Pitfall Rubrics**.
 
-<p align="center">
-  <img src="image/readme/AgentDropoutV2-logo.png" alt="AgentDropoutV2 Logo" width="200">
-</p>
-
-## News
-
-- **2026-05-27**: arXiv preprint released:
-  [arXiv:2602.23258](https://arxiv.org/abs/2602.23258).
-- **2026-05-22**: Math and code indicator-pool JSON files are bundled in the
-  GitHub release.
-- **2026-02-27**: Initial code and dataset release.
-
-## Overview
-
-AgentDropoutV2 is a test-time framework for improving information flow in
-multi-agent systems without retraining the base agents. During MAS execution it:
-
-1. intercepts each agent output before broadcast,
-2. retrieves failure-driven indicators from an offline pool,
-3. audits the output and provides targeted rectification feedback,
-4. rejects unreleased outputs that still fail the audit threshold,
-5. falls back to the original MAS path when pruning would collapse the team.
-
-<p align="center">
-  <img src="image/readme/adv1-vs-adv2.png" alt="ADv1 versus ADv2 overview">
-</p>
-
-<p align="center">
-  <img src="image/readme/main-picture.png" alt="AgentDropoutV2 framework">
-</p>
-
-## Repository Layout
+MASRubric builds a bank of diagnostic criteria from failed multi-agent
+trajectories, retrieves a contextual rubric for each intermediate message, and
+decides whether to **Pass**, **Revise**, or **Withhold** it. A separate auditor
+provides feedback; the reasoning agent revises its own output. Base models remain
+frozen, and the criterion bank stays fixed during inference. Reference answers
+are used for offline mining and benchmark grading, and are withheld from the
+online auditor.
 
 ```text
-test/run_paper_main.py             Main-table experiment launcher.
-configs/paper_main.json            Main-table datasets, models, and method settings.
-paper/runtime/                    Runtime for main-table experiments.
-configs/release_experiments.json   Release benchmarks, pools, and method presets.
-docs/experiment_matrix.md          Main-table coverage and release configuration guide.
-docs/release_results.md            Historical Table 1 / Table 2 / Table 3 / Table 4 snapshot.
-test/                             Test-time inference, benchmark loaders, and public launcher.
-train/                            Training-time collection and indicator-pool construction.
-image/readme/                     README figures.
+Offline: failed trajectories -> criterion mining -> deduplication -> criterion bank
+Online:  agent message -> rubric retrieval -> audit -> Pass / Revise / Withhold
 ```
 
-## Requirements
+## Quick start
 
-Use Python 3.10. The full historical environment is pinned in
-`requirements.txt`; for a fresh setup:
-
-```bash
-conda create -n agentdropoutv2 python=3.10
-conda activate agentdropoutv2
-pip install -r requirements.txt
-```
-
-The runners use OpenAI-compatible chat and embedding endpoints. Local vLLM
-servers can use `EMPTY` keys when authentication is disabled.
-
-## Main-table reproduction
-
-Use `test/run_paper_main.py` for the Dynamic-MAS main method. It supports nine
-math benchmarks (`math_8b`, `math_14b`) and four code benchmarks (`code_8b`):
+The commands below use **Python 3.10 and Bash on Linux or WSL2**. Model serving is
+configured separately through OpenAI-compatible endpoints.
 
 ```bash
+git clone https://github.com/TonySY2/MASRubric.git
+cd MASRubric
+python3.10 -m venv .venv-paper
+source .venv-paper/bin/activate
+python -m pip install -r paper/requirements.txt
+
+# Inspect supported tasks and a command without making model calls.
 python test/run_paper_main.py --list
-python test/run_paper_main.py --help
-python test/run_paper_main.py --suite math_8b --benchmark gsm8k --method adv2 --dry-run
+python test/run_paper_main.py --suite math_8b --benchmark gsm8k --method masrubric --dry-run
 ```
 
-See the [runbook](docs/paper_main_reproduction.md) for model settings, datasets,
-embedding caches, and grader setup, and the
-[experiment matrix](docs/experiment_matrix.md) for supported methods.
-
-After setting the endpoint variables below, check the bundled assets and a
-matching external embedding cache:
+Configure the four model roles. Replace the example hosts with your own services
+and set each `*_KEY` to its key. `EMPTY` is only for a local service without
+authentication.
 
 ```bash
-python test/run_paper_main.py \
-  --suite math_8b --benchmark gsm8k --method adv2 \
-  --assets-root paper/assets \
-  --embedding-cache-file /path/to/math_pool_embeddings.jsonl \
-  --preflight
+export REASONING_URL=http://reasoning-host:8000/v1 REASONING_MODEL=Qwen3-8B
+export SUPERVISOR_URL=http://auditor-host:8000/v1 SUPERVISOR_MODEL=Qwen3-8B
+export SELECTOR_URL=http://selector-host:8000/v1 SELECTOR_MODEL=Qwen3.5-9B
+export EMBEDDING_URL=http://embedding-host:8000/v1 EMBEDDING_MODEL=Qwen3-Embedding-8B
+export REASONING_KEY=EMPTY SUPERVISOR_KEY=EMPTY SELECTOR_KEY=EMPTY EMBEDDING_KEY=EMPTY
 ```
 
-For a two-question smoke run, replace `--preflight` with `--limit 2`; keep the
-full dataset as input. Use the cache for the selected math or code pool.
-LiveCodeBench's 400-record input file is external; preparation is covered in
-the runbook.
-
-The release launcher below provides additional settings for new experiments.
-
-## Release Quick Start
-
-Set endpoint variables:
+Generate a cache for the bundled math criterion bank. This step calls the
+embedding service; keep the same embedding model for subsequent experiments.
 
 ```bash
-export SELECTOR_URL="http://host:port/v1"
-export SELECTOR_MODEL="selector-model-name"
-export REASONING_URL="http://host:port/v1"
-export REASONING_MODEL="reasoning-model-name"
-export SUPERVISOR_URL="http://host:port/v1"
-export SUPERVISOR_MODEL="auditor-model-name"
-export EMBEDDING_URL="http://host:port/v1"
-export EMBEDDING_MODEL="embedding-model-name"
+python test/metrics_pool/two_pool/embed_metrics-trigger.py \
+  --input_file paper/assets/pools/math/deduped-mixed_metrics_two_pool.json \
+  --output_cache_file paper/assets/pools/math/deduped-mixed_two_pool-trigger.jsonl
 
-export SELECTOR_KEY="EMPTY"
-export REASONING_KEY="EMPTY"
-export SUPERVISOR_KEY="EMPTY"
-export EMBEDDING_KEY="EMPTY"
+# Check local assets and dependencies, then run two questions.
+python test/run_paper_main.py --suite math_8b --benchmark gsm8k --method masrubric --preflight
+python test/run_paper_main.py --suite math_8b --benchmark gsm8k --method masrubric --limit 2
 ```
 
-List available benchmarks and method presets:
+Remove `--limit` for the full benchmark. Use `--method baseline` for the baseline
+on the same runtime. Alternative model roles require `--allow-model-override`.
+See the [runbook](docs/paper_main_reproduction.md) for code tasks, the separate
+OlympiadBench grader, external assets, and output interpretation.
+
+## Repository contents
+
+| Path | Purpose |
+| --- | --- |
+| `test/run_paper_main.py`, `configs/paper_main.json` | Reference Dynamic-MAS launcher and benchmark settings |
+| `paper/runtime/`, `paper/assets/` | Reference runtime, evaluation data, and criterion banks |
+| `test/run_release_experiment.py`, `configs/release_experiments.json` | Configurable dynamic/fixed experiments and intervention variants |
+| `test/masrubric/` | Configurable runtime and per-call token accounting |
+| `train/` | Offline failure collection and criterion-bank construction |
+| `tests/` | Launcher, runtime, failure-handling, and accounting tests |
+
+The reference launcher covers nine math tasks and four code tasks. The banks
+contain 2,000 math criteria and 2,545 code criteria. Twelve evaluation datasets
+are bundled; LiveCodeBench's matching 400-problem file and embedding caches must
+be supplied or generated separately. Precomputed experiment outputs and result
+tables are excluded; new runs write their own measurements.
+
+## Additional experiments
 
 ```bash
 python test/run_release_experiment.py --list
+python test/run_release_experiment.py --benchmark gsm8k --method masrubric_math_main \
+  --framework fixed --model-profile math_8b --limit 2 --dry-run
 ```
 
-Preview the command shape without configured endpoints:
+The [experiment matrix](docs/experiment_matrix.md) describes available presets,
+environment variables, and custom banks. Its `--model-profile` option labels
+outputs; endpoint variables select the actual models.
+
+## Scope and validation
+
+This release contains a recovered reference implementation with later
+maintenance. Exact historical source identity and reproduction of every paper
+result are not established. The configurable fixed DAG is an extension; it does
+not establish equivalence with the paper's Fixed-MAS rows. Detailed behavior,
+sampling differences, and supported comparisons are recorded in the
+[runbook](docs/paper_main_reproduction.md#supported-scope-and-runtime-behavior).
+
+Run the offline and local-fixture checks in the installed environment:
 
 ```bash
-python test/run_release_experiment.py \
-  --benchmark gsm8k \
-  --method adv2_math_main \
-  --model-profile math_8b \
-  --limit 2 \
-  --dry-run
+python -m unittest discover -s tests -p 'test_*.py'
 ```
 
-Run the release math configuration on a small smoke subset:
-
-```bash
-python test/run_release_experiment.py \
-  --benchmark gsm8k \
-  --method adv2_math_main \
-  --model-profile math_8b \
-  --limit 2
-```
-
-The old per-benchmark shell scripts are now thin wrappers over the same launcher:
-
-```bash
-bash test/run-gsm8k.sh --method adv2_math_main --model-profile math_8b --limit 2
-```
-
-In the release launcher, `--model-profile` is an output-directory label only: it
-does not select, load, or validate a model. All actual served model names come
-from the endpoint environment. Use `--method adv2_code_main --model-profile
-code_8b` for the release code configuration. Use the historical entry point above
-when reproducing a supported main-table experiment.
-
-## Fixed framework and token usage
-
-The default framework remains `dynamic`. Add `--framework fixed` to use the
-reconstructed FullGraph-style schedule: five agents, all forward DAG edges, and one
-complete round. `--fixed-rounds N` controls complete fixed rounds; `--max-turns`
-controls dynamic chat only. Fixed runs reuse the release agents/prompts, pass
-only accepted predecessor outputs downstream, and aggregate the last round.
-They do not use a selector or the dynamic framework's whole-task fallback.
-This fixed runner is intended for new experiments; the historical Fixed-MAS
-comparison rows are not covered by the main-table launcher.
-
-```bash
-# Fixed MAS baseline, then Fixed MAS + ADv2 (use adv2_code_main for code).
-python test/run_release_experiment.py --benchmark gsm8k --method fixed_baseline --limit 2
-python test/run_release_experiment.py --benchmark gsm8k --method adv2_math_main --framework fixed --limit 2
-```
-
-Token accounting is automatic for both frameworks. Results contain per-question
-`token_usage`; the printed `*.usage.summary.json` contains run totals, alongside
-per-call `*.usage.jsonl` and per-sample `*.samples.jsonl`. Each launch has its own
-output directory under `test/results_release/<model-profile>/<framework>/`.
-Counts include selector, all reasoning/rectification attempts, summary, rerank,
-audit, final decision, and dynamic fallback. LLM and embedding tokens are separate.
-Missing provider usage stays `null` with `complete: false`; `observed_*` fields
-show known partial sums. These are response-usage measurements; transport retries
-for which the provider supplies no usage cannot be reconstructed.
-
-## Indicator Pools
-
-The math and code indicator-pool JSON files are bundled in this repository:
-
-```text
-test/metrics_pool/two_pool/deduped-mixed_metrics_two_pool.json
-test/metrics_pool/two_pool/mixed_metrics_two_pool.json
-test/metrics_pool/code_mixed/deduplicated_metrics_pool.json
-```
-
-Precomputed embedding caches can exceed GitHub's single-file size limit. They
-are optional release artifacts: either generate them locally, or host them
-outside the repository and pass them at runtime. For optional local overrides,
-pass explicit launcher arguments:
-
-```bash
-python test/run_release_experiment.py \
-  --benchmark gsm8k --method adv2_math_main \
-  --metric-pool-file /path/to/pool.json \
-  --embedding-cache-file /path/to/pool_embeddings.jsonl
-```
-
-For example, to generate the mixed code embedding cache:
-
-```bash
-python test/metrics_pool/two_pool/embed_metrics-trigger.py \
-  --input_file test/metrics_pool/code_mixed/deduplicated_metrics_pool.json \
-  --output_cache_file test/metrics_pool/code_mixed/deduplicated_embeddings-trigger.jsonl
-```
-
-For the math non-deduplication ablation, generate the matching cache with:
-
-```bash
-python test/metrics_pool/two_pool/embed_metrics-trigger.py \
-  --input_file test/metrics_pool/two_pool/mixed_metrics_two_pool.json \
-  --output_cache_file test/metrics_pool/two_pool/mixed_embeddings_cache_two_pool.jsonl
-```
-
-To build a custom pool:
-
-```bash
-cd train
-bash run-math-train.sh
-python Extraction-deduplication-embedding.py
-```
-
-The training scripts are controlled by environment variables and write their
-outputs to the configured local paths.
-
-## Common Arguments
-
-| Argument | Description |
-| --- | --- |
-| `--in_file` / `--out_file` | Input dataset and output result path. |
-| `--log_file` | Detailed run log path. |
-| `--selector_url`, `--selector_model`, `--selector_key` | Selector/planner endpoint. |
-| `--reasoning_url`, `--reasoning_model`, `--reasoning_key` | Participant and final-answer endpoint. |
-| `--supervisor_url`, `--supervisor_model`, `--supervisor_key` | Auditor endpoint. |
-| `--embedding_url`, `--embedding_model`, `--embedding_key` | Embedding endpoint for retrieval. |
-| `--metric_pool_file`, `--embedding_cache_file` | Indicator pool and precomputed embedding cache. |
-| `--baseline_only` | Run the MAS baseline without audit/pruning. |
-| `--retrieval_mode` | `direct`, `rerank`, or `random`. |
-| `--retrieve_p`, `--select_q` | Rerank path: retrieve top-P candidates, then select up to Q indicators. |
-| `--direct_k` | Direct retrieval top-K. |
-| `--random_k_min`, `--random_k_max` | Random indicator-count range for retrieval-control ablations. |
-| `--batch_audit_metrics` | Audit all selected indicators in one batched auditor call. |
-| `--pass_rate` | Fraction of selected indicators that must pass. |
-| `--retries_times` | Rectification retry budget for one agent output. |
-| `--limit` | Optional subset size for smoke tests. |
-
-## Privacy
-
-The public release should not contain private endpoint URLs, API keys, personal
-paths, server IPs, or local runtime settings. The launcher reads secrets from
-environment variables and masks key values when it prints commands.
-
-## Citation
-
-```bibtex
-@misc{wang2026agentdropoutv2optimizinginformationflow,
-      title={AgentDropoutV2: Optimizing Information Flow in Multi-Agent Systems via Test-Time Rectify-or-Reject Pruning},
-      author={Yutong Wang and Siyuan Xiong and Xuebo Liu and Wenkang Zhou and Liang Ding and Miao Zhang and Min Zhang},
-      year={2026},
-      eprint={2602.23258},
-      archivePrefix={arXiv},
-      primaryClass={cs.AI},
-      url={https://arxiv.org/abs/2602.23258},
-}
-```
-
-## Acknowledgments
-
-This codebase builds on [AgentDropout](https://github.com/wangzx1219/AgentDropout).
+Tests use local fixtures and do not establish model quality or benchmark scores.
+Code benchmarks execute generated Python; use an isolated environment. Generated
+results, logs, caches, and local credentials are ignored by Git. Review any
+manually added outputs before sharing them, as they can contain prompts, paths,
+and endpoint configuration.

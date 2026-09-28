@@ -1,2 +1,3 @@
+* text=auto eol=lf
 # Preserve whitespace in recovered source, including historical multiline prompts.
 paper/runtime/** -whitespace

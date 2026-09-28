@@ -1,7 +1,6 @@
 {
-  "source_package": "main_method_reference_20260711",
-  "recovered_on": "2026-09-18",
-  "reference_caveat": "The reference package was frozen after the historical main runs; its README records later workspace development. This is the recovered execution chain, not proof of a byte-identical source snapshot for each April/May run.",
+  "source_package": "masrubric_dynamic_reference",
+  "reference_caveat": "Recovered reference implementation with later maintenance; exact historical source identity is not established.",
   "preserved": [
     "agent and supervisor prompts",
     "metric selection and audit parsers",
@@ -17,9 +16,9 @@
     "Added original benchmark parser and code grader dependencies absent from the reference package"
   ],
   "temperature_caveat": "Code final: 0.0 (FinalWriteCodeMBPP and FinalWriteCode). Math final: 0.7 (FinalRefer). Request-level regression coverage is in tests/test_paper_runtime_integration.py.",
-  "external_dependencies_source": "migrated 26.4.9 workspace project_datasets/{aqua,gsm8k}_dataset.py and original evaluation-standard paper_code_eval.py",
-  "olympiad_grader_source": "Original 139 reference_packages/main_method_reference_20260711/source_workspace/experiments/olympiad/grader.py, content equality confirmed with migrated AC workspace grader.py using direct byte comparison",
-  "mbpp_few_shot_source": "Original AutoGen-3/project_datasets/mbpp-sanitized/mbpp_train.jsonl; bundled training split, preserving the original loader's first three valid prompt/code examples",
+  "external_dependencies_source": "Bundled benchmark loaders and code grader retained from the reference implementation.",
+  "olympiad_grader_source": "Reference OlympiadBench grader; requires the separate legacy grader environment.",
+  "mbpp_few_shot_source": "Bundled MBPP training split; the loader retains its first three valid prompt/code examples.",
   "code_profile_coverage": {
     "metrics": 2545,
     "metrics_with_match_profile": 0,
@@ -27,353 +26,353 @@
   },
   "files": [
     {
-      "path": "AgentDropout/__init__.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/__init__.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/agents/__init__.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/agents/__init__.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/agents/adversarial_agent.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/agents/adversarial_agent.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/agents/agent_mode_helpers.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/agents/agent_mode_helpers.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/agents/agent_registry.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/agents/agent_registry.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/agents/analyze_agent.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/agents/analyze_agent.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/agents/code_writing.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/agents/code_writing.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/agents/code_writing_codecontest.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/agents/code_writing_codecontest.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/agents/code_writing_humaneval.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/agents/code_writing_humaneval.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/agents/code_writing_livecode.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/agents/code_writing_livecode.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/agents/code_writing_mbpp.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/agents/code_writing_mbpp.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/agents/final_decision.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/agents/final_decision.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": true
     },
     {
-      "path": "AgentDropout/agents/math_grader.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/agents/math_grader.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/agents/math_solver.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/agents/math_solver.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/agents/math_solver_aime24.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/agents/math_solver_aime24.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/agents/math_solver_aime25.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/agents/math_solver_aime25.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/agents/math_solver_amc23.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/agents/math_solver_amc23.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/agents/math_solver_aqua.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/agents/math_solver_aqua.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/agents/math_solver_gsm8k.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/agents/math_solver_gsm8k.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/agents/math_solver_math500.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/agents/math_solver_math500.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/agents/math_solver_olymMATH.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/agents/math_solver_olymMATH.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/agents/math_solver_olympiad.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/agents/math_solver_olympiad.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/agents/math_solver_svamp.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/agents/math_solver_svamp.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/agents/supervisor.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/agents/supervisor.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/agents/supervisor_reasoning_pick_metric.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/agents/supervisor_reasoning_pick_metric.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/atomic_trace.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/atomic_trace.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/profileaware_metrics.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/profileaware_metrics.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/prompt/__init__.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/prompt/__init__.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/prompt/aime24_prompt_set.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/prompt/aime24_prompt_set.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/prompt/aime25_prompt_set.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/prompt/aime25_prompt_set.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/prompt/amc23_prompt_set.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/prompt/amc23_prompt_set.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/prompt/aqua_prompt_set.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/prompt/aqua_prompt_set.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/prompt/codecontest_prompt_set.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/prompt/codecontest_prompt_set.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/prompt/common.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/prompt/common.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/prompt/gsm8k_prompt_set.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/prompt/gsm8k_prompt_set.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/prompt/humaneval_prompt_set.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/prompt/humaneval_prompt_set.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/prompt/livecode_prompt_set.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/prompt/livecode_prompt_set.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/prompt/math500_prompt_set.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/prompt/math500_prompt_set.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/prompt/math_prompt_set.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/prompt/math_prompt_set.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/prompt/math_team_variant.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/prompt/math_team_variant.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/prompt/mathc_prompt_set.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/prompt/mathc_prompt_set.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/prompt/mbpp_prompt_set.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/prompt/mbpp_prompt_set.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": true
     },
     {
-      "path": "AgentDropout/prompt/mmlu_prompt_set.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/prompt/mmlu_prompt_set.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/prompt/olymMATH_prompt_set.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/prompt/olymMATH_prompt_set.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/prompt/olympiad_prompt_set.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/prompt/olympiad_prompt_set.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/prompt/prompt_set.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/prompt/prompt_set.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/prompt/prompt_set_registry.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/prompt/prompt_set_registry.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/prompt/svamp_prompt_set.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/prompt/svamp_prompt_set.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/prompt/teamv2_math_prompt_variants.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/prompt/teamv2_math_prompt_variants.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/tools/coding/executor_types.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/tools/coding/executor_types.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/tools/coding/executor_utils.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/tools/coding/executor_utils.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/tools/coding/python_executor.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/tools/coding/python_executor.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/tools/search/wiki.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/tools/search/wiki.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
-      "path": "AgentDropout/usage_tracking.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "path": "masrubric/usage_tracking.py",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
       "path": "experiments/aime24/run_aime24.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "source": "reference_runtime",
       "infrastructure_adapted": true
     },
     {
       "path": "experiments/aime25/run_aime25.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "source": "reference_runtime",
       "infrastructure_adapted": true
     },
     {
       "path": "experiments/amc23/run_amc23.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "source": "reference_runtime",
       "infrastructure_adapted": true
     },
     {
       "path": "experiments/gsm8k/run_gsm8k.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "source": "reference_runtime",
       "infrastructure_adapted": true
     },
     {
       "path": "experiments/math500/run_math500.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "source": "reference_runtime",
       "infrastructure_adapted": true
     },
     {
       "path": "experiments/olymMATH/run_olymMATH.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "source": "reference_runtime",
       "infrastructure_adapted": true
     },
     {
       "path": "experiments/olympiad/run_olympiad.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "source": "reference_runtime",
       "infrastructure_adapted": true
     },
     {
       "path": "experiments/run_aqua_adversarial_reasoning_pick_metric_reflection.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "source": "reference_runtime",
       "infrastructure_adapted": true
     },
     {
       "path": "grader.py",
-      "source": "supplemental_original_workspace",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
       "path": "logger.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
       "path": "paper_code_eval.py",
-      "source": "supplemental_original_workspace",
+      "source": "reference_runtime",
       "infrastructure_adapted": true
     },
     {
       "path": "project_datasets/aqua_dataset.py",
-      "source": "supplemental_original_workspace",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
       "path": "project_datasets/gsm8k_dataset.py",
-      "source": "supplemental_original_workspace",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     },
     {
       "path": "scripts/run_v2_code_eval.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "source": "reference_runtime",
       "infrastructure_adapted": true
     },
     {
       "path": "scripts/v2_code_common.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "source": "reference_runtime",
       "infrastructure_adapted": true
     },
     {
       "path": "sitecustomize.py",
-      "source": "main_method_reference_20260711/source_workspace",
+      "source": "reference_runtime",
       "infrastructure_adapted": false
     }
   ]

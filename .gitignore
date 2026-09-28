@@ -8,6 +8,7 @@ paper/results/
 paper/assets/pools/**/*.jsonl
 paper/assets/datasets/livecode/*.jsonl
 .venv-*/
+.venv/
 train/results-*/
 *.log
 
@@ -16,3 +17,23 @@ test/metrics_pool/**/*.jsonl
 
 # Local preview assets that are not part of the public release.
 image/readme/*preview*
+
+# Keep local credentials and personal workspace state out of releases.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+.netrc
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Keep experiment outputs out of the distributed artifact.
+/test/results_main_table/
+*.usage.jsonl
+*.usage.summary.json
+*.samples.jsonl

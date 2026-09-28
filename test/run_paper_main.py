@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Run the recovered Dynamic-MAS main method, isolated from the release runtime.
 
-No model calls are made by --dry-run or --preflight. Historical scores are
-reference observations, not a promise that new stochastic runs reproduce them.
+No model calls are made by --dry-run or --preflight. Each experiment records
+fresh measurements; precomputed benchmark results are not bundled.
 """
 from __future__ import annotations
 
@@ -19,12 +19,12 @@ RUNTIME = ROOT / "paper" / "runtime"
 CONFIG = ROOT / "configs" / "paper_main.json"
 ROLES = ("selector", "reasoning", "supervisor", "embedding")
 LOCKED_ENV = {
-    "AGENTDROPOUT_BATCH_AUDIT_METRICS": "1",
-    "AGENTDROPOUT_EXACT_SELECT_Q": "0",
-    "AGENTDROPOUT_CHEAP_PRECHECK": "0",
-    "AGENTDROPOUT_RANDOM_K_MIN": "0",
-    "AGENTDROPOUT_RANDOM_K_MAX": "0",
-    "AGENTDROPOUT_BATCH_AUDIT_MAX_TOKENS": "4000",
+    "MASRUBRIC_BATCH_AUDIT_METRICS": "1",
+    "MASRUBRIC_EXACT_SELECT_Q": "0",
+    "MASRUBRIC_CHEAP_PRECHECK": "0",
+    "MASRUBRIC_RANDOM_K_MIN": "0",
+    "MASRUBRIC_RANDOM_K_MAX": "0",
+    "MASRUBRIC_BATCH_AUDIT_MAX_TOKENS": "4000",
 }
 
 
@@ -70,7 +70,7 @@ def parser():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--suite", choices=("math_8b", "math_14b", "code_8b"))
     p.add_argument("--benchmark", default="all")
-    p.add_argument("--method", choices=("adv2", "baseline"), default="adv2")
+    p.add_argument("--method", choices=("masrubric", "baseline"), default="masrubric")
     p.add_argument("--assets-root", type=Path, default=ROOT / "paper" / "assets")
     p.add_argument("--in-file", type=Path)
     p.add_argument("--metric-pool-file", type=Path)
@@ -98,24 +98,24 @@ def build_plan(args, config, benchmark, out_dir):
     cache = (args.embedding_cache_file or assets / config["pools"][domain]["embeddings"]).resolve()
     output = out_dir / benchmark
     script = RUNTIME / spec["script"]
-    # The child receives one explicit runtime path. No release AgentDropout or
+    # The child receives one explicit runtime path. No release masrubric or
     # inherited experiment toggles may silently change the main-method preset.
-    env = {k: v for k, v in os.environ.items() if not k.startswith("AGENTDROPOUT_")}
+    env = {k: v for k, v in os.environ.items() if not k.startswith("MASRUBRIC_")}
     env["PYTHONPATH"] = str(RUNTIME)
     env["PYTHONIOENCODING"] = "utf-8"
     env.update(LOCKED_ENV)
-    env["AGENTDROPOUT_MATH_TEAM_VARIANT"] = "verifier" if domain == "math" else ""
-    env["AGENTDROPOUT_PROFILE_AWARE_RETRIEVAL"] = "1" if domain == "code" else "0"
-    env["AGENTDROPOUT_USAGE_LOG"] = str(output / "usage.jsonl")
+    env["MASRUBRIC_MATH_TEAM_VARIANT"] = "verifier" if domain == "math" else ""
+    env["MASRUBRIC_PROFILE_AWARE_RETRIEVAL"] = "1" if domain == "code" else "0"
+    env["MASRUBRIC_USAGE_LOG"] = str(output / "usage.jsonl")
     for role in ROLES:
-        env[f"AGENTDROPOUT_{role.upper()}_API_KEY"] = os.environ.get(f"{role.upper()}_KEY", "EMPTY")
+        env[f"MASRUBRIC_{role.upper()}_API_KEY"] = os.environ.get(f"{role.upper()}_KEY", "EMPTY")
     result = output / ("result.jsonl" if domain == "code" else "result.json")
     # runpy plus an import assertion prevents an installed/release package from
     # taking precedence even when the runner lives several directories deep.
     bootstrap = ("import pathlib,runpy,sys; "
                  "r=pathlib.Path(sys.argv.pop(1)).resolve(); sys.path.insert(0,str(r)); "
-                 "import AgentDropout; "
-                 "assert pathlib.Path(AgentDropout.__file__).resolve().is_relative_to(r), 'Wrong runtime'; "
+                 "import masrubric; "
+                 "assert pathlib.Path(masrubric.__file__).resolve().is_relative_to(r), 'Wrong runtime'; "
                  "s=sys.argv[1]; sys.path.insert(1,str(pathlib.Path(s).parent)); "
                  "sys.argv=sys.argv[1:]; runpy.run_path(s,run_name='__main__')")
     # Keep the venv's interpreter entrypoint: resolving its symlink would select
@@ -155,12 +155,12 @@ def build_plan(args, config, benchmark, out_dir):
         "suite": args.suite, "benchmark": benchmark, "method": args.method,
         "runtime": str(RUNTIME), "reference_package": config["reference_package"],
         "source_boundary": config["source_boundary"], "python": interpreter,
-        "scope": "recovered_dynamic_main" if args.suite != "math_14b" and args.method == "adv2"
+        "scope": "recovered_dynamic_main" if args.suite != "math_14b" and args.method == "masrubric"
                  else "same_runtime_comparison_not_historical_row_certification",
         "dataset": str(data), "metric_pool": str(pool), "embedding_cache": str(cache),
         "benchmark_total": spec["total"], "limit": args.limit,
         "concurrency": args.concurrency, "models_and_endpoints": endpoints,
-        "fixed_environment": {k: v for k, v in env.items() if k.startswith("AGENTDROPOUT_") and not k.endswith("_API_KEY")},
+        "fixed_environment": {k: v for k, v in env.items() if k.startswith("MASRUBRIC_") and not k.endswith("_API_KEY")},
         "command": safe_cmd, "result_file": str(result),
         "sampling_note": "Preserved runtime sampling; no seed was recorded for the source runs.",
         "final_decision": spec["final_decision"],
@@ -311,7 +311,7 @@ def main(argv=None):
     if args.list:
         for domain in ("math", "code"):
             print(domain + ": " + ", ".join(k for k, v in config["benchmarks"].items() if v["domain"] == domain))
-        print("Methods: adv2; baseline (same-runtime control). Fixed/other paper baselines are outside this entrypoint.")
+        print("Methods: masrubric; baseline (same-runtime control). Fixed/other paper baselines are outside this entrypoint.")
         return 0
     if not args.suite:
         p.error("--suite is required")

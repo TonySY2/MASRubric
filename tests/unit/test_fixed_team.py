@@ -12,7 +12,7 @@ from autogen_agentchat.base import Response
 from autogen_agentchat.messages import TextMessage
 from autogen_core import CancellationToken
 
-from AgentDropout.teams import FixedDAGTeam, create_team
+from masrubric.teams import FixedDAGTeam, create_team
 
 
 class Gate:
@@ -102,7 +102,7 @@ class FixedTeamTests(unittest.IsolatedAsyncioTestCase):
         agents = [RecordingAgent("A")]
         client = object()
         termination = object()
-        with patch("AgentDropout.teams.SelectorGroupChat") as constructor:
+        with patch("masrubric.teams.SelectorGroupChat") as constructor:
             result = create_team(participants=agents, framework="dynamic", model_client=client,
                                  termination_condition=termination, selector_prompt="select",
                                  allow_repeated_speaker=True)

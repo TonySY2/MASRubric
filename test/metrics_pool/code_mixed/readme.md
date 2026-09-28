@@ -1,4 +1,4 @@
-The mixed code indicator-pool JSON is bundled here. The embedding cache is
+The mixed code criterion-bank JSON is bundled here. The embedding cache is
 generated separately because precomputed vectors can exceed GitHub's single-file
 size limit:
 

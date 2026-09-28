@@ -4,22 +4,22 @@
       "metric_pool_file": "test/metrics_pool/two_pool/deduped-mixed_metrics_two_pool.json",
       "embedding_cache_file": "test/metrics_pool/two_pool/deduped-mixed_two_pool-trigger.jsonl",
       "note": "Small public math indicator pool. Generate the embedding cache before running if it is absent.",
-      "metric_pool_file_env": "AGENTDROPOUT_METRIC_POOL_FILE",
-      "embedding_cache_file_env": "AGENTDROPOUT_EMBEDDING_CACHE_FILE"
+      "metric_pool_file_env": "MASRUBRIC_METRIC_POOL_FILE",
+      "embedding_cache_file_env": "MASRUBRIC_EMBEDDING_CACHE_FILE"
     },
     "math_nondedup": {
       "metric_pool_file": "test/metrics_pool/two_pool/mixed_metrics_two_pool.json",
       "embedding_cache_file": "test/metrics_pool/two_pool/mixed_embeddings_cache_two_pool.jsonl",
       "note": "Bundled non-deduplicated math indicator pool for the pool-control ablation. Generate the embedding cache before running if it is absent.",
-      "metric_pool_file_env": "AGENTDROPOUT_METRIC_POOL_FILE",
-      "embedding_cache_file_env": "AGENTDROPOUT_EMBEDDING_CACHE_FILE"
+      "metric_pool_file_env": "MASRUBRIC_METRIC_POOL_FILE",
+      "embedding_cache_file_env": "MASRUBRIC_EMBEDDING_CACHE_FILE"
     },
     "code_mixed": {
       "metric_pool_file": "test/metrics_pool/code_mixed/deduplicated_metrics_pool.json",
       "embedding_cache_file": "test/metrics_pool/code_mixed/deduplicated_embeddings-trigger.jsonl",
       "note": "Bundled mixed code indicator pool. Generate the embedding cache before running if it is absent.",
-      "metric_pool_file_env": "AGENTDROPOUT_METRIC_POOL_FILE",
-      "embedding_cache_file_env": "AGENTDROPOUT_EMBEDDING_CACHE_FILE"
+      "metric_pool_file_env": "MASRUBRIC_METRIC_POOL_FILE",
+      "embedding_cache_file_env": "MASRUBRIC_EMBEDDING_CACHE_FILE"
     }
   },
   "benchmarks": {
@@ -103,19 +103,19 @@
     "livecode": {
       "domain": "code",
       "script": "test/experiments/livecode/run_livecode.py",
-      "input_file_env": "AGENTDROPOUT_LIVECODE_FILE",
+      "input_file_env": "MASRUBRIC_LIVECODE_FILE",
       "default_pool": "code_mixed",
       "max_turns": 7
     }
   },
   "method_presets": {
     "autogen_baseline": {
-      "description": "Dynamic-MAS / AutoGen baseline without audit or pruning.",
+      "description": "Dynamic-MAS / AutoGen baseline without audit or message withholding.",
       "args": {
         "baseline_only": true
       }
     },
-    "adv2_math_main": {
+    "masrubric_math_main": {
       "description": "Main math setting: top20 -> <=top5, batch audit, pass 3/5.",
       "pool": "math_deduped",
       "args": {
@@ -127,8 +127,8 @@
         "retries_times": 3
       }
     },
-    "adv2_math_pass_5of5": {
-      "description": "Table 4 pass-threshold ablation: top20 -> <=top5, 100% pass threshold.",
+    "masrubric_math_pass_5of5": {
+      "description": "Extension pass-threshold ablation: top20 -> <=top5, 100% pass threshold.",
       "pool": "math_deduped",
       "args": {
         "retrieval_mode": "rerank",
@@ -139,8 +139,8 @@
         "retries_times": 3
       }
     },
-    "adv2_math_pass_2of5": {
-      "description": "Table 4 pass-threshold ablation: top20 -> <=top5, 40% pass threshold.",
+    "masrubric_math_pass_2of5": {
+      "description": "Extension pass-threshold ablation: top20 -> <=top5, 40% pass threshold.",
       "pool": "math_deduped",
       "args": {
         "retrieval_mode": "rerank",
@@ -151,8 +151,8 @@
         "retries_times": 3
       }
     },
-    "adv2_math_iter2": {
-      "description": "Table 4 iteration ablation with two rectification retries.",
+    "masrubric_math_iter2": {
+      "description": "Extension iteration ablation with two revision retries.",
       "pool": "math_deduped",
       "args": {
         "retrieval_mode": "rerank",
@@ -163,8 +163,8 @@
         "retries_times": 2
       }
     },
-    "adv2_math_iter4": {
-      "description": "Table 4 iteration ablation with four rectification retries.",
+    "masrubric_math_iter4": {
+      "description": "Extension iteration ablation with four revision retries.",
       "pool": "math_deduped",
       "args": {
         "retrieval_mode": "rerank",
@@ -175,8 +175,8 @@
         "retries_times": 4
       }
     },
-    "adv2_math_top3": {
-      "description": "Table 4 retrieved-indicator ablation: top20 -> <=top3, pass 3/3.",
+    "masrubric_math_top3": {
+      "description": "Extension retrieved-criterion ablation: top20 -> <=top3, pass 3/3.",
       "pool": "math_deduped",
       "args": {
         "retrieval_mode": "rerank",
@@ -187,8 +187,8 @@
         "retries_times": 3
       }
     },
-    "adv2_math_top7": {
-      "description": "Table 4 retrieved-indicator ablation: top20 -> <=top7.",
+    "masrubric_math_top7": {
+      "description": "Extension retrieved-criterion ablation: top20 -> <=top7.",
       "pool": "math_deduped",
       "args": {
         "retrieval_mode": "rerank",
@@ -199,8 +199,8 @@
         "retries_times": 3
       }
     },
-    "adv2_math_random_1to5": {
-      "description": "Table 4 retrieval-control ablation with random 1-5 indicators.",
+    "masrubric_math_random_1to5": {
+      "description": "Extension retrieval-control ablation with random 1-5 criterions.",
       "pool": "math_deduped",
       "args": {
         "retrieval_mode": "random",
@@ -211,8 +211,8 @@
         "retries_times": 3
       }
     },
-    "adv2_math_nondedup_pool": {
-      "description": "Table 4 pool-control ablation with the non-deduplicated indicator pool.",
+    "masrubric_math_nondedup_pool": {
+      "description": "Extension pool-control ablation with the non-deduplicated criterion pool.",
       "pool": "math_nondedup",
       "args": {
         "retrieval_mode": "rerank",
@@ -223,8 +223,8 @@
         "retries_times": 3
       }
     },
-    "adv2_math_no_indicator_pool": {
-      "description": "Table 4 no-pool control using the low-level universal audit path.",
+    "masrubric_math_no_indicator_pool": {
+      "description": "Extension no-pool control using the low-level universal audit path.",
       "pool": "math_deduped",
       "args": {
         "use_simple_audit": true,
@@ -233,7 +233,7 @@
         "retries_times": 3
       }
     },
-    "adv2_code_main": {
+    "masrubric_code_main": {
       "description": "Main code setting: mixed code pool + direct top3, batch audit, pass 3/3.",
       "pool": "code_mixed",
       "args": {
@@ -245,7 +245,7 @@
       }
     },
     "fixed_baseline": {
-      "description": "Fixed FullGraph MAS baseline without audit or pruning.",
+      "description": "Fixed FullGraph MAS baseline without audit or message withholding.",
       "framework": "fixed",
       "args": {
         "baseline_only": true
@@ -257,10 +257,10 @@
       "description": "8B math/table-1 style profile. Supply endpoint URLs and exact served model names with environment variables."
     },
     "math_14b": {
-      "description": "14B math/table-2 style profile. The command shape is identical to math_8b; only served model names change."
+      "description": "14B math/table-4 style profile. The command shape is identical to math_8b; only served model names change."
     },
     "code_8b": {
-      "description": "8B code/table-3 style profile. Use the code mixed indicator pool."
+      "description": "8B code/table-2 style profile. Use the code mixed criterion bank."
     }
   }
 }

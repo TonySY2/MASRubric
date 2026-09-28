@@ -14,14 +14,14 @@ import numpy as np
 import asyncio
 
 from autogen_agentchat.teams import SelectorGroupChat
-from AgentDropout.usage import TrackedOpenAIChatCompletionClient, set_usage_phase
-from AgentDropout.teams import create_team
-from AgentDropout.run_support import UsageRun, attach_usage, mark_sample_failed, sample_id
+from masrubric.usage import TrackedOpenAIChatCompletionClient, set_usage_phase
+from masrubric.teams import create_team
+from masrubric.run_support import UsageRun, attach_usage, mark_sample_failed, sample_id
 from autogen_agentchat.conditions import MaxMessageTermination, TextMentionTermination
 from autogen_agentchat.ui import Console
-from AgentDropout.agents import AgentRegistry
-from AgentDropout.agents.supervisor_reasoning_pick_metric import Supervisor
-from AgentDropout.agents.final_decision import FinalRefer
+from masrubric.agents import AgentRegistry
+from masrubric.agents.supervisor_reasoning_pick_metric import Supervisor
+from masrubric.agents.final_decision import FinalRefer
 
 
 # ==============================================================================

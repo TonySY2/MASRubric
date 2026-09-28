@@ -17,14 +17,13 @@ from typing import Any, Iterable
 
 ROOT = Path(__file__).resolve().parent.parent / "assets"
 REBUTTAL_ROOT = ROOT / "26.3.24rebuttal"
-UPSTREAM_TEST_ROOT = REBUTTAL_ROOT / "AgentDropoutV2_upstream" / "test"
+UPSTREAM_TEST_ROOT = REBUTTAL_ROOT / "MASRubric_upstream" / "test"
 
 
 @dataclass(frozen=True)
 class TaskSpec:
     task: str
     paper_name: str
-    paper_score: float
     judge_note: str
     dataset_candidates: tuple[Path, ...]
 
@@ -33,13 +32,12 @@ TASK_SPECS = {
     "mbpp": TaskSpec(
         task="mbpp",
         paper_name="MBPP",
-        paper_score=68.09,
         judge_note="MBPP assertion execution; timeout=15s",
         dataset_candidates=(
             UPSTREAM_TEST_ROOT / "project_datasets" / "mbpp-sanitized" / "mbpp_test.jsonl",
             ROOT
-            / "AgentDropout_v2"
-            / "selection_group_agentdropout"
+            / "masrubric_v2"
+            / "selection_group_masrubric"
             / "AutoGen-3"
             / "project_datasets"
             / "mbpp-sanitized"
@@ -49,7 +47,6 @@ TASK_SPECS = {
     "humaneval": TaskSpec(
         task="humaneval",
         paper_name="HumanEval",
-        paper_score=84.50,
         judge_note="HumanEval test execution; timeout=15s",
         dataset_candidates=(
             UPSTREAM_TEST_ROOT / "project_datasets" / "humaneval" / "humaneval-py_id.jsonl",
@@ -59,13 +56,12 @@ TASK_SPECS = {
     "codecontest": TaskSpec(
         task="codecontest",
         paper_name="CodeContests",
-        paper_score=9.26,
         judge_note="Public stdin/stdout cases; exact normalized match; timeout=2s/case",
         dataset_candidates=(
             UPSTREAM_TEST_ROOT / "project_datasets" / "codecontest" / "test.jsonl",
             ROOT
-            / "AgentDropout_v2"
-            / "selection_group_agentdropout"
+            / "masrubric_v2"
+            / "selection_group_masrubric"
             / "AutoGen-3"
             / "project_datasets"
             / "codecontest"
@@ -75,13 +71,12 @@ TASK_SPECS = {
     "livecode": TaskSpec(
         task="livecode",
         paper_name="LiveCodeBench",
-        paper_score=32.75,
         judge_note="Public test cases only; exact normalized match; timeout=4s/case",
         dataset_candidates=(
             UPSTREAM_TEST_ROOT / "project_datasets" / "livecode" / "livecodebench_v1.jsonl",
             ROOT
-            / "AgentDropout_v2"
-            / "selection_group_agentdropout"
+            / "masrubric_v2"
+            / "selection_group_masrubric"
             / "AutoGen-3"
             / "project_datasets"
             / "livecode"
@@ -765,7 +760,6 @@ def evaluate_result_file(
 
     accuracy = round(correct / matched_records * 100, 4) if matched_records else 0.0
     stored_accuracy = round(stored_correct / stored_total * 100, 4) if stored_total else None
-    paper_score = TASK_SPECS[task].paper_score
 
     return {
         "task": task,
@@ -773,14 +767,11 @@ def evaluate_result_file(
         "judge_note": TASK_SPECS[task].judge_note,
         "result_file": str(result_file),
         "dataset_file": str(dataset_file),
-        "paper_score": paper_score,
-        "paper_setting": "simple fixed indicators (w/ Generic Indicators)",
         "total_records": total_records,
         "matched_records": matched_records,
         "missing_dataset_records": missing_dataset_records,
         "correct": correct,
         "accuracy": accuracy,
-        "delta_vs_paper": round(accuracy - paper_score, 4),
         "stored_total": stored_total,
         "stored_correct": stored_correct,
         "stored_accuracy": stored_accuracy,
@@ -844,26 +835,12 @@ def align_summary_with_paper_code_eval(
     summary["summary_file"] = str(summary_path)
     summary["dataset_json"] = str(summary.get("dataset_json") or resolved_dataset)
     summary["paper_code_eval"] = paper_summary
-    summary["paper_setting"] = paper_summary["paper_setting"]
+    summary.pop("paper_setting", None)
     summary["judge_note"] = paper_summary["judge_note"]
     summary["summary_aligned_with"] = "paper_code_eval"
 
     summary_path.write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
     return summary
-
-
-def print_reference_table() -> None:
-    print("task,paper_name,paper_score,paper_setting,judge_note")
-    total = 0.0
-    for task in ("mbpp", "humaneval", "codecontest", "livecode"):
-        spec = TASK_SPECS[task]
-        print(
-            f"{task},{spec.paper_name},{spec.paper_score:.2f},"
-            "simple fixed indicators (w/ Generic Indicators),"
-            f"{spec.judge_note}"
-        )
-        total += spec.paper_score
-    print(f"avg,Average,{total / 4:.2f},simple fixed indicators (w/ Generic Indicators),Table 3 reference")
 
 
 def main() -> int:
@@ -873,17 +850,12 @@ def main() -> int:
     parser.add_argument("--dataset-file", type=str, default=None)
     parser.add_argument("--limit", type=int, default=None)
     parser.add_argument("--trust-stored-flags", action="store_true")
-    parser.add_argument("--show-reference-table", action="store_true")
     parser.add_argument("--show-mismatches", type=int, default=10)
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args()
 
-    if args.show_reference_table:
-        print_reference_table()
-        return 0
-
     if not args.task or not args.result_file:
-        parser.error("--task and --result-file are required unless --show-reference-table is used")
+        parser.error("--task and --result-file are required")
 
     task = ensure_task_name(args.task)
     result_file = Path(args.result_file)
@@ -898,15 +870,12 @@ def main() -> int:
         return 0
 
     print(f"task               : {summary['paper_name']} ({summary['task']})")
-    print(f"paper_setting      : {summary['paper_setting']}")
     print(f"judge_note         : {summary['judge_note']}")
     print(f"result_file        : {summary['result_file']}")
     print(f"dataset_file       : {summary['dataset_file']}")
-    print(f"paper_score        : {summary['paper_score']:.2f}")
     print(f"matched_records    : {summary['matched_records']}/{summary['total_records']}")
     print(f"correct            : {summary['correct']}")
     print(f"accuracy           : {summary['accuracy']:.4f}")
-    print(f"delta_vs_paper     : {summary['delta_vs_paper']:+.4f}")
     if summary["stored_total"]:
         print(f"stored_accuracy    : {summary['stored_accuracy']:.4f}")
         print(f"changed_vs_stored  : {summary['changed_vs_stored']}")

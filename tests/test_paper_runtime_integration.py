@@ -63,7 +63,7 @@ def metric(name, shape="any", io_contract="any"):
 class PaperFinalTemperatureTests(unittest.TestCase):
     def test_final_requests_use_historical_temperatures_and_code4_routing(self):
         # Import the recovered runtime in a separate interpreter: the other
-        # integration tests also import the public package named AgentDropout.
+        # integration tests also import the public package named masrubric.
         script = r"""
 import asyncio
 import inspect
@@ -73,7 +73,7 @@ import sys
 
 runtime = Path(sys.argv[1]).resolve()
 sys.path[:0] = [str(runtime), str(runtime / "scripts")]
-from AgentDropout.agents import AgentRegistry
+from masrubric.agents import AgentRegistry
 from v2_code_common import ensure_task_name
 
 async def main():
@@ -104,7 +104,7 @@ asyncio.run(main())
 """
         environment = {
             name: value for name, value in os.environ.items()
-            if not name.startswith("AGENTDROPOUT_")
+            if not name.startswith("MASRUBRIC_")
         }
         environment.update(PYTHONUTF8="1", PYTHONIOENCODING="utf-8",
                            NO_PROXY="127.0.0.1,localhost")
@@ -135,7 +135,7 @@ asyncio.run(main())
                     self.assertEqual(decision["class"], agent_name)
                     self.assertEqual(decision["source"], "DecisionMaker")
                     self.assertEqual(Path(decision["module"]),
-                                     (runtime / "AgentDropout/agents/final_decision.py").resolve())
+                                     (runtime / "masrubric/agents/final_decision.py").resolve())
                     self.assertTrue(call["path"].endswith("/chat/completions"))
                     self.assertEqual(call["body"]["model"], "gpt-4o")
                     # This is the JSON received over HTTP, after the real SDK
@@ -179,11 +179,11 @@ class PaperRuntimeIntegrationTests(unittest.TestCase):
             environment.pop(name, None)
         # Deliberately contaminate the caller's settings. The paper entrypoint
         # must lock its main-method settings before importing the child runtime.
-        environment.update(AGENTDROPOUT_MATH_TEAM_VARIANT="disabled",
-                           AGENTDROPOUT_PROFILE_AWARE_RETRIEVAL="0",
-                           AGENTDROPOUT_BATCH_AUDIT_METRICS="0",
-                           AGENTDROPOUT_EXACT_SELECT_Q="1", AGENTDROPOUT_CHEAP_PRECHECK="1",
-                           AGENTDROPOUT_RANDOM_K_MIN="1", AGENTDROPOUT_RANDOM_K_MAX="1")
+        environment.update(MASRUBRIC_MATH_TEAM_VARIANT="disabled",
+                           MASRUBRIC_PROFILE_AWARE_RETRIEVAL="0",
+                           MASRUBRIC_BATCH_AUDIT_METRICS="0",
+                           MASRUBRIC_EXACT_SELECT_Q="1", MASRUBRIC_CHEAP_PRECHECK="1",
+                           MASRUBRIC_RANDOM_K_MIN="1", MASRUBRIC_RANDOM_K_MAX="1")
         for role in ("SELECTOR", "REASONING", "SUPERVISOR", "EMBEDDING"):
             environment[f"{role}_URL"] = endpoint.url
             environment[f"{role}_MODEL"] = "embedding-local" if role == "EMBEDDING" else "gpt-4o"
@@ -208,9 +208,9 @@ class PaperRuntimeIntegrationTests(unittest.TestCase):
         self.assertEqual(summary["scope"], "smoke_subset")
         self.assertEqual(Path(manifest["runtime"]).resolve(), (ROOT / "paper/runtime").resolve())
         fixed = manifest["fixed_environment"]
-        self.assertEqual(fixed["AGENTDROPOUT_BATCH_AUDIT_METRICS"], "1")
-        self.assertEqual(fixed["AGENTDROPOUT_EXACT_SELECT_Q"], "0")
-        self.assertEqual(fixed["AGENTDROPOUT_CHEAP_PRECHECK"], "0")
+        self.assertEqual(fixed["MASRUBRIC_BATCH_AUDIT_METRICS"], "1")
+        self.assertEqual(fixed["MASRUBRIC_EXACT_SELECT_Q"], "0")
+        self.assertEqual(fixed["MASRUBRIC_CHEAP_PRECHECK"], "0")
         events = [json.loads(line) for line in (task_dir / "usage.jsonl").read_text(encoding="utf-8").splitlines()]
         self.assertEqual(len(events), len(endpoint.calls))
         self.assertEqual(sum(event["total_tokens"] for event in events if event["kind"] == "chat_completion"),
@@ -224,7 +224,7 @@ class PaperRuntimeIntegrationTests(unittest.TestCase):
     def test_gsm8k_uses_verifier_and_rerank_in_the_isolated_runtime(self):
         with tempfile.TemporaryDirectory() as temp, PaperModelEndpoint() as endpoint:
             manifest, events, _ = self.run_fixture("gsm8k", endpoint, Path(temp))
-            self.assertEqual(manifest["fixed_environment"]["AGENTDROPOUT_MATH_TEAM_VARIANT"], "verifier")
+            self.assertEqual(manifest["fixed_environment"]["MASRUBRIC_MATH_TEAM_VARIANT"], "verifier")
             reasoning_prompts = ["\n".join(message.get("content", "") for message in call["body"]["messages"])
                                  for call in endpoint.calls if call["stage"] == "reasoning"]
             self.assertTrue(any("computational verifier" in prompt for prompt in reasoning_prompts))
@@ -238,7 +238,7 @@ class PaperRuntimeIntegrationTests(unittest.TestCase):
     def test_mbpp_executes_code_and_hard_filters_conflicting_metrics(self):
         with tempfile.TemporaryDirectory() as temp, PaperModelEndpoint(code=True) as endpoint:
             manifest, events, logs = self.run_fixture("mbpp", endpoint, Path(temp))
-            self.assertEqual(manifest["fixed_environment"]["AGENTDROPOUT_PROFILE_AWARE_RETRIEVAL"], "1")
+            self.assertEqual(manifest["fixed_environment"]["MASRUBRIC_PROFILE_AWARE_RETRIEVAL"], "1")
             self.assertTrue(any(event["stage"] == "supervisor_match_profile" for event in events))
             self.assertTrue(any(event["stage"] == "embedding_query_profileaware" for event in events))
             self.assertFalse(any(event["stage"] == "supervisor_rerank" for event in events))

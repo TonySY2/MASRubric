@@ -6,6 +6,8 @@ autogen-ext[openai]==0.7.5
 openai==2.15.0
 numpy==2.2.6
 class-registry==2.1.2
+# class-registry 2.x imports pkg_resources, supplied by this setuptools release.
+setuptools==80.9.0
 astunparse==1.6.3
 timeout-decorator==0.5.0
 langchain-core==1.2.7

@@ -1,0 +1,33 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  offline-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.10'
+      - name: Install client and grader dependencies
+        run: python -m pip install -r paper/requirements.txt
+      - name: Run offline and local-fixture regression tests
+        run: python -m unittest discover -s tests -p 'test_*.py' -v
+      - name: Check public launcher commands
+        run: |
+          python test/run_paper_main.py --list
+          python test/run_paper_main.py --suite math_8b --benchmark gsm8k --method masrubric --dry-run
+          python test/run_release_experiment.py --list
+          python test/run_release_experiment.py --benchmark gsm8k --method masrubric_math_main --model-profile math_8b --limit 2 --dry-run
+          python test/run_release_experiment.py --benchmark gsm8k --method masrubric_math_main --framework fixed --model-profile math_8b --limit 2 --dry-run

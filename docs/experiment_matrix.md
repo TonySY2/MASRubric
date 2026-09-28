@@ -1,4 +1,4 @@
-# Experiment Matrix
+# MASRubric Experiment Matrix
 
 See the [main-method runbook](paper_main_reproduction.md) for model settings,
 datasets, embedding caches, and grader setup.
@@ -8,28 +8,30 @@ Main-method experiments use `test/run_paper_main.py`:
 ```bash
 python test/run_paper_main.py --list
 python test/run_paper_main.py --help
-python test/run_paper_main.py --suite math_8b --benchmark gsm8k --method adv2 --dry-run
+python test/run_paper_main.py --suite math_8b --benchmark gsm8k --method masrubric --dry-run
 ```
 
 Select `--suite math_8b`, `math_14b`, or `code_8b`, a `--benchmark` (or `all`),
-and `--method adv2` or `baseline`. These runs use `paper/runtime/` and the
-settings in `configs/paper_main.json`. Use `--preflight` to check required
-resources and `--dry-run` to inspect commands.
+and `--method masrubric` or `baseline`. These runs use `paper/runtime/` and the
+settings in `configs/paper_main.json`. This is a recovered implementation with
+later maintenance; exact source identity for every paper experiment is not
+established. Use `--preflight` to check required resources and `--dry-run` to
+inspect commands.
 
 After configuring the endpoints below, provide an embedding cache matching the
-selected pool and embedding model:
+selected criterion bank and embedding model:
 
 ```bash
 # Math readiness check; no inference requests are sent.
 python test/run_paper_main.py \
-  --suite math_8b --benchmark gsm8k --method adv2 \
+  --suite math_8b --benchmark gsm8k --method masrubric \
   --assets-root paper/assets \
   --embedding-cache-file /path/to/math_pool_embeddings.jsonl \
   --preflight
 
 # Code smoke run: two records from the full input file.
 python test/run_paper_main.py \
-  --suite code_8b --benchmark mbpp --method adv2 \
+  --suite code_8b --benchmark mbpp --method masrubric \
   --assets-root paper/assets \
   --embedding-cache-file /path/to/code_pool_embeddings.jsonl \
   --limit 2
@@ -44,22 +46,22 @@ and Qwen3-Embedding-8B for embeddings. To use other models, add
 via `--olympiad-python /path/to/legacy-env/bin/python`.
 
 LiveCodeBench input is external. For one task, pass
-`--benchmark livecode --in-file /path/to/historical_livecode_400.jsonl`; for
-`--benchmark all`, place that historical 400-record file at
-`paper/assets/datasets/livecode/livecodebench_v1.jsonl`. Use the original
-400-record evaluation set.
+`--benchmark livecode --in-file /path/to/livecodebench_v1_400.jsonl`; for
+`--benchmark all`, place the matching 400-record file at
+`paper/assets/datasets/livecode/livecodebench_v1.jsonl`.
 
 | Experiment | Supported entry point |
 | --- | --- |
-| Dynamic-MAS + ADv2, 8B math and code | `run_paper_main.py`; suites `math_8b` / `code_8b`, method `adv2` |
-| Dynamic-MAS + ADv2, 14B math | `run_paper_main.py --suite math_14b --method adv2` |
+| Dynamic-MAS + MASRubric, 8B math and code | `run_paper_main.py`; suites `math_8b` / `code_8b`, method `masrubric` |
+| Dynamic-MAS + MASRubric, 14B math | `run_paper_main.py --suite math_14b --method masrubric` |
 | Dynamic-MAS baseline | `run_paper_main.py --method baseline` with the selected suite |
-| Historical Fixed-MAS, Single Agent, CoT, Self-Refine, PRM, Multi-TAG, ADv1 | Not included in the main-table launcher |
-| Fixed framework and ablation variants | Development presets in `run_release_experiment.py`; see below |
+| Paper Fixed-MAS, Single Agent, CoT, Self-Refine, PRM, Multi-TAG, RaR-Gen | Not included in the main-method launcher |
+| Fixed framework and intervention variants | Extension presets in `run_release_experiment.py`; see below |
 
-The [result tables](release_results.md) retain the original reported scores;
-new runs produce their own measurements. Release presets do not cover every
-historical comparison or ablation implementation.
+Precomputed result files and result tables are excluded from this artifact.
+New runs produce their own measurements. Extension presets do not map
+one-to-one to the paper's ablations and do not establish equivalence with
+every reported comparison.
 
 The sections below describe the release launcher. Its `--model-profile` value
 only labels the output directory. It neither selects nor verifies the model;
@@ -88,11 +90,11 @@ export SUPERVISOR_KEY="EMPTY"
 export EMBEDDING_KEY="EMPTY"
 ```
 
-For optional pool overrides or externally hosted embedding caches, pass:
+For optional criterion-bank overrides or local embedding caches, pass:
 
 ```bash
 python test/run_release_experiment.py \
-  --benchmark gsm8k --method adv2_math_main \
+  --benchmark gsm8k --method masrubric_math_main \
   --metric-pool-file /path/to/pool.json \
   --embedding-cache-file /path/to/pool_embeddings.jsonl
 ```
@@ -100,7 +102,7 @@ python test/run_release_experiment.py \
 LiveCodeBench data is not bundled in this release. Provide a local jsonl file:
 
 ```bash
-export AGENTDROPOUT_LIVECODE_FILE="/path/to/livecode.jsonl"
+export MASRUBRIC_LIVECODE_FILE="/path/to/livecode.jsonl"
 ```
 
 ## Examples
@@ -116,7 +118,7 @@ Dry-run the main math configuration:
 ```bash
 python test/run_release_experiment.py \
   --benchmark gsm8k \
-  --method adv2_math_main \
+  --method masrubric_math_main \
   --model-profile math_8b \
   --dry-run
 ```
@@ -129,7 +131,7 @@ Run a small smoke subset:
 ```bash
 python test/run_release_experiment.py \
   --benchmark gsm8k \
-  --method adv2_math_main \
+  --method masrubric_math_main \
   --model-profile math_8b \
   --limit 2
 ```
@@ -137,38 +139,46 @@ python test/run_release_experiment.py \
 Legacy `test/run-*.sh` scripts are thin wrappers over this launcher:
 
 ```bash
-bash test/run-gsm8k.sh --method adv2_math_main --model-profile math_8b --limit 2
+bash test/run-gsm8k.sh --method masrubric_math_main --model-profile math_8b --limit 2
 ```
 
-## Method Presets
+## Extension Presets
+
+These presets use the separate release runtime. Their values below are
+executable settings, not a claim that each preset reproduces a paper row.
+For example, the three-criterion preset also changes the threshold to 1.0,
+and there is no one-revision preset corresponding to the new Table 3 row.
+The release `fixed` framework is an extension and has not been established as
+equivalent to the paper's Fixed-MAS implementation.
 
 | Preset | Release configuration | Main arguments |
 | --- | --- | --- |
 | `autogen_baseline` | Dynamic-MAS / AutoGen baseline | `--baseline_only` |
-| `adv2_math_main` | Math ADv2 setting | `--retrieval_mode rerank --retrieve_p 20 --select_q 5 --batch_audit_metrics --pass_rate 0.6 --retries_times 3` |
-| `adv2_math_iter2` | Table 4 iteration ablation | Same as main, `--retries_times 2` |
-| `adv2_math_iter4` | Table 4 iteration ablation | Same as main, `--retries_times 4` |
-| `adv2_math_top3` | Table 4 retrieved-indicator ablation | Same as main, `--select_q 3 --pass_rate 1.0` (pass 3/3) |
-| `adv2_math_top7` | Table 4 retrieved-indicator ablation | Same as main, `--select_q 7` |
-| `adv2_math_pass_2of5` | Table 4 pass-threshold ablation | Same as main, `--pass_rate 0.4` |
-| `adv2_math_pass_5of5` | Table 4 pass-threshold ablation | Same as main, `--pass_rate 1.0` |
-| `adv2_math_nondedup_pool` | Table 4 pool-deduplication ablation | Same as main, with the bundled non-deduplicated pool |
-| `adv2_math_random_1to5` | Table 4 retrieval-control ablation | `--retrieval_mode random --random_k_min 1 --random_k_max 5` |
-| `adv2_math_no_indicator_pool` | Table 4 no-pool control | Uses the low-level universal audit switch |
-| `adv2_code_main` | Code ADv2 setting | `--retrieval_mode direct --direct_k 3 --batch_audit_metrics --pass_rate 1.0` |
+| `masrubric_math_main` | Math MASRubric setting | `--retrieval_mode rerank --retrieve_p 20 --select_q 5 --batch_audit_metrics --pass_rate 0.6 --retries_times 3` |
+| `masrubric_math_iter2` | Two-revision variant | Same as main, `--retries_times 2` |
+| `masrubric_math_iter4` | Four-revision variant | Same as main, `--retries_times 4` |
+| `masrubric_math_top3` | Three-criterion variant | Same as main, `--select_q 3 --pass_rate 1.0` |
+| `masrubric_math_top7` | Seven-criterion variant | Same as main, `--select_q 7` |
+| `masrubric_math_pass_2of5` | 40% satisfaction threshold | Same as main, `--pass_rate 0.4` |
+| `masrubric_math_pass_5of5` | 100% satisfaction threshold | Same as main, `--pass_rate 1.0` |
+| `masrubric_math_nondedup_pool` | Bank without deduplication | Same as main, with the bundled non-deduplicated bank |
+| `masrubric_math_random_1to5` | Random criterion retrieval | `--retrieval_mode random --random_k_min 1 --random_k_max 5` |
+| `masrubric_math_no_indicator_pool` | Generic audit control | Uses the low-level universal audit switch |
+| `masrubric_code_main` | Code MASRubric setting | `--retrieval_mode direct --direct_k 3 --batch_audit_metrics --pass_rate 1.0` |
 
-The no-pool control activates the release universal audit path.
+The generic audit control activates the release universal audit path. Preset
+and option names containing `metric` or `pool` are retained implementation
+identifiers for criterion-bank components.
 
 The release benchmark id `olymMATH` defaults to the Easy dataset. To run Hard,
 explicitly pass `--in-file test/project_datasets/olymMATH/OlymMATH-EN-HARD.jsonl`.
 
-## Indicator Pool Notes
+## Criterion Bank Preparation
 
-The math and code indicator-pool JSON files are bundled in this
+The math and code criterion-bank JSON files are bundled in this
 repository under `test/metrics_pool/`. Precomputed embedding caches can exceed
-GitHub's single-file size limit, so they are optional release artifacts. Either
-generate them locally or host them outside the repository and pass them to the
-launcher with `--embedding-cache-file`.
+GitHub's single-file size limit. Generate them locally or obtain a matching
+cache, then pass its local path with `--embedding-cache-file`.
 
 For example, to generate the mixed code embedding cache:
 
@@ -186,13 +196,20 @@ python test/metrics_pool/two_pool/embed_metrics-trigger.py \
   --output_cache_file test/metrics_pool/two_pool/mixed_embeddings_cache_two_pool.jsonl
 ```
 
-Training-time scripts in `train/` collect raw trajectories for building a pool
-and are controlled by environment variables. After collection, run:
+Offline scripts in `train/` collect raw trajectories for constructing a bank
+and are controlled by environment variables. After running
+`bash train/run-aqua-train.sh` with its default output path, extract the bank
+from the repository root:
 
 ```bash
-cd train
-python Extraction-deduplication-embedding.py
+python train/Extraction-deduplication-embedding.py \
+  --input_data_file train/results-aqua/public_train_aqua.json \
+  --output_metrics_file train/results-aqua/metrics_pool_deduped.json \
+  --output_embedding_file train/results-aqua/metrics_embeddings_trigger.jsonl
 ```
 
-The extraction script produces deduplicated indicator records and embedding
-caches that can be supplied to the test-time launcher.
+If collection used `OUTPUT_FILE`, pass that file to `--input_data_file` instead.
+Extraction uses `SUPERVISOR_*` and `EMBEDDING_*` from the configured environment
+and replaces the specified generated outputs. The resulting criterion bank and
+embedding cache can be supplied to the test-time launcher with
+`--metric-pool-file` and `--embedding-cache-file`.

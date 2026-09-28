@@ -27,7 +27,7 @@ import run_release_experiment as launcher
 
 class LauncherPoolOverrideTests(unittest.TestCase):
     def arguments(self, **overrides):
-        values = dict(benchmark="gsm8k", method="adv2_math_main", framework=None,
+        values = dict(benchmark="gsm8k", method="masrubric_math_main", framework=None,
                       fixed_rounds=None, limit=None, pool=None, in_file=None,
                       metric_pool_file=None, embedding_cache_file=None,
                       output_dir="test/results_release", model_profile=None,
@@ -37,8 +37,8 @@ class LauncherPoolOverrideTests(unittest.TestCase):
 
     def test_pool_environment_overrides_apply_to_every_public_pool(self):
         config = launcher.load_config()
-        environment = {"AGENTDROPOUT_METRIC_POOL_FILE": "external/metrics.json",
-                       "AGENTDROPOUT_EMBEDDING_CACHE_FILE": "external/cache.jsonl"}
+        environment = {"MASRUBRIC_METRIC_POOL_FILE": "external/metrics.json",
+                       "MASRUBRIC_EMBEDDING_CACHE_FILE": "external/cache.jsonl"}
         with patch.dict(os.environ, environment, clear=True):
             for pool in config["metric_pools"]:
                 with self.subTest(pool=pool):
@@ -49,8 +49,8 @@ class LauncherPoolOverrideTests(unittest.TestCase):
                                      str(ROOT / "external/cache.jsonl"))
 
     def test_explicit_paths_take_precedence_over_environment(self):
-        environment = {"AGENTDROPOUT_METRIC_POOL_FILE": "ignored/metrics.json",
-                       "AGENTDROPOUT_EMBEDDING_CACHE_FILE": "ignored/cache.jsonl"}
+        environment = {"MASRUBRIC_METRIC_POOL_FILE": "ignored/metrics.json",
+                       "MASRUBRIC_EMBEDDING_CACHE_FILE": "ignored/cache.jsonl"}
         with patch.dict(os.environ, environment, clear=True):
             command = launcher.build_command(
                 self.arguments(metric_pool_file="chosen/metrics.json", embedding_cache_file="chosen/cache.jsonl"),
@@ -70,7 +70,7 @@ class LauncherPoolOverrideTests(unittest.TestCase):
 
     def test_top3_ablation_requires_all_three_indicators_to_pass(self):
         with patch.dict(os.environ, {}, clear=True):
-            command = launcher.build_command(self.arguments(method="adv2_math_top3"), launcher.load_config())
+            command = launcher.build_command(self.arguments(method="masrubric_math_top3"), launcher.load_config())
         self.assertEqual(command[command.index("--retrieve_p") + 1], "20")
         self.assertEqual(command[command.index("--select_q") + 1], "3")
         self.assertEqual(command[command.index("--pass_rate") + 1], "1.0")
@@ -78,7 +78,7 @@ class LauncherPoolOverrideTests(unittest.TestCase):
 
 class ParticipantRetryTests(unittest.IsolatedAsyncioTestCase):
     def make_agent(self, benchmark, retries):
-        from AgentDropout.agents import AgentRegistry
+        from masrubric.agents import AgentRegistry
 
         kind = "CodeWriting" if benchmark in {"mbpp", "humaneval", "codecontest", "livecode"} else "MathSolver"
         return AgentRegistry.get(agent_name=f"{kind}_{benchmark}", domain=benchmark,
@@ -90,7 +90,7 @@ class ParticipantRetryTests(unittest.IsolatedAsyncioTestCase):
         from autogen_agentchat.messages import TextMessage
         from autogen_core import CancellationToken
         from openai import APIConnectionError
-        from AgentDropout.usage import usage_scope
+        from masrubric.usage import usage_scope
 
         request = httpx.Request("POST", "http://127.0.0.1:1/v1/chat/completions")
         for benchmark in launcher.load_config()["benchmarks"]:
@@ -122,7 +122,7 @@ class ParticipantRetryTests(unittest.IsolatedAsyncioTestCase):
         from autogen_agentchat.messages import TextMessage
         from autogen_core import CancellationToken
         from openai import APITimeoutError
-        from AgentDropout.usage import usage_scope
+        from masrubric.usage import usage_scope
 
         completion = SimpleNamespace(
             choices=[SimpleNamespace(message=SimpleNamespace(model_dump=Mock(return_value={"content": "2"})))],

@@ -161,7 +161,7 @@ class RealAgentAccountingTests(unittest.IsolatedAsyncioTestCase):
     @staticmethod
     def supervisor(endpoint, **kwargs):
         import numpy as np
-        from AgentDropout.agents.supervisor_reasoning_pick_metric import Supervisor
+        from masrubric.agents.supervisor_reasoning_pick_metric import Supervisor
         return Supervisor(
             model="gpt-4o-mini", api_key="local-test", base_url=endpoint.url, domain="math",
             embedding_api_key="local-test", embedding_model="embedding-local",
@@ -169,9 +169,9 @@ class RealAgentAccountingTests(unittest.IsolatedAsyncioTestCase):
             preloaded_embeddings=np.array([[1.0, 0.0], [0.9, 0.0]]), **kwargs)
 
     async def test_actual_participant_retry_audit_and_final_all_count(self):
-        from AgentDropout.agents.math_solver_gsm8k import MathSolverGsm8k
-        from AgentDropout.agents.final_decision import FinalRefer
-        from AgentDropout.usage import usage_scope
+        from masrubric.agents.math_solver_gsm8k import MathSolverGsm8k
+        from masrubric.agents.final_decision import FinalRefer
+        from masrubric.usage import usage_scope
         from autogen_agentchat.messages import TextMessage
         from autogen_core import CancellationToken
 
@@ -195,7 +195,7 @@ class RealAgentAccountingTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(summary["by_stage"]["final_decision"]["call_count"], 1)
 
     async def test_retrieval_rerank_batch_parse_retry_and_embedding_all_count(self):
-        from AgentDropout.usage import usage_scope
+        from masrubric.usage import usage_scope
         from autogen_agentchat.messages import TextMessage
 
         with FakeModelEndpoint(malformed_batch=1) as endpoint:
@@ -217,9 +217,9 @@ class RealAgentAccountingTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(summary["online_rectifier_llm"]["call_count"], 4)
 
     async def test_missing_usage_does_not_crash_participant_or_final(self):
-        from AgentDropout.agents.math_solver_gsm8k import MathSolverGsm8k
-        from AgentDropout.agents.final_decision import FinalRefer
-        from AgentDropout.usage import usage_scope
+        from masrubric.agents.math_solver_gsm8k import MathSolverGsm8k
+        from masrubric.agents.final_decision import FinalRefer
+        from masrubric.usage import usage_scope
         from autogen_agentchat.messages import TextMessage
         from autogen_core import CancellationToken
 
@@ -237,7 +237,7 @@ class RealAgentAccountingTests(unittest.IsolatedAsyncioTestCase):
             self.assertIsNone(summary["llm"]["total_tokens"])
 
     async def test_selector_missing_raw_usage_stays_unknown(self):
-        from AgentDropout.usage import TrackedOpenAIChatCompletionClient, usage_scope
+        from masrubric.usage import TrackedOpenAIChatCompletionClient, usage_scope
         from autogen_core.models import UserMessage
 
         with FakeModelEndpoint(missing_usage=True) as endpoint:
@@ -255,7 +255,7 @@ class RealAgentAccountingTests(unittest.IsolatedAsyncioTestCase):
                 await client.close()
 
     async def test_qwen_selector_alias_uses_actual_provider_usage(self):
-        from AgentDropout.usage import TrackedOpenAIChatCompletionClient, usage_scope
+        from masrubric.usage import TrackedOpenAIChatCompletionClient, usage_scope
         from autogen_core.models import UserMessage
 
         with FakeModelEndpoint() as endpoint:
@@ -272,7 +272,7 @@ class RealAgentAccountingTests(unittest.IsolatedAsyncioTestCase):
                 await client.close()
 
     async def test_http_error_is_recorded_and_propagated(self):
-        from AgentDropout.usage import tracked_create, usage_scope
+        from masrubric.usage import tracked_create, usage_scope
         from openai import AsyncOpenAI, BadRequestError
 
         with FakeModelEndpoint(http_error=True) as endpoint:
@@ -290,7 +290,7 @@ class RealAgentAccountingTests(unittest.IsolatedAsyncioTestCase):
 
 class UsagePersistenceTests(unittest.TestCase):
     def test_existing_answer_file_is_rejected_without_modification(self):
-        from AgentDropout.run_support import UsageRun
+        from masrubric.run_support import UsageRun
 
         with tempfile.TemporaryDirectory() as temp:
             output = Path(temp) / "results.json"
@@ -302,8 +302,8 @@ class UsagePersistenceTests(unittest.TestCase):
             self.assertEqual(list(Path(temp).iterdir()), [output])
 
     def test_failed_and_missing_results_raise_after_preserving_usage(self):
-        from AgentDropout.run_support import UsageRun, mark_sample_failed
-        from AgentDropout.usage import record_usage
+        from masrubric.run_support import UsageRun, mark_sample_failed
+        from masrubric.usage import record_usage
 
         with tempfile.TemporaryDirectory() as temp:
             for expected_status in ("failed", "no_result"):
@@ -324,8 +324,8 @@ class UsagePersistenceTests(unittest.TestCase):
                     self.assertEqual(len(run.events_path.read_text(encoding="utf-8").splitlines()), 1)
 
     def test_repeat_runs_and_failed_samples_have_separate_traces(self):
-        from AgentDropout.run_support import UsageRun, attach_usage, mark_sample_failed
-        from AgentDropout.usage import record_usage
+        from masrubric.run_support import UsageRun, attach_usage, mark_sample_failed
+        from masrubric.usage import record_usage
 
         with tempfile.TemporaryDirectory() as temp:
             output = Path(temp) / "results.json"
@@ -396,7 +396,7 @@ class RunnerConstructionTests(unittest.TestCase):
     def test_every_benchmark_builds_both_frameworks_from_its_real_cli_parser(self):
         """Catch stale runner args and SDK model-name assumptions without inference."""
         import numpy as np
-        from AgentDropout.teams import FixedDAGTeam
+        from masrubric.teams import FixedDAGTeam
         from autogen_agentchat.teams import SelectorGroupChat
 
         benchmarks = json.loads((ROOT / "configs" / "release_experiments.json").read_text(encoding="utf-8"))["benchmarks"]

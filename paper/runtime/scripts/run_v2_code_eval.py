@@ -26,17 +26,17 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from autogen_agentchat.conditions import MaxMessageTermination, TextMentionTermination
 from autogen_agentchat.teams import SelectorGroupChat
 from autogen_agentchat.ui import Console
-from AgentDropout.agents import AgentRegistry
-from AgentDropout.agents.agent_mode_helpers import (
+from masrubric.agents import AgentRegistry
+from masrubric.agents.agent_mode_helpers import (
     attach_agent_mode_state,
     configure_agent_mode_team,
     get_agent_mode_history,
     normalize_agent_mode,
     reset_agent_mode_state,
 )
-from AgentDropout.agents.supervisor_reasoning_pick_metric import Supervisor
-from AgentDropout.usage_tracking import TrackedOpenAIChatCompletionClient
-from AgentDropout.tools.coding.python_executor import HumanEvalExecutor, MBPPExecutor
+from masrubric.agents.supervisor_reasoning_pick_metric import Supervisor
+from masrubric.usage_tracking import TrackedOpenAIChatCompletionClient
+from masrubric.tools.coding.python_executor import HumanEvalExecutor, MBPPExecutor
 from v2_code_common import ensure_task_name
 
 
@@ -610,7 +610,7 @@ def init_team(spec, preloaded_metrics, preloaded_embeddings):
     use_llm = not args.force_direct_search
     supervisor = Supervisor(
         model=args.supervisor_model,
-        api_key=os.environ.get("AGENTDROPOUT_SUPERVISOR_API_KEY", "EMPTY"),
+        api_key=os.environ.get("MASRUBRIC_SUPERVISOR_API_KEY", "EMPTY"),
         base_url=args.supervisor_url,
         domain="code",
         metrics_retrieve_k=args.retrieve_p,
@@ -618,7 +618,7 @@ def init_team(spec, preloaded_metrics, preloaded_embeddings):
         prune_flag=True,
         metric_pool_file=args.metric_pool_file,
         embedding_cache_file=args.embedding_cache_file,
-        embedding_api_key=os.environ.get("AGENTDROPOUT_EMBEDDING_API_KEY", "EMPTY"),
+        embedding_api_key=os.environ.get("MASRUBRIC_EMBEDDING_API_KEY", "EMPTY"),
         embedding_model=args.embedding_model,
         embedding_api_base=args.embedding_url,
         preloaded_metrics=preloaded_metrics,
@@ -640,7 +640,7 @@ def init_team(spec, preloaded_metrics, preloaded_embeddings):
             name=f"Participant_{i + 1}",
             domain=spec.domain_name,
             model=args.reasoning_model,
-            api_key=os.environ.get("AGENTDROPOUT_REASONING_API_KEY", "EMPTY"),
+            api_key=os.environ.get("MASRUBRIC_REASONING_API_KEY", "EMPTY"),
             base_url=args.reasoning_url,
             supervisor=supervisor,
         )
@@ -659,7 +659,7 @@ def init_team(spec, preloaded_metrics, preloaded_embeddings):
         prm_url=args.prm_url,
         prm_n_samples=args.prm_n_samples,
         model=args.reasoning_model,
-        api_key=os.environ.get("AGENTDROPOUT_REASONING_API_KEY", "EMPTY"),
+        api_key=os.environ.get("MASRUBRIC_REASONING_API_KEY", "EMPTY"),
         base_url=args.reasoning_url,
     )
 
@@ -702,7 +702,7 @@ Only select one agent.
         name="DecisionMaker",
         domain=spec.domain_name,
         model=args.reasoning_model,
-        api_key=os.environ.get("AGENTDROPOUT_REASONING_API_KEY", "EMPTY"),
+        api_key=os.environ.get("MASRUBRIC_REASONING_API_KEY", "EMPTY"),
         base_url=args.reasoning_url,
     )
 

@@ -11,9 +11,9 @@ import random
 from typing import List, Tuple, Dict, Any
 from tqdm import tqdm
 
-from AgentDropout.agents import AgentRegistry
-from AgentDropout.agents.supervisor import Supervisor
-from AgentDropout.agents.final_decision import FinalRefer
+from masrubric.agents import AgentRegistry
+from masrubric.agents.supervisor import Supervisor
+from masrubric.agents.final_decision import FinalRefer
 from autogen_agentchat.teams import SelectorGroupChat
 from autogen_ext.models.openai import OpenAIChatCompletionClient
 from autogen_agentchat.conditions import MaxMessageTermination, TextMentionTermination

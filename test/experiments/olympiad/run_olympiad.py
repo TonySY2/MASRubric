@@ -8,13 +8,13 @@ import time
 import traceback
 import json
 import re
-from AgentDropout.agents import AgentRegistry
-from AgentDropout.agents.supervisor_reasoning_pick_metric import Supervisor
-from AgentDropout.agents.final_decision import FinalRefer
+from masrubric.agents import AgentRegistry
+from masrubric.agents.supervisor_reasoning_pick_metric import Supervisor
+from masrubric.agents.final_decision import FinalRefer
 from autogen_agentchat.teams import SelectorGroupChat
-from AgentDropout.usage import TrackedOpenAIChatCompletionClient, set_usage_phase
-from AgentDropout.teams import create_team
-from AgentDropout.run_support import UsageRun, attach_usage, mark_sample_failed, sample_id
+from masrubric.usage import TrackedOpenAIChatCompletionClient, set_usage_phase
+from masrubric.teams import create_team
+from masrubric.run_support import UsageRun, attach_usage, mark_sample_failed, sample_id
 from autogen_agentchat.conditions import MaxMessageTermination, TextMentionTermination
 from autogen_agentchat.ui import Console
 import asyncio
@@ -31,7 +31,7 @@ except ImportError:
         from grader import math_equal
     except ImportError:
         try:
-             from AgentDropout.agents.math_grader import MathGrader
+             from masrubric.agents.math_grader import MathGrader
         except:
              print("[FATAL")
              sys.exit(1)
@@ -322,7 +322,7 @@ async def run_sample(data, out_file, team, decision_maker, role_map, supervisor,
         else:
             print("[WARN] grader.math_equal not found, using MathGrader fallback.")
             try:
-                 from AgentDropout.agents.math_grader import MathGrader
+                 from masrubric.agents.math_grader import MathGrader
                  is_correct = MathGrader.check_correctness(hypothesis, ground_truth_clean)
             except:
                  is_correct = (hypothesis.strip() == ground_truth_clean.strip())

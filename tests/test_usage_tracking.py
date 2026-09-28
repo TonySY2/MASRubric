@@ -13,7 +13,7 @@ from types import SimpleNamespace
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "test"))
 
-from AgentDropout.usage import (  # noqa: E402
+from masrubric.usage import (  # noqa: E402
     current_usage,
     record_usage,
     set_usage_phase,

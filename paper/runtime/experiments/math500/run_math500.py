@@ -7,13 +7,13 @@ import time
 import traceback
 import json
 import re
-from AgentDropout.agents import AgentRegistry
+from masrubric.agents import AgentRegistry
 # [修改] 引用新的 RAG Supervisor
-from AgentDropout.agents.supervisor_reasoning_pick_metric import Supervisor
-from AgentDropout.agents.final_decision import FinalRefer
+from masrubric.agents.supervisor_reasoning_pick_metric import Supervisor
+from masrubric.agents.final_decision import FinalRefer
 from autogen_agentchat.teams import SelectorGroupChat
-from AgentDropout.usage_tracking import TrackedOpenAIChatCompletionClient
-from AgentDropout.agents.agent_mode_helpers import (
+from masrubric.usage_tracking import TrackedOpenAIChatCompletionClient
+from masrubric.agents.agent_mode_helpers import (
     attach_agent_mode_state,
     configure_agent_mode_team,
     get_agent_mode_history,
@@ -34,9 +34,9 @@ import numpy as np # 记得文件头导入 numpy
 
 # [新增] 核心依赖
 try:
-    from AgentDropout.agents.math_grader import MathGrader
+    from masrubric.agents.math_grader import MathGrader
 except ImportError:
-    print("[FATAL] 找不到 AgentDropout.agents.math_grader，请确认文件位置。")
+    print("[FATAL] 找不到 masrubric.agents.math_grader，请确认文件位置。")
     sys.exit(1)
 
 # ==========================================
@@ -107,7 +107,7 @@ def init_team(preloaded_metrics, preloaded_embeddings) -> Tuple[SelectorGroupCha
     # 注意：metric_pool_file 需要指向您之前去重生成的 math 指标文件
     supervisor = Supervisor(
         model=args.supervisor_model,
-        api_key=os.environ.get("AGENTDROPOUT_SUPERVISOR_API_KEY", "EMPTY"), 
+        api_key=os.environ.get("MASRUBRIC_SUPERVISOR_API_KEY", "EMPTY"), 
         base_url=args.supervisor_url,
         domain="math", # [重要] 设定领域为 math
         metrics_retrieve_k=args.metrics_retrieve_k,
@@ -117,7 +117,7 @@ def init_team(preloaded_metrics, preloaded_embeddings) -> Tuple[SelectorGroupCha
         # [新增] 传入向量缓存路径
         embedding_cache_file=args.embedding_cache_file, 
         
-        embedding_api_key=os.environ.get("AGENTDROPOUT_EMBEDDING_API_KEY", "EMPTY"),
+        embedding_api_key=os.environ.get("MASRUBRIC_EMBEDDING_API_KEY", "EMPTY"),
         embedding_model=args.embedding_model,
         embedding_api_base=args.embedding_url,
         
@@ -151,7 +151,7 @@ def init_team(preloaded_metrics, preloaded_embeddings) -> Tuple[SelectorGroupCha
             name=f"Participant_{i + 1}",
             domain="math500",                    
             model=args.reasoning_model,
-            api_key=os.environ.get("AGENTDROPOUT_REASONING_API_KEY", "EMPTY"),
+            api_key=os.environ.get("MASRUBRIC_REASONING_API_KEY", "EMPTY"),
             base_url=args.reasoning_url,
             supervisor=supervisor,
             reflection_time=args.retries_times,
@@ -164,7 +164,7 @@ def init_team(preloaded_metrics, preloaded_embeddings) -> Tuple[SelectorGroupCha
         prm_url=args.prm_url,
         prm_n_samples=args.prm_n_samples,
         model=args.reasoning_model,
-        api_key=os.environ.get("AGENTDROPOUT_REASONING_API_KEY", "EMPTY"),
+        api_key=os.environ.get("MASRUBRIC_REASONING_API_KEY", "EMPTY"),
         base_url=args.reasoning_url,
     )
 
@@ -215,7 +215,7 @@ def init_team(preloaded_metrics, preloaded_embeddings) -> Tuple[SelectorGroupCha
         name="DecisionMaker",
         domain="math500",
         model=args.reasoning_model,
-        api_key=os.environ.get("AGENTDROPOUT_REASONING_API_KEY", "EMPTY"),
+        api_key=os.environ.get("MASRUBRIC_REASONING_API_KEY", "EMPTY"),
         base_url=args.reasoning_url
     )
     

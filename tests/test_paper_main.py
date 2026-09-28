@@ -87,7 +87,7 @@ class PlanTests(unittest.TestCase):
                 for benchmark, spec in self.config["benchmarks"].items():
                     if (suite == "code_8b") != (spec["domain"] == "code"):
                         continue
-                    for method in ("adv2", "baseline"):
+                    for method in ("masrubric", "baseline"):
                         with self.subTest(suite=suite, benchmark=benchmark, method=method):
                             _, (cmd, _, manifest, missing) = self.plan(
                                 benchmark, suite, ("--method", method, "--limit", "2", "--concurrency", "3"))
@@ -110,23 +110,23 @@ class PlanTests(unittest.TestCase):
 
     def test_runtime_environment_isolated_and_only_documented_toggles_survive(self):
         environment = dict(endpoint_environment(), PYTHONPATH=str(ROOT / "test"),
-                           AGENTDROPOUT_CHEAP_PRECHECK="1", AGENTDROPOUT_RANDOM_K_MIN="4",
-                           AGENTDROPOUT_MATH_TEAM_VARIANT="legacy",
-                           AGENTDROPOUT_UNDOCUMENTED_TOGGLE="do-not-inherit")
+                           MASRUBRIC_CHEAP_PRECHECK="1", MASRUBRIC_RANDOM_K_MIN="4",
+                           MASRUBRIC_MATH_TEAM_VARIANT="legacy",
+                           MASRUBRIC_UNDOCUMENTED_TOGGLE="do-not-inherit")
         with patch.dict(os.environ, environment):
             for benchmark, suite in (("gsm8k", "math_8b"), ("mbpp", "code_8b")):
                 with self.subTest(suite=suite):
                     _, (_, env, manifest, _) = self.plan(benchmark, suite)
                     self.assertEqual(Path(env["PYTHONPATH"]), launcher.RUNTIME)
-                    self.assertNotIn("AGENTDROPOUT_UNDOCUMENTED_TOGGLE", env)
-                    self.assertEqual(env["AGENTDROPOUT_CHEAP_PRECHECK"], "0")
-                    self.assertEqual(env["AGENTDROPOUT_RANDOM_K_MIN"], "0")
-                    self.assertEqual(env["AGENTDROPOUT_EXACT_SELECT_Q"], "0")
-                    self.assertEqual(env["AGENTDROPOUT_BATCH_AUDIT_METRICS"], "1")
+                    self.assertNotIn("MASRUBRIC_UNDOCUMENTED_TOGGLE", env)
+                    self.assertEqual(env["MASRUBRIC_CHEAP_PRECHECK"], "0")
+                    self.assertEqual(env["MASRUBRIC_RANDOM_K_MIN"], "0")
+                    self.assertEqual(env["MASRUBRIC_EXACT_SELECT_Q"], "0")
+                    self.assertEqual(env["MASRUBRIC_BATCH_AUDIT_METRICS"], "1")
                     if suite == "math_8b":
-                        self.assertEqual(env["AGENTDROPOUT_MATH_TEAM_VARIANT"], "verifier")
+                        self.assertEqual(env["MASRUBRIC_MATH_TEAM_VARIANT"], "verifier")
                     else:
-                        self.assertEqual(env["AGENTDROPOUT_PROFILE_AWARE_RETRIEVAL"], "1")
+                        self.assertEqual(env["MASRUBRIC_PROFILE_AWARE_RETRIEVAL"], "1")
                     self.assertNotIn("do-not-inherit", json.dumps(manifest))
 
     def test_authentication_is_forwarded_but_never_written_to_manifest(self):
@@ -135,7 +135,7 @@ class PlanTests(unittest.TestCase):
             _, (cmd, env, manifest, _) = self.plan()
         self.assertEqual(cmd[cmd.index("--selector_api_key") + 1], environment["SELECTOR_KEY"])
         for role in ("reasoning", "supervisor", "embedding"):
-            self.assertEqual(env[f"AGENTDROPOUT_{role.upper()}_API_KEY"], environment[f"{role.upper()}_KEY"])
+            self.assertEqual(env[f"MASRUBRIC_{role.upper()}_API_KEY"], environment[f"{role.upper()}_KEY"])
         serialized = json.dumps(manifest)
         for role in launcher.ROLES:
             self.assertNotIn(environment[f"{role.upper()}_KEY"], serialized)
@@ -143,15 +143,15 @@ class PlanTests(unittest.TestCase):
 
     def test_bootstrap_imports_runtime_even_with_release_package_on_pythonpath(self):
         runtime = self.root / "isolated-runtime"
-        (runtime / "AgentDropout").mkdir(parents=True)
-        (runtime / "AgentDropout/__init__.py").write_text("ORIGIN = 'recovered'\n", encoding="utf-8")
+        (runtime / "masrubric").mkdir(parents=True)
+        (runtime / "masrubric/__init__.py").write_text("ORIGIN = 'recovered'\n", encoding="utf-8")
         decoy = self.root / "release-decoy"
-        (decoy / "AgentDropout").mkdir(parents=True)
-        (decoy / "AgentDropout/__init__.py").write_text("raise RuntimeError('release imported')\n", encoding="utf-8")
+        (decoy / "masrubric").mkdir(parents=True)
+        (decoy / "masrubric/__init__.py").write_text("raise RuntimeError('release imported')\n", encoding="utf-8")
         spec = self.config["benchmarks"]["gsm8k"]
         script = runtime / spec["script"]
         script.parent.mkdir(parents=True)
-        script.write_text("import AgentDropout; print(AgentDropout.ORIGIN)\n", encoding="utf-8")
+        script.write_text("import masrubric; print(masrubric.ORIGIN)\n", encoding="utf-8")
         with patch.object(launcher, "RUNTIME", runtime), \
                 patch.dict(os.environ, dict(endpoint_environment(), PYTHONPATH=str(decoy))):
             _, (cmd, env, _, _) = self.plan()
@@ -233,8 +233,8 @@ class PlanTests(unittest.TestCase):
             "VALUE = 'dependency-from-legacy-venv'\n", encoding="utf-8")
 
         runtime = self.root / "stub-runtime"
-        (runtime / "AgentDropout").mkdir(parents=True)
-        (runtime / "AgentDropout/__init__.py").write_text("", encoding="utf-8")
+        (runtime / "masrubric").mkdir(parents=True)
+        (runtime / "masrubric/__init__.py").write_text("", encoding="utf-8")
         script = runtime / self.config["benchmarks"]["olympiad"]["script"]
         script.parent.mkdir(parents=True)
         script.write_text(
@@ -258,7 +258,7 @@ class PreflightAndResultsTests(unittest.TestCase):
         self.root = Path(self.temp.name)
         self.args = launcher.parser().parse_args(["--suite", "code_8b", "--benchmark", "mbpp"])
         self.manifest = {
-            "suite": "code_8b", "benchmark": "mbpp", "method": "adv2",
+            "suite": "code_8b", "benchmark": "mbpp", "method": "masrubric",
             "dataset": str(self.root / "data.jsonl"),
             "metric_pool": str(self.root / "pool.json"),
             "embedding_cache": str(self.root / "cache.jsonl"),

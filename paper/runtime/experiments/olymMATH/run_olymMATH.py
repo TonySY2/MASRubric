@@ -8,12 +8,12 @@ import time
 import traceback
 import json
 import re
-from AgentDropout.agents import AgentRegistry
-from AgentDropout.agents.supervisor_reasoning_pick_metric import Supervisor
-from AgentDropout.agents.final_decision import FinalRefer
+from masrubric.agents import AgentRegistry
+from masrubric.agents.supervisor_reasoning_pick_metric import Supervisor
+from masrubric.agents.final_decision import FinalRefer
 from autogen_agentchat.teams import SelectorGroupChat
-from AgentDropout.usage_tracking import TrackedOpenAIChatCompletionClient
-from AgentDropout.agents.agent_mode_helpers import (
+from masrubric.usage_tracking import TrackedOpenAIChatCompletionClient
+from masrubric.agents.agent_mode_helpers import (
     attach_agent_mode_state,
     configure_agent_mode_team,
     get_agent_mode_history,
@@ -220,7 +220,7 @@ def init_team(preloaded_metrics, preloaded_embeddings) -> Tuple[SelectorGroupCha
     
     supervisor = Supervisor(
         model=args.supervisor_model,
-        api_key=os.environ.get("AGENTDROPOUT_SUPERVISOR_API_KEY", "EMPTY"), 
+        api_key=os.environ.get("MASRUBRIC_SUPERVISOR_API_KEY", "EMPTY"), 
         base_url=args.supervisor_url,
         domain="olymMATH", # [关键] 必须与 Solver 和 PromptSet 注册名一致
         metrics_retrieve_k=args.metrics_retrieve_k,
@@ -228,7 +228,7 @@ def init_team(preloaded_metrics, preloaded_embeddings) -> Tuple[SelectorGroupCha
         prune_flag=True, 
         metric_pool_file=args.metric_pool_file, 
         embedding_cache_file=args.embedding_cache_file, 
-        embedding_api_key=os.environ.get("AGENTDROPOUT_EMBEDDING_API_KEY", "EMPTY"),
+        embedding_api_key=os.environ.get("MASRUBRIC_EMBEDDING_API_KEY", "EMPTY"),
         embedding_model=args.embedding_model,
         embedding_api_base=args.embedding_url,
         preloaded_metrics=preloaded_metrics,
@@ -251,7 +251,7 @@ def init_team(preloaded_metrics, preloaded_embeddings) -> Tuple[SelectorGroupCha
             name=f"Participant_{i + 1}",
             domain="olymMATH",                # [关键] 必须与 PromptSetRegistry 一致
             model=args.reasoning_model,
-            api_key=os.environ.get("AGENTDROPOUT_REASONING_API_KEY", "EMPTY"),
+            api_key=os.environ.get("MASRUBRIC_REASONING_API_KEY", "EMPTY"),
             base_url=args.reasoning_url,
             supervisor=supervisor,
             reflection_time=args.retries_times,
@@ -264,7 +264,7 @@ def init_team(preloaded_metrics, preloaded_embeddings) -> Tuple[SelectorGroupCha
         prm_url=args.prm_url,
         prm_n_samples=args.prm_n_samples,
         model=args.reasoning_model,
-        api_key=os.environ.get("AGENTDROPOUT_REASONING_API_KEY", "EMPTY"),
+        api_key=os.environ.get("MASRUBRIC_REASONING_API_KEY", "EMPTY"),
         base_url=args.reasoning_url,
     )
 
@@ -312,7 +312,7 @@ def init_team(preloaded_metrics, preloaded_embeddings) -> Tuple[SelectorGroupCha
         name="DecisionMaker",
         domain="olymMATH", 
         model=args.reasoning_model,
-        api_key=os.environ.get("AGENTDROPOUT_REASONING_API_KEY", "EMPTY"),
+        api_key=os.environ.get("MASRUBRIC_REASONING_API_KEY", "EMPTY"),
         base_url=args.reasoning_url
     )
     

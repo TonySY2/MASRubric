@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Launcher for the public AgentDropoutV2 release.
+"""Launcher for the public MASRubric release.
 
 This wrapper maps a benchmark plus a method preset to a reproducible
 experiment command.
@@ -202,7 +202,7 @@ def build_command(args: argparse.Namespace, config: dict[str, Any]) -> list[str]
 
 def main() -> int:
     config = load_config()
-    parser = argparse.ArgumentParser(description="Run one public AgentDropoutV2 experiment preset.")
+    parser = argparse.ArgumentParser(description="Run one public MASRubric experiment preset.")
     parser.add_argument("--benchmark", choices=sorted(config["benchmarks"]), help="Benchmark id.")
     parser.add_argument("--method", choices=sorted(config["method_presets"]), help="Method preset id.")
     parser.add_argument("--model-profile", choices=sorted(config["model_profiles"]), default=None)

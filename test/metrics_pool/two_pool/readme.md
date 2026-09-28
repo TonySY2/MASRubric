@@ -1,4 +1,4 @@
-The indicator-pool JSON is bundled here. The embedding cache is generated
+The criterion-bank JSON is bundled here. The embedding cache is generated
 separately because precomputed vectors can be large:
 
 ```bash

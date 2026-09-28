@@ -1,6 +1,6 @@
 {
-  "reference_package": "main_method_reference_20260711",
-  "source_boundary": "Recovered July reference workspace, which had post-run development; not a bitwise snapshot of April/May execution.",
+  "reference_package": "masrubric_dynamic_reference",
+  "source_boundary": "Recovered reference implementation with later maintenance; exact historical source identity is not established.",
   "pools": {
     "math": {
       "metrics": "pools/math/deduped-mixed_metrics_two_pool.json",
@@ -18,10 +18,6 @@
       "script": "experiments/gsm8k/run_gsm8k.py",
       "total": 1319,
       "historical": {
-        "source_run": "math9_v2_top5_pass3of5_gpu234567_4lane_sel16k_2026-04-22-16-38-53",
-        "completed_samples": 1319,
-        "correct": 1209,
-        "full_denominator_accuracy_percent": 91.6603,
         "model_roles": {
           "reasoning": "Qwen3-8B",
           "supervisor": "Qwen3-8B",
@@ -40,10 +36,6 @@
       "script": "experiments/math500/run_math500.py",
       "total": 500,
       "historical": {
-        "source_run": "math9_v2_top5_pass3of5_gpu234567_4lane_sel16k_2026-04-22-16-38-53",
-        "completed_samples": 500,
-        "correct": 398,
-        "full_denominator_accuracy_percent": 79.6,
         "model_roles": {
           "reasoning": "Qwen3-8B",
           "supervisor": "Qwen3-8B",
@@ -62,10 +54,6 @@
       "script": "experiments/run_aqua_adversarial_reasoning_pick_metric_reflection.py",
       "total": 254,
       "historical": {
-        "source_run": "math9_v2_top5_pass3of5_gpu234567_4lane_sel16k_2026-04-22-16-38-53",
-        "completed_samples": 253,
-        "correct": 213,
-        "full_denominator_accuracy_percent": 83.8583,
         "model_roles": {
           "reasoning": "Qwen3-8B",
           "supervisor": "Qwen3-8B",
@@ -84,10 +72,6 @@
       "script": "experiments/amc23/run_amc23.py",
       "total": 40,
       "historical": {
-        "source_run": "math9_v2_top5_pass3of5_gpu234567_4lane_sel16k_2026-04-22-16-38-53",
-        "completed_samples": 40,
-        "correct": 28,
-        "full_denominator_accuracy_percent": 70.0,
         "model_roles": {
           "reasoning": "Qwen3-8B",
           "supervisor": "Qwen3-8B",
@@ -106,10 +90,6 @@
       "script": "experiments/olympiad/run_olympiad.py",
       "total": 675,
       "historical": {
-        "source_run": "math9_v2_top5_pass3of5_gpu234567_4lane_sel16k_2026-04-22-16-38-53",
-        "completed_samples": 674,
-        "correct": 354,
-        "full_denominator_accuracy_percent": 52.4444,
         "model_roles": {
           "reasoning": "Qwen3-8B",
           "supervisor": "Qwen3-8B",
@@ -128,10 +108,6 @@
       "script": "experiments/olymMATH/run_olymMATH.py",
       "total": 100,
       "historical": {
-        "source_run": "math9_v2_top5_pass3of5_gpu234567_4lane_sel16k_2026-04-22-16-38-53",
-        "completed_samples": 99,
-        "correct": 32,
-        "full_denominator_accuracy_percent": 32.0,
         "model_roles": {
           "reasoning": "Qwen3-8B",
           "supervisor": "Qwen3-8B",
@@ -150,10 +126,6 @@
       "script": "experiments/olymMATH/run_olymMATH.py",
       "total": 100,
       "historical": {
-        "source_run": "math9_v2_top5_pass3of5_gpu234567_4lane_sel16k_2026-04-22-16-38-53",
-        "completed_samples": 100,
-        "correct": 17,
-        "full_denominator_accuracy_percent": 17.0,
         "model_roles": {
           "reasoning": "Qwen3-8B",
           "supervisor": "Qwen3-8B",
@@ -172,10 +144,6 @@
       "script": "experiments/aime24/run_aime24.py",
       "total": 30,
       "historical": {
-        "source_run": "math9_v2_top5_pass3of5_gpu234567_4lane_sel16k_2026-04-22-16-38-53",
-        "completed_samples": 30,
-        "correct": 9,
-        "full_denominator_accuracy_percent": 30.0,
         "model_roles": {
           "reasoning": "Qwen3-8B",
           "supervisor": "Qwen3-8B",
@@ -194,10 +162,6 @@
       "script": "experiments/aime25/run_aime25.py",
       "total": 30,
       "historical": {
-        "source_run": "math9_v2_top5_pass3of5_gpu234567_4lane_sel16k_2026-04-22-16-38-53",
-        "completed_samples": 30,
-        "correct": 8,
-        "full_denominator_accuracy_percent": 26.6667,
         "model_roles": {
           "reasoning": "Qwen3-8B",
           "supervisor": "Qwen3-8B",
@@ -216,10 +180,6 @@
       "script": "scripts/run_v2_code_eval.py",
       "total": 257,
       "historical": {
-        "source_run": "code4_kodcode_mbpp_codecontest_4cfg_6lane_20260508_010637",
-        "completed_samples": 257,
-        "correct": 176,
-        "full_denominator_accuracy_percent": 68.4825,
         "model_roles": {
           "reasoning": "Qwen3-8B",
           "supervisor": "Qwen3-8B",
@@ -238,10 +198,6 @@
       "script": "scripts/run_v2_code_eval.py",
       "total": 161,
       "historical": {
-        "source_run": "code4_kodcode_mbpp_codecontest_4cfg_6lane_20260508_010637",
-        "completed_samples": 161,
-        "correct": 138,
-        "full_denominator_accuracy_percent": 85.7143,
         "model_roles": {
           "reasoning": "Qwen3-8B",
           "supervisor": "Qwen3-8B",
@@ -260,10 +216,6 @@
       "script": "scripts/run_v2_code_eval.py",
       "total": 165,
       "historical": {
-        "source_run": "code4_kodcode_mbpp_codecontest_4cfg_6lane_20260508_010637",
-        "completed_samples": 160,
-        "correct": 12,
-        "full_denominator_accuracy_percent": 7.2727,
         "model_roles": {
           "reasoning": "Qwen3-8B",
           "supervisor": "Qwen3-8B",
@@ -282,10 +234,6 @@
       "script": "scripts/run_v2_code_eval.py",
       "total": 400,
       "historical": {
-        "source_run": "code4_kodcode_mbpp_codecontest_4cfg_6lane_20260508_010637",
-        "completed_samples": 400,
-        "correct": 128,
-        "full_denominator_accuracy_percent": 32.0,
         "model_roles": {
           "reasoning": "Qwen3-8B",
           "supervisor": "Qwen3-8B",
