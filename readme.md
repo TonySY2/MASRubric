@@ -1,7 +1,26 @@
-# MASRubric
+<p align="center">
+  <img src="image/readme/masrubric-logo.png" alt="MASRubric network logo" width="220">
+</p>
 
-Research code for **MASRubric: Auditing Information Flow in Multi-Agent Systems
-with Failure-Distilled Pitfall Rubrics**.
+<h1 align="center">MASRubric</h1>
+
+<p align="center">
+  <strong>Auditing Information Flow in Multi-Agent Systems<br>
+  with Failure-Distilled Pitfall Rubrics</strong>
+</p>
+
+<p align="center">
+  <a href="https://github.com/TonySY2/MASRubric/actions/workflows/tests.yml"><img src="https://github.com/TonySY2/MASRubric/actions/workflows/tests.yml/badge.svg" alt="Tests"></a>
+</p>
+
+<p align="center">
+  <a href="https://arxiv.org/abs/2602.23258">Preprint (earlier title)</a> &nbsp;|&nbsp;
+  <a href="docs/paper_main_reproduction.md">Runbook</a> &nbsp;|&nbsp;
+  <a href="docs/experiment_matrix.md">Experiments</a> &nbsp;|&nbsp;
+  <a href="#citation">Citation</a>
+</p>
+
+## Overview
 
 MASRubric builds a bank of diagnostic criteria from failed multi-agent
 trajectories, retrieves a contextual rubric for each intermediate message, and
@@ -11,10 +30,33 @@ frozen, and the criterion bank stays fixed during inference. Reference answers
 are used for offline mining and benchmark grading, and are withheld from the
 online auditor.
 
-```text
-Offline: failed trajectories -> criterion mining -> deduplication -> criterion bank
-Online:  agent message -> rubric retrieval -> audit -> Pass / Revise / Withhold
-```
+1. **Learn from failures.** Collect unsuccessful multi-agent trajectories and
+   distill reusable diagnostic criteria into a compact bank.
+2. **Retrieve a rubric.** Select criteria relevant to the current task and
+   intermediate message.
+3. **Audit before broadcast.** Pass accepted messages, request targeted revisions,
+   and withhold messages that still fail after the revision budget.
+
+<p align="center">
+  <img src="image/readme/masrubric-overview.png" alt="Agent-level dropout and MASRubric message-level auditing" width="1000">
+</p>
+
+<p align="center"><em>From agent-level dropout to message-level auditing: retrieve a rubric, revise the message, and control what reaches downstream agents.</em></p>
+
+<p align="center">
+  <img src="image/readme/masrubric-framework.png" alt="Offline criterion-bank construction and online MASRubric information flow" width="1100">
+</p>
+
+<p align="center"><em>MASRubric combines offline criterion-bank construction with online retrieval, auditing, and Pass / Revise / Withhold decisions.</em></p>
+
+## Paper
+
+The public preprint is available under the project's earlier title,
+[**AgentDropoutV2: Optimizing Information Flow in Multi-Agent Systems via
+Test-Time Rectify-or-Reject Pruning**](https://arxiv.org/abs/2602.23258).
+Its latest posted version is v2, dated May 28, 2026. This repository now uses
+the MASRubric name; the [citation](#citation) retains the preprint's title and
+author metadata.
 
 ## Quick start
 
@@ -92,7 +134,7 @@ The [experiment matrix](docs/experiment_matrix.md) describes available presets,
 environment variables, and custom banks. Its `--model-profile` option labels
 outputs; endpoint variables select the actual models.
 
-## Scope and validation
+## Validation and scope
 
 This release contains a recovered reference implementation with later
 maintenance. Exact historical source identity and reproduction of every paper
@@ -112,3 +154,21 @@ Code benchmarks execute generated Python; use an isolated environment. Generated
 results, logs, caches, and local credentials are ignored by Git. Review any
 manually added outputs before sharing them, as they can contain prompts, paths,
 and endpoint configuration.
+
+## Citation
+
+For the public preprint, use its arXiv citation:
+
+```bibtex
+@misc{wang2026agentdropoutv2optimizinginformationflow,
+  title={AgentDropoutV2: Optimizing Information Flow in Multi-Agent Systems via Test-Time Rectify-or-Reject Pruning},
+  author={Yutong Wang and Siyuan Xiong and Xuebo Liu and Wenkang Zhou and Liang Ding and Miao Zhang and Min Zhang},
+  year={2026},
+  eprint={2602.23258},
+  archivePrefix={arXiv},
+  primaryClass={cs.AI},
+  url={https://arxiv.org/abs/2602.23258}
+}
+```
+
+This codebase builds on [AgentDropout](https://github.com/wangzx1219/AgentDropout).
