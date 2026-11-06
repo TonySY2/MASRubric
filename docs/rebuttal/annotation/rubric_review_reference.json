@@ -1,0 +1,1610 @@
+{
+  "sheet": "盲审",
+  "header_row": 1,
+  "protocol_sheet": "协议",
+  "reviewer_cell": "B3",
+  "date_cell": "B4",
+  "completion_cell": "B5",
+  "rows": [
+    {
+      "id": "B0001",
+      "domain": "代码",
+      "name": "ROTATION_STATE_OMITTED_IN_SEARCH_SPACE_ENUMERATION",
+      "definition": "This error occurs when a puzzle/search problem explicitly allows rotating entities (tiles/pieces/objects), but the implementation fails to include orientation as part of the state space during enumeration (e.g., never iterating over the 4 rotations per tile). The solver then counts only placements, not (placement, orientation) configurations, producing systematically incorrect counts even if adjacency logic is otherwise correct.",
+      "condition": "When the problem statement permits rotations (or multiple orientations) and the solver uses backtracking/DFS/DP over placements without an explicit loop over orientations for each placed object.",
+      "directive": "Under-enumeration of valid configurations; counts and feasibility results become incorrect because orientation constraints are ignored."
+    },
+    {
+      "id": "B0002",
+      "domain": "数学",
+      "name": "INCORRECT_SUPPLEMENTARY_ANGLE_APPLICATION",
+      "definition": "This error arises from misunderstanding the relational context of exterior versus adjacent interior angles when computing supplementary angles. Proper verification of angle relationships is necessary for accurate calculations.",
+      "condition": "When the agent relies on supplementary angle calculations in geometric contexts.",
+      "directive": "Attention! Verify if the supplementary angle application aligns correctly with the triangle's angles and adheres to the exterior angle theorem."
+    },
+    {
+      "id": "B0003",
+      "domain": "数学",
+      "name": "SIGN_ERROR_IN_COEFFICIENT_COMPARISON",
+      "definition": "This error occurs when the agent incorrectly assumes the sign of the leading coefficient in a polynomial, which can lead to improper deductions about the shape or behavior of the polynomial with respect to inequalities.",
+      "condition": "When the problem involves inequalities of quadratic polynomials, especially comparisons of terms.",
+      "directive": "Attention! Check if the polynomial coefficients preserve the correct sign conventions from the problem description."
+    },
+    {
+      "id": "B0004",
+      "domain": "数学",
+      "name": "GENERAL_FORM_FOR_VARIABLE_A",
+      "definition": "This check ensures that periodic functions are correctly analyzed with respect to variables, ensuring that potential shifts or cycles are incorporated into the solution range.",
+      "condition": "When the agent's output involves analysis of periodic function relationships, particularly for deriving constants based on trigonometric identities.",
+      "directive": "Attention! Check if the agent has properly applied periodic offset conditions to derive general solutions."
+    },
+    {
+      "id": "B0005",
+      "domain": "代码",
+      "name": "FORMATTED_GRID_PARSING_IGNORES_SEPARATORS",
+      "definition": "When input encodes a logical grid using separator characters (spaces) and/or separator lines (blank rows), the solution must parse into a normalized coordinate system (e.g., 9x9) before applying index-based logic. Failing to strip or map separators, while still indexing as if the grid were dense, is a reusable class of bugs that leads to wrong moves, wrong field selection, or runtime index errors.",
+      "condition": "When a solution indexes directly into raw input lines that include formatting separators (spaces/blank lines) while treating coordinates as dense grid indices.",
+      "directive": "High risk of runtime errors or incorrect cell targeting due to coordinate-system mismatch between formatted input and logical grid."
+    },
+    {
+      "id": "B0006",
+      "domain": "数学",
+      "name": "ERROR_IN_EXPONENT_SIMPLIFICATION",
+      "definition": "Incorrect simplification in applying the modulo operation to the exponents of a primitive nth root of unity, leading to incorrect factorization and evaluation.",
+      "condition": "When the problem involves applying properties of roots of unity to simplify complex exponentials...",
+      "directive": "Attention! Check if the exponent's reduction modulo operation correctly matches problems involving roots of unity."
+    },
+    {
+      "id": "B0007",
+      "domain": "代码",
+      "name": "MISSING_COUNTEREXAMPLE_FOR_RELAXED_PROBLEM",
+      "definition": "Flags test analysis that lists only trivial edge cases (n=1, equal arrays, zero differences) and fails to generate targeted counterexamples that distinguish the true constrained operation from common relaxations (e.g., sorting/reassignment); requires adversarial tests that invalidate the relaxation.",
+      "condition": "Apply when a proposed algorithm involves sorting/permutation or other relaxation risk, but the test plan lacks explicit cases that separate the constrained-operation optimum from the relaxed optimum.",
+      "directive": "Incorrect solutions can slip through because tests do not probe the constraint boundary (e.g., ‘single swap’ vs ‘arbitrary permutation’)."
+    },
+    {
+      "id": "B0008",
+      "domain": "数学",
+      "name": "MISINTERPRETATION_OF_MULTIPLE_CONDITION",
+      "definition": "This error arises when an agent incorrectly interprets the condition referring to multiples as encompassing every element due to misunderstanding contextual intent.",
+      "condition": "When the problem involves determining quantities based on divisibility by integers...",
+      "directive": "Check if the agent's understanding of conditions like 'multiples of a number' aligns with the problem description."
+    },
+    {
+      "id": "B0009",
+      "domain": "代码",
+      "name": "INCORRECT_SLICING_CONDITION",
+      "definition": "The algorithm designer incorrectly suggests returning an empty list when n exceeds the length of the input list, while the requirement is to use slicing regardless of n's relation to the length of the list.",
+      "condition": "When the algorithm involves conditional logic for list operations that doesn't match requirements...",
+      "directive": "Attention! Verify that the logic does not incorrectly constrain the list slicing operation based on the list length, which results in inaccurate processing."
+    },
+    {
+      "id": "B0010",
+      "domain": "数学",
+      "name": "REAL_SOLUTION_APPROXIMATION_CHECK",
+      "definition": "The error involves potential issues with converting symbolic solutions to numeric approximations and ensuring real solutions are appropriately identified and included.",
+      "condition": "When the agent evaluates symbolic solutions to approximate numeric forms while filtering for reality...",
+      "directive": "Attention! Check if solutions are evaluated symbolically for reality to prevent floating point inaccuracies and ensure completeness."
+    },
+    {
+      "id": "B0011",
+      "domain": "数学",
+      "name": "INTEGER_BOUND_APPROXIMATION",
+      "definition": "This error involves approximating a bound in inequalities, leading to incorrect integer limits.",
+      "condition": "When the agent's output includes approximations of solutions derived from inequality bounds.",
+      "directive": "Attention! Check if the integer bounds derived from fraction approximations correctly reflect the ceiling or floor values as integers."
+    },
+    {
+      "id": "B0012",
+      "domain": "代码",
+      "name": "SIGN_PARITY_MULTIPLIER_OMITTED",
+      "definition": "When arrays are over integers and the target product x is positive, the count of sign assignments must be included: each absolute-value factorization expands by the number of sign vectors with even parity of negatives, which equals 2^(y-1). Implementations must multiply the magnitude-based count by this parity factor (and handle x=1 consistently with the same sign rule).",
+      "condition": "When the problem allows negative integers and x>0, yet the solution counts only positive-factor tuples or ignores sign-parity constraints.",
+      "directive": "Answer is off by a predictable power-of-two factor, and edge cases like x=1 are frequently mishandled."
+    },
+    {
+      "id": "B0013",
+      "domain": "数学",
+      "name": "RANGE_DEFINITION_ERROR",
+      "definition": "Error occurring from improperly defined iteration range that accounts for values outside permissible scope.",
+      "condition": "When defining loop boundaries based on set constraints and the agent uses inclusive ranges that exceed established limits.",
+      "directive": "Attention! Verify loop iteration bounds for adherence to specified constraints on domain-specific values."
+    },
+    {
+      "id": "B0014",
+      "domain": "代码",
+      "name": "DP_STATE_MISREPRESENTS_RESOURCE_AGE_DISTRIBUTION",
+      "definition": "Flags DP designs that compress a multi-item, multi-age resource system into a single global \"time/decay\" variable, losing the distribution of items across age/stage buckets. This typically enables illegal actions (e.g., using stage-2 and stage-1 items in arbitrary quantities each step) because the state cannot enforce how many items are actually in each stage based on prior actions.",
+      "condition": "Apply when the proposed DP uses a single decay/time scalar to represent the status of multiple concurrently alive resources that can be in different age/stage states.",
+      "directive": "State is likely insufficient; transitions may allow infeasible per-step choices that ignore carryover constraints tied to past actions."
+    },
+    {
+      "id": "B0015",
+      "domain": "代码",
+      "name": "GAUSSIAN_INTEGER_ROOT_CANDIDATE_MISDERIVATION",
+      "definition": "Derives a candidate set for Gaussian-integer (complex integer) polynomial roots by applying a rational-root style rule using ordinary integer divisors of coefficients (e.g., using divisors of a0/ad, or choosing real part from divisors(a0) and imaginary part from divisors(ad)). This ignores divisibility in Z[i] and produces an incomplete search space that can miss valid Gaussian integer roots, especially when roots lie on the axes (real-only or imaginary-only) or when units/associates matter.",
+      "condition": "Apply when the proposed algorithm enumerates complex-integer root candidates by independently taking integer divisors for the real and imaginary parts from polynomial coefficients, or by treating complex-integer roots as “divisors of a0/ad” without a Z[i] divisibility argument.",
+      "directive": "Candidate space is structurally incomplete; common Gaussian-integer roots (pure real/pure imaginary, associates/units, a0=0 cases) can be skipped, leading to systematic Wrong Answer."
+    },
+    {
+      "id": "B0016",
+      "domain": "数学",
+      "name": "INDEX_SEQUENCE_CALCULATION_LOGIC",
+      "definition": "An error where the agent applies incorrect sequence or index logic, usually due to mistaken assumptions about value distribution.",
+      "condition": "When sequence or index extraction is involved based on pattern assumptions.",
+      "directive": "Attention! Check if the sequence extraction logic aligns with the pattern specified or computed in the problem constraints."
+    },
+    {
+      "id": "B0017",
+      "domain": "代码",
+      "name": "CHAIN_REACTION_NEIGHBOR_MERGE_INVARIANT_OMITTED",
+      "definition": "In run-length encoded or stack-based elimination simulations, every deletion must be followed by an explicit 'merge newly adjacent equal-colored runs, then re-check deletion threshold repeatedly until stable' invariant. Omitting this invariant leads to missed chain reactions and incorrect final states.",
+      "condition": "Apply when an algorithm proposes stack/RLE deletion of segments but lacks a clear step to merge adjacent equal runs after each deletion and to iterate until no further deletions occur.",
+      "directive": "Chain reactions may be skipped, leading to incorrect stabilization and incorrect maxima/minima in optimization over moves."
+    },
+    {
+      "id": "B0018",
+      "domain": "数学",
+      "name": "MISCOUNT_FAVORABLE_OUTCOMES",
+      "definition": "The agent miscounted the favorable outcomes by underestimating their multiplicity, mistakenly treating distinct permutations as identical events.",
+      "condition": "When the problem involves calculating the number of favorable outcomes based on specific conditions...",
+      "directive": "Check if the agent has properly accounted for permutations and combinations, ensuring they distinguish between unique sequences and repeated instances."
+    },
+    {
+      "id": "B0019",
+      "domain": "数学",
+      "name": "INCORRECT_GEOMETRICAL_PROPERTY_ASSUMPTION",
+      "definition": "This error occurs when an agent assumes a geometric property, such as equilateral or specific angle measures, without adequate evidence from the problem context or given solution, leading to incorrect downstream logic.",
+      "condition": "When the problem involves multiple geometric shapes forming configurations and the agent's output makes assumptions about symmetry or specific properties without verification.",
+      "directive": "Attention! Check if the assumed geometric properties are explicitly stated or derivable from the given context before using them."
+    },
+    {
+      "id": "B0020",
+      "domain": "数学",
+      "name": "INCORRECT_MULTIPLE_TERM_AMGM_APPLICATION",
+      "definition": "This error occurs when attempting to apply the AM-GM inequality to a set of terms with inconsistent structures, including different powers or mixed inverse relations, leading to mathematically invalid inequality formation.",
+      "condition": "When the problem involves applying AM-GM inequality to multiple terms with different powers or inverse relationships...",
+      "directive": "Attention! Check if the terms involved in AM-GM application are similar in structure and ensure it is applied between terms of equal powers or within appropriately structured groupings."
+    },
+    {
+      "id": "B0021",
+      "domain": "数学",
+      "name": "IMPRECISE_AREA_CALCULATION_DUE_TO_PI_APPROXIMATION",
+      "definition": "This error pattern manifests when using approximate values such as Pi in computing areas or volumes leading ultimately resulting in rounded calculations discrepancies not matching correct or closest rational outcomes accurately.",
+      "condition": "When the problem involves geometric shapes requiring precise area or volume calculations with transcendental constants such as Pi.",
+      "directive": "Check if approximate values of constants like Pi lead to discrepancies in the calculation outcomes, causing mismatches with the expected precision in results."
+    },
+    {
+      "id": "B0022",
+      "domain": "数学",
+      "name": "INCORRECT_APPLYING_VIETA_FORMULAS",
+      "definition": "The mathematical analyst incorrectly used Vieta's formulas, misunderstanding the sign conventions for a cubic equation. Vieta's formulas provide relationships between the coefficients of a polynomial and sums and products of its roots.",
+      "condition": "When the problem involves using Vieta's formulas for cubic equations and involves root relationships.",
+      "directive": "Attention! Check if Vieta's formulas are correctly applied, especially the signs related to sums and products of roots."
+    },
+    {
+      "id": "B0023",
+      "domain": "代码",
+      "name": "INCORRECT_ALGORITHM_LOGIC",
+      "definition": "The proposed algorithm logic to track the maximum subset sum and return the absolute difference from the total sum is conceptually flawed, potentially because it miscalculates subset sums dynamically and is not aimed at precisely achieving the problem's goal of minimizing the weight difference between two partitioned groups.",
+      "condition": "Whenever the algorithm attempts to solve partition problems involving sum minimization through dynamic programming...",
+      "directive": "Attention! Verify that the dynamic programming approach accurately determines the partition splits based on the target closest sum rather than misestimating achievable subset sums."
+    },
+    {
+      "id": "B0024",
+      "domain": "数学",
+      "name": "INCORRECT_MULTIPLE_CHECK",
+      "definition": "An error where the agent checks for divisibility by a fixed number but fails to incorporate additional conditions required by the problem, such as specific multiples or forms necessary for solution validity.",
+      "condition": "When the agent's output shows reliance on checking divisibility conditions without ensuring the form aligns with the problem's requirements.",
+      "directive": "Attention! Check if the output correctly represents conditions for specific multiples or forms as stipulated by the problem requirements."
+    },
+    {
+      "id": "B0025",
+      "domain": "数学",
+      "name": "INVALID_SECTION_FORMULA_APPLICATION",
+      "definition": "Mistake occurs when misunderstanding spatial constraints leads one to incorrectly apply generalized formulas without re-evaluation against distinct distances.",
+      "condition": "When problems involve spatial calculations with specific conditions requiring careful application of formulas.",
+      "directive": "Check if the spatial formula application accounts for specific problem constraints and unique distance ratios."
+    },
+    {
+      "id": "B0026",
+      "domain": "代码",
+      "name": "MISSING_TEMPLATE_MASK_STATE_IN_RECURSION",
+      "definition": "When a recursive generation process depends on a fixed but unknown base template (e.g., a 2x2 mask) reused at every nesting level, the algorithm design omits the template parameter from the DP/recursion state (or omits the need to iterate over all possible templates), which encourages implementations that hardcode a trivial template or ignore the template dimension entirely.",
+      "condition": "Apply when a proposed DP/recursion for a template-based generator only tracks location/size and lacks an explicit state dimension for the reusable base template (mask/pattern) even though the statement allows multiple templates.",
+      "directive": "Risk that the implementation will ignore the template choice and validate the wrong language of patterns."
+    },
+    {
+      "id": "B0027",
+      "domain": "代码",
+      "name": "MISSING_INITIAL_FREQUENCY_CHECK",
+      "definition": "The algorithm design did not include an initial frequency check to determine if any character frequency exceeds (n+1)//2, which is necessary to establish if rearrangement is possible before proceeding.",
+      "condition": "When designing algorithms where the feasibility of an operation is based on character frequency exceeding a threshold...",
+      "directive": "Attention! Ensure that there is an initial check to ascertain if the character frequency exceeds a rearrangement feasibility threshold, which must be determined before attempting further processing."
+    },
+    {
+      "id": "B0028",
+      "domain": "代码",
+      "name": "UNVERIFIED_EARLY_EXIT_CONTRADICTS_EXAMPLE",
+      "definition": "Early-exit guards that output failure (`-1`) must be validated against the problem statement examples and minimal counterexamples. A reusable failure pattern is to preserve or add an impossibility precheck derived from an adjacent variant of the problem (e.g., using all items vs selecting a subset) and ship it without running the provided samples, causing immediate wrong answers on otherwise trivial cases.",
+      "condition": "When a solution includes an early `print(-1)` feasibility guard that is not proven necessary under the exact selection rules, especially if it can be falsified by checking statement examples.",
+      "directive": "High risk of immediate WA due to a brittle precondition that rejects valid instances."
+    },
+    {
+      "id": "B0029",
+      "domain": "数学",
+      "name": "MISINTERPRETED_UNIT_CONVERSION",
+      "definition": "The agent correctly finds a numerical value in one unit system but fails to recognize the need for conversion before comparing calculated value against given options, especially when dealing with unit conversion games (e.g., meters per second to kilometers per hour) embedded in some word problems.",
+      "condition": "When the problem involves converting units between systems such as meters per second to kilometers per hour.",
+      "directive": "Ensure that the final numeric solutions accurately reflect the units expected after necessary conversions."
+    },
+    {
+      "id": "B0030",
+      "domain": "数学",
+      "name": "INCORRECT_ITERATION_RANGE",
+      "definition": "The error arises from iterating over an incorrect range or set of values, leading to a miscount of the valid cases that meet a specified mathematical rule or condition.",
+      "condition": "When the agent's output requires iterating over a specific range or digit constraints...",
+      "directive": "Attention! Verify if the iteration range corresponds correctly to conditions required by the problem."
+    },
+    {
+      "id": "B0031",
+      "domain": "数学",
+      "name": "SEQUENCE_ALTERNATION_ERROR",
+      "definition": "This error occurs when the agent fails to correctly alternate operations as specified, resulting in incorrect mathematical processing of a given sequence or pattern.",
+      "condition": "When the problem involves evaluating a sequence or pattern with alternating operations...",
+      "directive": "Check if all operations in the sequence adhere to the specified alternation pattern. Look for any deviations from the intended addition and subtraction sequence."
+    },
+    {
+      "id": "B0032",
+      "domain": "代码",
+      "name": "PYTHON_DP_NEGATIVE_INDEX_WRAPAROUND",
+      "definition": "In Python, DP recurrences that reference dp[i-1] must guard i>=1. If the loop includes i=0, dp[-1] is accessed due to negative indexing, creating an unintended wrap-around transition that can invalidate combinatorial counts while remaining syntactically valid.",
+      "condition": "Apply when Python code updates dp[i] using dp[i-1] inside a loop that iterates down to i=0.",
+      "directive": "Silent negative-index wrap-around produces incorrect DP results that can pass small samples and fail hidden tests."
+    },
+    {
+      "id": "B0033",
+      "domain": "代码",
+      "name": "NO_REGIME_SPLIT_ON_DAMAGE_VS_REPAIR",
+      "definition": "For repeated-turn adversarial state-update problems with opposing step sizes (e.g., damage x vs repair y), the solution must explicitly analyze and justify all parameter regimes where the reachable set of states changes (commonly by comparing step sizes such as x > y vs x <= y). Producing a single heuristic rule without a regime split or proof is a failure.",
+      "condition": "When a proposed algorithm for a multi-turn adversarial process uses parameters like x and y but does not branch on, or explicitly rule out the need for, comparisons such as x > y vs x <= y.",
+      "directive": "High risk of systematic incorrect results across parameter regimes."
+    },
+    {
+      "id": "B0034",
+      "domain": "数学",
+      "name": "MISCOUNTING_VALID_CASES_FOR_PROBABILITY_CALCULATION",
+      "definition": "This error occurs when an agent incorrectly counts or evaluates the number of valid outcomes for a probability calculation due to misunderstanding conditions. In problems requiring conditional logic checks on sets or ranges in combinatorial contexts, overlooking elements satisfying all criteria leads to errors in outcome counts and subsequent probabilities.",
+      "condition": "When the problem involves evaluating multiple conditional criteria over a set of possible outcomes.",
+      "directive": "Attention! Verify that each condition has been satisfied for all possible values to ensure accurate counting of valid cases."
+    },
+    {
+      "id": "B0035",
+      "domain": "数学",
+      "name": "INCORRECT_TOTAL_WAYS_CALCULATION",
+      "definition": "This error occurs when the computation for the number of ways to select a subset from a set using combinatorial mathematics is incorrectly formulated, leading to errors in probability calculations.",
+      "condition": "When the problem involves computing combinations or subsets, particularly in probability calculations such as card draws.",
+      "directive": "Check the formulas used for combinatorial calculations. Ensure the use of proper combination expressions (e.g., nCk) for accuracy in probability derivations."
+    },
+    {
+      "id": "B0036",
+      "domain": "数学",
+      "name": "LOGICAL_FLAW_IN_ODD_MAN_OUT_IDENTIFICATION",
+      "definition": "This error arises when an agent incorrectly identifies an element as unique based on superficial characteristics such as digit count, rather than analyzing a deeper mathematical sequence or rule that governs problem item classification.",
+      "condition": "When the problem involves identifying an odd element in a numeric sequence...",
+      "directive": "Check whether the identified odd element truly breaks an underlying arithmetic or mathematical pattern in the sequence."
+    },
+    {
+      "id": "B0037",
+      "domain": "代码",
+      "name": "DIAMETER_HALF_N_HEURISTIC_BOUND",
+      "definition": "Penalize test-analysis guidance that endorses un-derived numeric bounds connecting the diameter / maximum eccentricity to a fixed function of N (e.g., floor((N-1)/2), ceil(N/2)-1) without checking against basic counterexamples (paths, stars). Such bounds frequently invalidate correct constructions and mask the real characterization.",
+      "condition": "When a reviewer sees N-based diameter bounds introduced as ‘consistency checks’ without validation using trivial constructions.",
+      "directive": "Systematic false negatives from fabricated constraints (diameter/eccentricity extremes incorrectly limited by N/2-style bounds)."
+    },
+    {
+      "id": "B0038",
+      "domain": "代码",
+      "name": "MISINTERPRET_EXACTLY_ONE_PER_GROUP_AS_ALL_IN_GROUP",
+      "definition": "Detects solutions that misread constraints of the form \"for each group/segment/interval, choose exactly one element\" and instead treat the operation as applying to every element in the group (or as additive coverage), collapsing a selection/assignment problem into a simple counting/coverage problem.",
+      "condition": "When the task has \"pick exactly one\" (or one item per segment/group) constraints and the solution reduces it to counting how many groups include each position.",
+      "directive": "High risk the solver ignored the selection/assignment nature and will overcount contributions, producing inflated objective values."
+    },
+    {
+      "id": "B0039",
+      "domain": "代码",
+      "name": "COUNTEREXAMPLE_MISS_FOR_COMPLEMENT_LOGIC",
+      "definition": "Test analysis fails to construct minimal counterexamples that distinguish between a target event and its common mistaken inverse (e.g., “no one from group” vs “everyone from group”), allowing a reversed complement formula to pass informal review.",
+      "condition": "When reviewing a complement-based probability, require at least one small test where the target group has size 1 (only the fixed-included person).",
+      "directive": "Without discriminator cases, an inverted complement can appear consistent and slip through review."
+    },
+    {
+      "id": "B0040",
+      "domain": "数学",
+      "name": "INEFFECTIVE_NUMERICAL_APPROXIMATION_FOR_ANALYTIC_REQUIREMENT",
+      "definition": "High-level math problems intended to be solved analytically can be incorrectly approached with numerical methods, risking overlooking critical values or behaviors that are only evident through exact mathematical analysis.",
+      "condition": "When the problem involves strict inequalities or conditions defined over an interval and the output uses approximations rather than exact analysis.",
+      "directive": "Attention! Check if the solution requires continuous or analytic evaluation across an interval, avoiding incomplete or discreet numerical assessments."
+    },
+    {
+      "id": "B0041",
+      "domain": "数学",
+      "name": "OVER_SIMPLIFICATION_OF_COMPLEX_INTERVALS",
+      "definition": "This occurs when an agent makes oversimplified assumptions about durations or variables involved in calculations, leading to inaccurate mapping between related variables and incorrect calculations overall.",
+      "condition": "When the problem involves complex interval understanding, like variable durations or interactions that require more than a simplified approach.",
+      "directive": "Check if the agent makes oversimplifications that could lead to inaccurate relationships between problem variables, affecting the overall calculation."
+    },
+    {
+      "id": "B0042",
+      "domain": "代码",
+      "name": "LIVE_SEQUENCE_KTH_INDEXING_MISMATCH",
+      "definition": "When a problem defines operations on the k-th element of a dynamically changing sequence (deletions, capacity-based evictions), the design must map k to the current live order. Any approach that treats k as a fixed insertion index, or uses an array with tombstones and direct indexing, is considered incorrect unless it also includes an order-statistics mechanism (e.g., Fenwick/segment tree over live flags, balanced BST with ranks, indexed linked structure).",
+      "condition": "Apply when the solution plan claims a list/array plus deletions can answer k-th queries via direct indexing, without a rank/select structure that accounts for removed elements and capacity-based evictions.",
+      "directive": "Flags high risk of Wrong Answer once any deletion or eviction occurs, since logical positions diverge from insertion indices."
+    },
+    {
+      "id": "B0043",
+      "domain": "代码",
+      "name": "MISSING_POSITIONAL_INPUT_MAPPING_IN_HANDOFF",
+      "definition": "When designing an algorithmic solution, the handoff must explicitly specify any nonstandard or easy-to-misread input encoding rules (especially positional mappings) and how they map into internal state initialization.",
+      "condition": "Apply when an algorithm write-up references inputs generically (arrays/lists) but fails to restate key mapping constraints that affect indexing or initialization.",
+      "directive": "Ambiguous handoff leads to systematic misparsing and invalid indexing, producing runtime failures or completely incorrect course states."
+    },
+    {
+      "id": "B0044",
+      "domain": "数学",
+      "name": "COMBINATION_INSTEAD_OF_PERMUTATION_USED",
+      "definition": "This error occurs when using the combination formula instead of permutations for scenarios where the arrangement or order of selected elements is important. In multiple-choice questions involving numerics, this often leads to undercounting possibilities since combinations ignore sequence order.",
+      "condition": "When the problem involves forming numbers or sequences with a significant order of digits.",
+      "directive": "Check if the order of elements impacts the solution, and verify that permutations are used instead of combinations."
+    },
+    {
+      "id": "B0045",
+      "domain": "代码",
+      "name": "FALSE_NEGATIVE_FROM_BOUNDED_TRIAL_DIVISION_DECISION",
+      "definition": "Flags implementations that decide YES/NO for large-integer feasibility based on a bounded factor search (e.g., checking divisibility only by primes up to a fixed cap) and then treating “no small factor found” as evidence for impossibility. This creates systematic false negatives on numbers whose prime factors lie above the chosen bound, especially semiprimes constructed from primes just above that bound.",
+      "condition": "Apply when code uses a fixed prime list / capped trial division and then outputs NO (or other hard decision) because no factor was found within the cap.",
+      "directive": "Risk of hidden-case WA from large-prime-factor inputs and semiprime constructions placed just beyond the chosen bound."
+    },
+    {
+      "id": "B0046",
+      "domain": "代码",
+      "name": "UNBOUNDED_FIBONACCI_PRECOMPUTATION_UNDER_LARGE_N",
+      "definition": "If constraints allow very large n, planning that requires precomputing and storing an exponentially growing numeric sequence up to n (with full-precision integers) is usually infeasible. A viable plan should include bounding by relevant thresholds, using logarithmic/fast-doubling methods, or avoiding full-value storage when only comparisons against small inputs are needed.",
+      "condition": "Apply when a solution plan proposes precomputing all terms of a fast-growing sequence up to the maximum n with exact integers, and constraints place n in the 10^5–10^6 range.",
+      "directive": "Likely TLE/MLE due to big-integer growth and O(n) storage, plus hidden quadratic costs from repeated large-integer additions."
+    },
+    {
+      "id": "B0047",
+      "domain": "代码",
+      "name": "OMITS_NONNEGATIVITY_CONSTRAINT_ON_OPERATION_COUNTS",
+      "definition": "When modeling repeated +1 operations as integer count variables, the design must enforce integrality and nonnegativity. Any derived negative count requires reparameterization (e.g., shifting degrees of freedom) or declaring impossibility. Designs that validate only algebraic equality and ignore nonnegativity can output sequences that cannot be executed.",
+      "condition": "When a solution uses auxiliary arrays of operation counts (rows/cols/steps) derived from equations and only checks equality constraints.",
+      "directive": "Negative operation counts can slip through, leading to impossible move sequences or malformed output."
+    },
+    {
+      "id": "B0048",
+      "domain": "代码",
+      "name": "INTEGER_DIVISION_COLLAPSES_CONTINUOUS_FACTOR",
+      "definition": "Implements a continuous scoring factor using integer division or truncation at the wrong step (e.g., `(120-m)//120`), collapsing almost all values to 0/1 and destroying intended proportional behavior.",
+      "condition": "When the algorithm includes fractional multipliers or ratios and the code uses `//` (or casts to int) before multiplying by the scale, especially with numerator smaller than denominator.",
+      "directive": "High risk of outputs collapsing to 0/constant values, causing widespread Wrong Answer despite seemingly reasonable logic."
+    },
+    {
+      "id": "B0049",
+      "domain": "数学",
+      "name": "INVALID_RETURN_VALUE_FOR_UNSUCCESSFUL_SEARCH",
+      "definition": "This error occurs when the agent's function returns a value that does not meet the problem's requirements following an unsuccessful search effort.",
+      "condition": "When the agent is handling cases of unsuccessful search or solution finding.",
+      "directive": "Attention! Check if there is a fallback mechanism or alternative approach when the initial method does not yield a valid solution."
+    },
+    {
+      "id": "B0050",
+      "domain": "代码",
+      "name": "STATE_REPRESENTATION_TYPE_MISMATCH",
+      "definition": "The solution uses inconsistent data types for representing the same conceptual state (e.g., list vs tuple) such that equality checks, dictionary keys, or goal comparisons silently fail, breaking termination or correctness.",
+      "condition": "When the algorithm compares states, uses them as dict/set keys, or checks a goal condition across different containers/types.",
+      "directive": "Goal state may never be recognized, causing exhaustive search with wrong result (often `inf`/unset) despite a finite state space."
+    },
+    {
+      "id": "B0051",
+      "domain": "数学",
+      "name": "RANGE_START_BOUNDARY_CHECK",
+      "definition": "Assess whether the starting point of a range for calculations aligns with the mathematical constraints specified in the problem. Ensure no inappropriate values are included.",
+      "condition": "When the problem involves finding values within a specific range that must satisfy certain constraints, and the agent handles the range inclusively.",
+      "directive": "Attention! Check if the starting boundary of the range logically aligns with the mathematical constraints imposed by the problem."
+    },
+    {
+      "id": "B0052",
+      "domain": "代码",
+      "name": "EDGE_COUNT_INSTEAD_OF_ENDPOINT_PLAYERS",
+      "definition": "In linear/graph consistency tasks where each observed mismatch between adjacent reports implicates both endpoints as potential culprits, the correct output is the size of the union of implicated entities (endpoints of all mismatching adjacencies). A recurring failure mode counts only the number of mismatching adjacencies (edges), which undercounts whenever a single mismatch implicates two entities or when mismatches overlap.",
+      "condition": "when the proposed algorithm maps “how many entities could be wrong” to “how many adjacent pairs differ” without taking the union of the adjacent endpoints",
+      "directive": "flags systematic undercounting of potentially faulty entities; fails whenever a single mismatch should mark two neighbors or when multiple mismatches share endpoints"
+    },
+    {
+      "id": "B0053",
+      "domain": "数学",
+      "name": "INCORRECT_IMPLEMENTATION_OF_CONSECUTIVE_INTEGERS",
+      "definition": "This error occurs when the problem explicitly involves consecutive integers, and the agent inaccurately identifies or assumes the integers to fit predefined conditions instead of solving from a standard base or variable.",
+      "condition": "When the problem involves consecutive integer relationships, critical reasoning to ensure side lengths fit all given conditions should be supervised.",
+      "directive": "Attention! Check if the side lengths have correctly been assigned based on consecutive integer logic."
+    },
+    {
+      "id": "B0054",
+      "domain": "数学",
+      "name": "ASSUMPTION_OF_PROBLEM_PARITY_WITH_HISTORICAL_EXAMPLES",
+      "definition": "This error occurs when an agent assumes that a problem is identical to a historical example without sufficient justification, potentially leading to a misaligned solution when the problems differ in detail or constraints.",
+      "condition": "When the agent references historical examples to solve current problems.",
+      "directive": "Attention! Check if the problem structure and constraints match historical examples before applying known solutions."
+    },
+    {
+      "id": "B0055",
+      "domain": "数学",
+      "name": "METHOD_OF_FUNCTION_FORM",
+      "definition": "This metric is used when addressing issues related to assuming a specific polynomial or form for a function without sufficient justification or necessity from the given functional equation.",
+      "condition": "When the problem involves functional equations without constraints on form.",
+      "directive": "Attention! Check if the Supervisor ensures the agent derives valid forms for functions from functional equations instead of prematurely assuming a standard polynomial form."
+    },
+    {
+      "id": "B0056",
+      "domain": "代码",
+      "name": "ADDITION_SUBTRACTION_CHAIN_STATE_COLLAPSE",
+      "definition": "For minimal-operation power construction with multiplication and division, each step combines two previously computed powers, so the reachable next exponents depend on the full set (or sequence) of exponents accumulated so far. Any approach that models a search state as a single current exponent and deduplicates with visited[current_exponent] collapses distinct histories that enable different future operations, causing missed solutions and incorrect optimality.",
+      "condition": "When the solution uses BFS/DP over a single numeric exponent state with a global visited set for problems where operations combine any two previously built values.",
+      "directive": "State collapse can prune valid/optimal chains, leading to unreachable targets or non-minimal step counts."
+    },
+    {
+      "id": "B0057",
+      "domain": "代码",
+      "name": "MISSED_COUNTEREXAMPLE_FOR_STATEFUL_GREEDY_WITH_MULTIPLE_TABLE_STATES",
+      "definition": "Validates a greedy/simulation solution without generating counterexamples that exercise all distinct system states (especially intermediate/partial states), leading to false confidence despite a fundamental modeling bug.",
+      "condition": "When reviewing a stateful simulation/greedy solution, and the tests/analysis do not explicitly cover each distinct state transition described in the problem statement.",
+      "directive": "Hidden-state bugs (missing transitions) may survive and cause wrong answers despite passing many cases."
+    },
+    {
+      "id": "B0058",
+      "domain": "数学",
+      "name": "MISDEFINITION_OF_RECTANGLE_SIDE_LENGTHS",
+      "definition": "Errors occur when the dimensions of the resulting figure are incorrectly defined due to misunderstanding how transformations affect geometric figures.",
+      "condition": "When the problem involves transformations of geometric shapes...",
+      "directive": "Attention! Check if shape transformations are correctly applied to all relevant dimensions."
+    },
+    {
+      "id": "B0059",
+      "domain": "代码",
+      "name": "WRONG_ACTION_DOMAIN_GATING_BY_N",
+      "definition": "Penalize solutions that gate or discard operations using an incorrect simplistic bound check (commonly k<=n) without deriving the true valid coordinate ranges for each operation type from the problem's coordinate system and constructed shape (including offsets and non-uniform extents).",
+      "condition": "When the solution filters operations with a blanket k<=n (or similarly unproven) condition instead of computing per-axis/per-action feasible ranges from the structure definition.",
+      "directive": "Legitimate actions may be ignored (or invalid ones miscounted), causing incorrect results even if later counting logic is otherwise sound."
+    },
+    {
+      "id": "B0060",
+      "domain": "数学",
+      "name": "FINAL_INTEGER_COUNT_VALIDATION",
+      "definition": "This metric checks if the agent accurately deduces the number of integer solutions by correctly understanding the scope and setup of geometric constraints and verifying earlier inequalities or setup.",
+      "condition": "When the agent calculates the number of integer solutions based on algebraic or geometric setups.",
+      "directive": "Attention! Check if the final count of integer solutions reflects accurate mathematics and constraints established in preceding steps."
+    },
+    {
+      "id": "B0061",
+      "domain": "数学",
+      "name": "POLYNOMIAL_REPRESENTATION_ERROR",
+      "definition": "This error occurs when a polynomial is represented as an array without accounting for the substitution and transformation needed for specific x terms raised to different powers. This representation leads to inaccuracies in application of polynomial operations.",
+      "condition": "When the problem involves polynomial operations on transformed variable terms...",
+      "directive": "Attention! Check if polynomial terms are correctly transformed and represented for calculations involving variations such as P(x^k)."
+    },
+    {
+      "id": "B0062",
+      "domain": "代码",
+      "name": "EXTRA_WHITESPACE_CHECK_IN_LOCAL_PART",
+      "definition": "The email validation logic incorrectly allows whitespace characters in the local part of the email address, as it does not adhere strictly to the rule of only alphanumeric characters and specific special symbols (., -, _).",
+      "condition": "When validating string elements where specific character constraints are defined.",
+      "directive": "Attention! Verify that the character checks in email local parts exactly match the specified allowed characters without permitting unintended ones like spaces."
+    },
+    {
+      "id": "B0063",
+      "domain": "数学",
+      "name": "MISAPPLICATION_OF_LINEAR_CONSTRAINT",
+      "definition": "This metric addresses errors where the agent mistakenly uses linear constraints as direct indicators of valid points in problems involving geometric regions. Instead of understanding the geometrical implications of intersecting lines, the agent uses algebraic inequalities incorrectly.",
+      "condition": "When the agent relies on algebraic inequalities to determine valid points in problems that require understanding geometrical regions.",
+      "directive": "Attention! Check if the algebraic constraints are appropriately translated into geometric configurations, ensuring a correct understanding of boundary exclusions or inclusions."
+    },
+    {
+      "id": "B0064",
+      "domain": "代码",
+      "name": "UNIFORM_COMPOSITION_INSTEAD_OF_MULTINOMIAL",
+      "definition": "For problems where each of n independent choices assigns an item to one of m categories uniformly, the solution models category counts by treating all integer compositions (count vectors summing to n) as equally likely, rather than using the correct multinomial probabilities (with combinatorial weights).",
+      "condition": "When a solution to independent assignment/binning replaces multinomial/binomial probabilities with uniform weighting over count vectors or uses only 'number of compositions' as probabilities.",
+      "directive": "Computed expectations will be biased because marginal and joint distributions of counts are wrong; results can look plausible on tiny cases but fail broadly."
+    },
+    {
+      "id": "B0065",
+      "domain": "代码",
+      "name": "NO_OPTIMIZATION_STEP_ONLY_EVALUATES_DERIVED_STATISTIC",
+      "definition": "Identifies implementations that never perform the required optimization/decision-making (search/DP/flow/greedy with proof), and instead compute a statistic from inputs (e.g., coverage, frequency, degree) and output it as the optimum.",
+      "condition": "When the problem statement requires selecting/assigning decisions but the solution pipeline only aggregates input properties and outputs a direct formula with no explicit optimization over choices.",
+      "directive": "Risk that the solver outputs a heuristic/statistic instead of the maximum, especially on adversarial tests where selection constraints bind."
+    },
+    {
+      "id": "B0066",
+      "domain": "代码",
+      "name": "GEOMETRY_MEASURE_FORMULA_SWAP",
+      "definition": "When proposing an algorithm for geometry problems involving circles, the solver must explicitly map the requested quantity (circumference vs area vs diameter-based formulas) to the correct mathematical expression and include at least one quick discriminating numerical check (a value where plausible alternative formulas differ substantially).",
+      "condition": "When the Algorithm Designer provides a one-line formula-driven solution for a geometry task without a discriminating numerical sanity check.",
+      "directive": "High risk of swapping circle measures (circumference/area) or misusing radius vs diameter, causing near-total WA with occasional accidental passes."
+    },
+    {
+      "id": "B0067",
+      "domain": "代码",
+      "name": "NO_INTERPRETATION_DISAMBIGUATION_TESTS",
+      "definition": "In review, design at least one small adversarial test that distinguishes between plausible statement interpretations (reorder allowed vs fixed order; line vs ring adjacency; requirement to use all items vs allow leaving items unused). The analyst should use these tests to challenge any solution that maps to a known pattern.",
+      "condition": "When validation feedback approves a known-pattern solution without proposing any tests that would break common alternative interpretations.",
+      "directive": "Hidden-case Wrong Answer risk driven by spec ambiguity that remains untested."
+    },
+    {
+      "id": "B0068",
+      "domain": "代码",
+      "name": "OMITS_PRIME_REACHABILITY_SEARCH_UNDER_FIXED_INCREMENT_K",
+      "definition": "This error occurs when a solution treats a property-check problem as a static validation on the initial values, even though the prompt allows repeated fixed-step modifications (add K each operation with an upper bound). A correct solution must compute, for each relevant cell, whether any reachable value of the form v+t*K (within bounds) becomes prime, and the minimal such t, then aggregate costs across the pattern.",
+      "condition": "When operations allow repeated +K (or other fixed-step) updates to individual values to satisfy a predicate (prime, divisible, threshold, etc.).",
+      "directive": "Static predicate checks will incorrectly declare impossibility and will miss the true minimum-operation solution."
+    },
+    {
+      "id": "B0069",
+      "domain": "代码",
+      "name": "UNVERIFIED_EXPECTED_RESULTS_FOR_CANONICAL_GRAPHS",
+      "definition": "The test plan proposes expected outputs for canonical graph shapes (path, star, deep branches) using heuristics, without validating those expectations via reasoning, sample replay, or brute force on small n. This yields incorrect oracles and weak test coverage that fails to detect flawed greedy models.",
+      "condition": "When test guidance includes numeric expected answers for edge-case graph families without justification and without verifying against sample IO or a brute-force oracle for small sizes.",
+      "directive": "Internal validation will miss fundamental correctness issues; incorrect greedy solutions can appear plausible and pass limited testing."
+    },
+    {
+      "id": "B0070",
+      "domain": "数学",
+      "name": "FINAL_SUM_RESULT_DUE_TO_PROBABILITY_CALCULATION",
+      "definition": "This error occurs when calculating the sum of integers derived from probability fraction terms, where an intermediate miscalculation can affect the final result.",
+      "condition": "When the agent is deriving a sum from calculated probability fraction terms.",
+      "directive": "Attention! Check if the probability fraction is correctly calculated before proceeding with operations involving terms m and n."
+    },
+    {
+      "id": "B0071",
+      "domain": "代码",
+      "name": "OVERAGGREGATED_CHAIN_REACTION_DAMAGE_MODEL",
+      "definition": "Flags solutions that model a local chain reaction as if multiple future entities' trigger effects can be freely accumulated (e.g., summing many neighbors' explosion damages) when the process only allows a single causal path at a time (typically only the immediately-triggered next entity can be damaged, and only if alive).",
+      "condition": "When a chain-reaction/propagation problem solution subtracts a sum of many future trigger strengths from a current node's required work, without proving those triggers can all occur before acting on the current node.",
+      "directive": "High risk of severe undercounting (often returning 0 or near-0) because the solution assumes impossible accumulation of effects."
+    },
+    {
+      "id": "B0072",
+      "domain": "代码",
+      "name": "INCORRECT_ALGORITHM_STRATEGY",
+      "definition": "The proposed algorithm strategy incorrectly uses the sum of absolute differences between consecutive elements in a sorted list, leading to incorrect total distance calculation when dealing with even number of positions. The optimal strategy should involve calculating travel distances relative to a central point, such as the median of the positions.",
+      "condition": "When calculating optimal travel paths for multiple agents based on sorted positions...",
+      "directive": "Attention! Examine if the algorithm considers the correct central reference point for optimizing total travel distance, especially for cases with an even number of positions."
+    },
+    {
+      "id": "B0073",
+      "domain": "数学",
+      "name": "CORRECT_SUBSTITUTION_IN_WRONG_CONTEXT",
+      "definition": "Occurs when calculations or formulas are applied correctly based on their setup but derive from an erroneous conceptual premise or misunderstanding earlier in the logic process.",
+      "condition": "When the problem involves coordinate substitution or solving using position-related formulas...",
+      "directive": "Verify that the initial logical setup aligns with the context for the correct application of mathematical formulas. Inconsistencies here might lead to correct calculations applied in the wrong scenario."
+    },
+    {
+      "id": "B0074",
+      "domain": "数学",
+      "name": "INCORRECT_LOGIC_FOR_NON-PRIME_IDENTIFICATION",
+      "definition": "The logic flaw exists in how the programming expert determines which number does not produce a prime when taking its square root. Instead of checking if the actual roots are non-prime, the code must ensure that all other items produce primes instead of looking for non-primes.",
+      "condition": "When the problem involves identifying numbers based on the primality of their square roots.",
+      "directive": "Check if the logic mistakenly identifies numbers by inversely applying the prime-check condition, leading to incorrect elimination of options."
+    },
+    {
+      "id": "B0075",
+      "domain": "数学",
+      "name": "MISAPPLICATION_OF_ANGLE_BISECTOR_THEOREM_DUE_TO_FALSE_BISECTION",
+      "definition": "This error occurs when an agent incorrectly assumes that an equality of angles implies the presence of an angle bisector, leading to the inappropriate application of the Angle Bisector Theorem. This logical flaw arises from false assumptions about geometrical relationships that are not explicitly detailed or proven in the problem context.",
+      "condition": "When the problem involves angles being equal without further details suggesting bisectors, and the agent's output shows reliance on angle bisector properties.",
+      "directive": "Attention! Check if the equal angle condition truly implies a bisector. Verify the context before applying the Angle Bisector Theorem."
+    },
+    {
+      "id": "B0076",
+      "domain": "代码",
+      "name": "OFF_BY_ONE_INCIDENT_EDGE_SUM",
+      "definition": "When computing a per-vertex requirement from incident edges in a cyclic ordered list, the implementation must sum the two edges adjacent to that vertex (previous+next in the cycle). An index shift (current+next, or previous+current for the wrong vertex) produces systematically incorrect requirements and can invalidate matching logic even if the high-level idea is plausible.",
+      "condition": "When a solution derives vertex-local constraints from a cyclic edge list and uses modular indexing.",
+      "directive": "Indexing shift can silently break feasibility checks and matching, yielding incorrect impossibility results."
+    },
+    {
+      "id": "B0077",
+      "domain": "数学",
+      "name": "MISINTERPRETATION_OF_ELEMENT_TYPE",
+      "definition": "This error pattern occurs when the agent wrongly applies logic about character types in constrained positions according to the problem statement, which leads to invalid scenario analysis.",
+      "condition": "When the analysis involves character positions in a sequence where type options like letter or digit are specifically constrained by the problem.",
+      "directive": "Attention! Verify that the solution respects the fixed type constraints for each character position defined in the problem."
+    },
+    {
+      "id": "B0078",
+      "domain": "数学",
+      "name": "SUM_OF_TRIGONOMETRIC_ROOTS_FORMULA",
+      "definition": "Ensures the correct derivation and application of the formula for summing roots derived from trigonometric functions.",
+      "condition": "When the agent performs calculations involving the summation of trigonometric angle roots.",
+      "directive": "Attention! Check if the derivation and application of the sum formula in trigonometric root problems is consistent with the given problem statement."
+    },
+    {
+      "id": "B0079",
+      "domain": "代码",
+      "name": "INCORRECT_HEAP_CONDITION_CHECK",
+      "definition": "The Programming Expert incorrectly uses a condition in the loop when determining whether to replace elements in the heap, leading to logical errors in finding the kth smallest element.",
+      "condition": "When implementing logic to maintain a heap of size k while iterating over an array...",
+      "directive": "Attention! Verify the condition used to maintain or replace elements in the heap to ensure it correctly facilitates the retrieval of the kth smallest element."
+    },
+    {
+      "id": "B0080",
+      "domain": "数学",
+      "name": "SHOELACE_FORMULA_ARITHMETIC_CHECK",
+      "definition": "This error occurs when using the Shoelace Formula, the Agent might make arithmetic errors in computing the determinant terms, which can lead to incorrect area results.",
+      "condition": "When the agent performs determinant-based area calculations such as the Shoelace Formula.",
+      "directive": "Attention! Check if each step in the application of the formula is conducted accurately, ensuring all vertex coordinate pairs and arithmetic operations are correct."
+    },
+    {
+      "id": "B0081",
+      "domain": "数学",
+      "name": "DP_TABLE_FINAL_OUTPUT_INDEXING",
+      "definition": "This metric identifies errors when the final result retrieved from a dynamic programming table does not comply with problem-specific constraints due to incomplete condition checks during table construction.",
+      "condition": "When the agent's output depends on dynamic programming table indexing to determine the final result.",
+      "directive": "Attention! Check if the final output from the DP table reflects all problem-specific constraints and conditions throughout its construction."
+    },
+    {
+      "id": "B0082",
+      "domain": "代码",
+      "name": "ASSIGNMENT_REDUCTION_MISSING_BASELINE_ERASE_COST",
+      "definition": "When reducing a global edit-cost transformation problem to an assignment/min-cost-flow formulation, the per-edge cost must represent the marginal cost of selecting that edge relative to a constant baseline. If baseline terms (e.g., cost to erase all existing marks that are not selected) are omitted or mixed into the wrong condition, the assignment objective diverges from the true total edit cost and the computed optimum becomes invalid.",
+      "condition": "When an evaluator sees a plan that maps a grid/board edit objective into a cost matrix for Hungarian/min-cost matching.",
+      "directive": "Objective mismatch risk: the assignment cost ignores baseline/complement terms, so the computed mincost is not the true minimum edit cost."
+    },
+    {
+      "id": "B0083",
+      "domain": "数学",
+      "name": "FINAL_NUMBER_RESOLUTION_ERROR",
+      "definition": "This error occurs when complex expressions are not simplified to obtain the final numeric answer, potentially due to incorrect computations.",
+      "condition": "When the agent's output involves extended derivation or fails to simplify expressions to a numeric conclusion",
+      "directive": "Attention! Check if the output expression is simplified correctly to a numeric result, ensuring no simplification errors exist."
+    },
+    {
+      "id": "B0084",
+      "domain": "代码",
+      "name": "DELETION_COUNT_FROM_IMBALANCE_MISHANDLED",
+      "definition": "In tasks where some operations may be skipped and each executed operation changes independent balance constraints by exactly 1 unit (e.g., opposite moves on x and y axes), the maximum number of executable operations that satisfies the balance constraints equals the sum over constraints of 2*min(opposite_counts). Equivalently, if dx and dy are net imbalances from total counts, the minimum skips required equals |dx|+|dy|, so the maximum executed equals n-(|dx|+|dy|). Any approach that halves the imbalance sum (for example (|dx|+|dy|)/2) indicates an incorrect unit mapping from imbalance to deletions.",
+      "condition": "When an algorithm converts net displacement or imbalance between opposing categories into a count of deletions/skips to satisfy a return-to-origin or equality constraint.",
+      "directive": "Flag any scaling (division by 2, averaging, rounding heuristics) applied to summed absolute imbalances; it commonly inflates the achievable maximum length and causes Wrong Answer on imbalanced-count cases."
+    },
+    {
+      "id": "B0085",
+      "domain": "代码",
+      "name": "INSUFFICIENT_EDGE_CASE_CONSIDERATION",
+      "definition": "The algorithm design overlooked potential issue scenarios like strings containing spaces and punctuation, despite the requirements stating these should be ignored.",
+      "condition": "When designing algorithm logic for string manipulation that specifies ignoring certain characters...",
+      "directive": "Attention! Analyze the handling of non-alphanumeric characters to ensure they are properly accounted for in the logic."
+    },
+    {
+      "id": "B0086",
+      "domain": "代码",
+      "name": "CUTOFF_RADIUS_PROPAGATION_BROKEN_IN_SPATIAL_HASHING",
+      "definition": "During an optimization refactor using spatial hashing/grids, the interaction cutoff radius is not propagated consistently across: (a) the distance predicate, (b) the grid cell size choice, and (c) the neighbor-cell expansion range. Any mismatch can silently drop valid neighbors (false negatives) or inflate work, and often indicates unresolved confusion about the true cutoff implied by the spec.",
+      "condition": "When a solution uses spatial hashing/uniform grids and the code contains multiple radius-related constants (cell size, squared cutoff, neighbor range) derived independently.",
+      "directive": "Flag likely false negatives from an inconsistent or mis-derived cutoff radius after optimization."
+    },
+    {
+      "id": "B0087",
+      "domain": "代码",
+      "name": "QUADRATIC_DISTINCT_PAIR_ENUMERATION",
+      "definition": "The implementation enumerates all pairs of distinct values using nested loops over unique keys (O(K^2)), despite constraints where K can be large (up to 1e6). This approach is structurally non-scalable and will time out even if correctness and parsing are fixed.",
+      "condition": "Apply when counting relations between values is implemented via nested loops over all distinct keys or over the entire value domain without a proven tight bound.",
+      "directive": "Flag near-certain timeouts on worst-case distinct-heavy inputs; require an O(N), O(M), or O(K log K) alternative with a concrete bound."
+    },
+    {
+      "id": "B0088",
+      "domain": "数学",
+      "name": "INCORRECT_EQUATION_FORMULATION",
+      "definition": "This error occurs when equations representing race conditions are inaccurately formulated despite textual clues suggesting alternate variable relationships.",
+      "condition": "When the problem involves interdependent time differences with complex variable relationships...",
+      "directive": "Check whether the equations accurately represent the time and distance relationships as specified in the problem's textual clues."
+    },
+    {
+      "id": "B0089",
+      "domain": "代码",
+      "name": "COUNTING_OBJECT_SUBSETS_INSTEAD_OF_VALID_AREAS",
+      "definition": "For counting problems where solutions are geometric regions (e.g., axis-aligned rectangles on a grid), do not reduce the count to combinations of target objects unless a proof establishes a one-to-one mapping; the algorithm must count distinct placements/sizes of regions that satisfy coverage and exclusion constraints.",
+      "condition": "When a problem asks for the number of distinct geometric regions/placements, but the proposed algorithm only counts feasible sets of objects/constraints without counting region boundary choices.",
+      "directive": "High WA risk due to many-to-one mapping between regions and object subsets, causing systematic undercount/overcount."
+    },
+    {
+      "id": "B0090",
+      "domain": "代码",
+      "name": "PROBLEM_REDUCTION_TO_PLAIN_GCD_WITHOUT_REMAINDER_ADJUSTMENT",
+      "definition": "Reduces a divisor/factor-with-remainder task to computing gcd(a,b) (or gcd over raw inputs) without incorporating the remainder constraints, leading to a systematic mismatch whenever remainders are present and meaningful.",
+      "condition": "Apply when a proposed plan mentions GCD/HCF as the complete solution while the input format includes remainder parameters per number.",
+      "directive": "The solution will fail for any case where remainder constraints imply gcd over adjusted values (dividend - remainder) or require feasibility checks tied to remainder size."
+    },
+    {
+      "id": "B0091",
+      "domain": "数学",
+      "name": "MISAPPLIED_LCM_CONCEPT",
+      "definition": "The agent erroneously calculates or compares least common multiples (LCMs) against starting integer values or an incorrect calculation. It overlooks a proper application of factorization and number properties for accurate judgment.",
+      "condition": "When the problem involves determining the least common multiple (LCM).",
+      "directive": "Check if LCM calculations are correctly applied and consistent with factorization and number properties."
+    },
+    {
+      "id": "B0092",
+      "domain": "数学",
+      "name": "MISDEFINED_SPEEDS",
+      "definition": "Incorrect definition or assumption regarding runner's speeds based on entire race length rather than relative gains and losses during targeted sections where one runner overtakes another.",
+      "condition": "When the problem involves calculating dynamics of one runner overtaking another...",
+      "directive": "Check if speeds are defined based on specific segments of the race relevant to the overtaking context, instead of the entire race length."
+    },
+    {
+      "id": "B0093",
+      "domain": "代码",
+      "name": "DATA_STRUCTURE_USED_WITHOUT_STATE_INVARIANT",
+      "definition": "When implementing a greedy/matching algorithm, the code uses a priority queue (or similar structure) whose stored values do not correspond to a well-defined resource state, lacking an invariant that connects heap operations (push/pop/compare) to valid assignments in the original problem.",
+      "condition": "When code introduces a heap/multiset to track 'occupied/available' resources and the stored key (e.g., an interval endpoint) lacks a clear invariant tied to real assignments.",
+      "directive": "Algorithm may pass random cases while failing adversarial inputs; demand an explicit invariant and validate with small hand-constructed cases that exercise resource persistence."
+    },
+    {
+      "id": "B0094",
+      "domain": "代码",
+      "name": "NESTED_BRACKET_UNAWARE_TOKENIZATION",
+      "definition": "Flags implementations that parse a nested-delimiter language (e.g., matrices inside matrices, bracketed/parenthesized expressions) using delimiter-agnostic string splitting (e.g., split on whitespace/';') without tracking bracket/parenthesis depth. A correct approach requires a bracket-aware lexer/tokenizer (character scan with nesting counters) so inner spaces/semicolons do not break tokens, and closing delimiters are not left attached to numeric tokens.",
+      "condition": "Apply when the solution parses nested bracket/parenthesis structures using naive split/index operations that ignore nesting depth (especially for matrix literals containing spaces and semicolons).",
+      "directive": "High risk of immediate crashes or silent misparses on nested literals because inner whitespace and delimiters are treated as top-level separators."
+    },
+    {
+      "id": "B0095",
+      "domain": "代码",
+      "name": "FALSE_NECESSARY_GLOBAL_COUNT_EQUALITY",
+      "definition": "Introduces an incorrect necessary condition by equating global totals (e.g., total count of property X across all items must equal total count of property Y) even though the actual constraint is defined on a partition/subset and its complement; this prematurely rejects valid instances and misguides subsequent construction.",
+      "condition": "When the proposed algorithm adds an early feasibility check that compares overall totals of two different attributes (or equates two global aggregates) for a constraint that is actually defined over chosen subsets/partition complements.",
+      "directive": "Flags a high risk of false impossibility detection (printing -1 on solvable cases) and downstream incorrect constructions built on a logically invalid prerequisite."
+    },
+    {
+      "id": "B0096",
+      "domain": "代码",
+      "name": "INCORRECT_CHARACTER_MAPPING",
+      "definition": "The agent uses a character mapping logic that incorrectly starts from 'o' instead of 'a', leading to an incorrect output string.",
+      "condition": "When designing algorithms that involve ASCII manipulation or character sequences...",
+      "directive": "Attention! Examine the starting character for ASCII manipulations and ensure it aligns with the intended alphabet sequence. Specifically, verify that the character calculations start from 'a'."
+    },
+    {
+      "id": "B0097",
+      "domain": "代码",
+      "name": "OVERCONFIDENT_LOW_STATE_COMPLEXITY_FOR_HARD_DISTINCTNESS",
+      "definition": "States an unrealistically low asymptotic complexity and minimal state size for a problem that requires counting distinct outcomes under a many-to-one digit transformation, without supplying a correctness argument or identifying the necessary combinatorial structure (e.g., multiset-of-digits, canonical forms, or explicit enumeration of result space).",
+      "condition": "When the plan claims a tiny digit-DP state and standard tight/leading-zero DP is sufficient for counting distinct canonicalized digit-multiset outputs, without a proof or a method to handle collisions.",
+      "directive": "Plan likely mis-scopes the mathematical difficulty; downstream implementation will be incorrect even if it runs fast."
+    },
+    {
+      "id": "B0098",
+      "domain": "代码",
+      "name": "REJECTED_COMMAND_STATE_SIDE_EFFECTS",
+      "definition": "In stateful command-processing problems, any command that is rejected (e.g., due to a constraint violation) must leave all persistent state unchanged, including membership sets and any auxiliary indices. Rejection paths that mutate state create phantom entries and cause downstream decisions to diverge from the specification.",
+      "condition": "When an implementation has early-return or conflict branches that output an error/deny message.",
+      "directive": "State changes occur on rejected commands, producing ghost activations and incorrect future conflict checks."
+    },
+    {
+      "id": "B0099",
+      "domain": "数学",
+      "name": "MAXIMUM_M_VALUE_CONTEXT",
+      "definition": "This checks if the agent correctly understands and calculates the maximum value \\( m \\) when problems involve determining the maximum number of elements based on given pairing constraints.",
+      "condition": "When the problem involves determining the maximum number of elements based on pairing constraints...",
+      "directive": "Attention! Check if the pairing constraints are correctly evaluated to derive the maximum value."
+    },
+    {
+      "id": "B0100",
+      "domain": "代码",
+      "name": "INCORRECT_LOOP_SETUP",
+      "definition": "The setup of loops did not align with the desired pattern of output, resulting in incorrect implementation compared to the intended design.",
+      "condition": "When the task involves generating specific patterns using nested loops...",
+      "directive": "Attention! Review the setup of nested loops to ensure they are structured correctly to produce the desired pattern or sequence in output."
+    },
+    {
+      "id": "B0101",
+      "domain": "代码",
+      "name": "KING_ATTACK_MODELED_AS_ROOK_LINES",
+      "definition": "When implementing chess-like attack detection, treat king attacks as only the 8 adjacent squares (Chebyshev distance 1). Do not reuse rook/queen line-attack predicates (same row/column) for king threat checks.",
+      "condition": "When reviewing code that checks check/checkmate with kings and line pieces, and it uses a shared row/column predicate for king attacks or fails to bound king attack range to adjacency.",
+      "directive": "Flags false positives/negatives in checkmate detection due to over-approximated king attacks."
+    },
+    {
+      "id": "B0102",
+      "domain": "数学",
+      "name": "RECURSION_VALUE_CALCULATION_ERROR",
+      "definition": "This error occurs when an agent miscalculates values generated from a recurrence relation. Proper evaluation of recursive sequences requires valid setup and application of the recurrence and accurate computation of relevant terms.",
+      "condition": "When the agent's output involves handling recursive sequences and calculating terms based on previous ones...",
+      "directive": "Attention! Check if the agent accurately calculated terms based on established recurrence, ensuring each step computes values correctly."
+    },
+    {
+      "id": "B0103",
+      "domain": "数学",
+      "name": "MISSED_VALID_INTEGER_CONFIGURATIONS",
+      "definition": "This error represents an oversight where available basic mathematical relationships (like foundational Pythagorean triplets) aren't evaluated properly, leading to missed alternative valid solutions with smaller parameters.",
+      "condition": "When the problem involves testing multiple configurations that may involve foundational mathematical relationships such as Pythagorean triplets.",
+      "directive": "Attention! Verify if essential foundational mathematical relationships, such as base-circle-inscribing triplets, are sufficiently examined before progressing to testing more complex configurations."
+    },
+    {
+      "id": "B0104",
+      "domain": "数学",
+      "name": "INCOMPLETE_PRODUCT_SEQUENCE_ERROR",
+      "definition": "Appears when incomplete sequences or miscalculated terminus products reflect blunders in magnitude-focused multiplications affecting final differences needed.",
+      "condition": "When the problem involves sequences or products that require complete multiplicative steps...",
+      "directive": "Check if all elements in the product sequence are included and correctly calculated to ensure the final result is as intended."
+    },
+    {
+      "id": "B0105",
+      "domain": "代码",
+      "name": "PROPAGATES_INCORRECT_PROBLEM_RESTATEMENT_TO_IMPLEMENTATION",
+      "definition": "Restates the task objective in a way that changes the required condition (e.g., turns a divisibility query into an equality query), causing downstream roles to implement the wrong specification even if the code is correct for the restated problem.",
+      "condition": "Apply when the PM/lead restatement replaces the original goal with a simplified but different equation or condition without reconciling it with examples.",
+      "directive": "Specification drift: correct code can still fail all tests because it solves the wrong problem."
+    },
+    {
+      "id": "B0106",
+      "domain": "数学",
+      "name": "MISAPPLICATION_OF_PERMUTATION_LOGIC",
+      "definition": "This error occurs when an agent misapplies logical reasoning involving permutation analysis in probability calculations, leading to incorrect conclusions about outcomes without averaging or properly assessing cumulative impact across sequences.",
+      "condition": "When the problem involves analyzing multiple permutations or sequences with distinct outcome probabilities...",
+      "directive": "Check if all permutation outcomes have been fully analyzed and averaged correctly to ensure the conclusion about a dominant outcome considers all sequence impacts."
+    },
+    {
+      "id": "B0107",
+      "domain": "代码",
+      "name": "FINAL_CODE_OUTPUT_CONTRACT",
+      "definition": "For judged coding tasks, the project handoff must include an explicit deliverable contract: produce exactly one complete runnable program, keep the response within typical platform size limits, and use extraction-safe formatting (single closed code block or raw code only) with minimal surrounding text.",
+      "condition": "Apply when the project handoff for a coding task does not specify an extraction-safe final answer format and a size/verbosity constraint.",
+      "directive": "High risk of submission rejection or non-execution due to failed code extraction (truncation, unclosed fences, excessive narrative, multiple blocks)."
+    },
+    {
+      "id": "B0108",
+      "domain": "代码",
+      "name": "REDUNDANT_GUARD_PATCH_INSTEAD_OF_MECHANISM_FIX",
+      "definition": "When addressing Wrong Answer reports in constructive problems, a valid bug fix must change the mechanism that generates invalid outputs (construction logic or its proof obligations). Adding redundant guards or re-checking conditions already implied by existing checks, while leaving the construction unchanged, is a non-fix and often wastes iterations by failing to alter the counterexample behavior.",
+      "condition": "When a proposed fix only adds extra input validation (especially redundant implications) while keeping the output construction logic effectively the same.",
+      "directive": "Risk of unchanged failing behavior: the fix does not address how the construction generates invalid derived artifacts, so WA persists."
+    },
+    {
+      "id": "B0109",
+      "domain": "代码",
+      "name": "BOGUS_MINIMUM_REQUIRED_ONES_THRESHOLD",
+      "definition": "In fixed-budget constructive optimization, feasibility should be derived from hard constraints (capacity/structure) rather than from a presumed greedy fill order. Introducing a minimum required count (e.g., requiring some region to be fully filled) confuses optimality strategy with feasibility and causes valid small-budget instances to be rejected.",
+      "condition": "When the reasoning introduces a lower-bound feasibility check like 'k must be at least X' where X is derived from filling a preferred pattern (upper triangle, first rows, etc.) rather than from the constraint itself.",
+      "directive": "May reject valid instances with small k and systematically fail sample-like tests where partial constructions are expected."
+    },
+    {
+      "id": "B0110",
+      "domain": "代码",
+      "name": "MISALIGNED_LOGIC_FOR_BRACKET_CHECK",
+      "definition": "The function incorrectly treats all non-matching characters as opening brackets to be pushed onto the stack, which can lead to false positives when the input contains characters other than brackets.",
+      "condition": "When the algorithm involves iterating over a string containing diverse characters, including non-brackets...",
+      "directive": "Attention! Examine the logic to ensure that only valid opening brackets are pushed onto the stack. Non-bracket characters should be ignored in the balanced bracket validation."
+    },
+    {
+      "id": "B0111",
+      "domain": "数学",
+      "name": "INCORRECT_SLOW_PIPE_TIME_ASSUMPTION",
+      "definition": "This error occurs when an agent incorrectly assigns a value or makes assumptions about variables that represent time or rates of work without explicit calculation or derived equation. The assumed variable value does not align with extracted equations from problem data.",
+      "condition": "When the problem involves determining fill times based on relational rates of work.",
+      "directive": "Check if assumptions about fill times logically correspond to the established relationships of variables within the problem."
+    },
+    {
+      "id": "B0112",
+      "domain": "代码",
+      "name": "NO_MINIMAL_TEST_FOR_TWO_STEP_CARRYOVER_COUPLING",
+      "definition": "Flags test plans that omit minimal counterexamples exercising temporal coupling (inventory carryover, stage transitions, expiration) across adjacent steps. The missing tests typically allow solutions that optimize each step independently to appear correct on samples and many random cases while failing targeted hidden cases.",
+      "condition": "Apply when the problem has explicit multi-step resource persistence/decay and the test strategy does not include a smallest-case carryover scenario that forces correct state coupling between consecutive steps.",
+      "directive": "High chance the submitted algorithm treats steps independently or models state transitions incorrectly, leading to late hidden-case failures."
+    },
+    {
+      "id": "B0113",
+      "domain": "代码",
+      "name": "MISSING_MODULO_CYCLE_OFFSET_DP_STATE",
+      "definition": "Flags solutions for modulo-wrap increment problems that treat each position’s needed change as a fixed scalar (often the minimal remainder in `[0, m-1]`) and never optimize over adding full cycles (`+ k*m`) per position. Correct minima can require choosing per-position cycle offsets and tracking how press counts evolve across indices (commonly via DP/shortest-path over a small state such as the extra-cycle count).",
+      "condition": "Apply when a solution computes `c[i] = (b[i]-a[i]) mod m` (or equivalent) and assumes that remainder fully determines the required press count per position, without any state/optimization over adding multiples of `m`.",
+      "directive": "Risk of non-minimal or infeasible operation counts because full-cycle offsets can change the optimal interval start/stop pattern."
+    },
+    {
+      "id": "B0114",
+      "domain": "代码",
+      "name": "INCORRECT_TRAVERSAL_METHOD",
+      "definition": "The algorithm was designed with a flawed approach for traversing the tree structure that incorrectly assumes children need to be traversed, despite the tree being flat, causing incorrect recursion behavior.",
+      "condition": "When the design involves recursion or tree traversal logic...",
+      "directive": "Attention! Scrutinize the tree traversal logic to ensure it is consistent with the actual tree structure provided, particularly looking for recursion when the input structure does not support such traversal."
+    },
+    {
+      "id": "B0115",
+      "domain": "代码",
+      "name": "MISMODELED_RESOURCE_INVARIANT_FROM_EQUATION",
+      "definition": "Flags failures where the planner mis-models how an equation constraint translates into a resource/count invariant (e.g., wrong relationship between a+b=c and a+b+c), leading to incorrect feasibility conditions and wrong boundary handling.",
+      "condition": "When the plan converts algebraic constraints into a counting rule but does not explicitly show the derived invariant (or shows one that does not follow from the equation).",
+      "directive": "Risk of incorrect necessary/sufficient conditions, especially for edge cases near the minimum feasible construction."
+    },
+    {
+      "id": "B0116",
+      "domain": "代码",
+      "name": "SCC_PARITY_REACHABILITY_AND_DP_OMITTED",
+      "definition": "Flags algorithm designs for directed graphs with revisits and parity-dependent one-time rewards that rely on plain reachability traversal (BFS/DFS) and direct summation, without accounting for cycles/SCC structure and parity reachability control (e.g., odd-cycle flexibility) and without performing an optimization over the condensed DAG of components/states.",
+      "condition": "When a directed-graph optimization with revisit/parity effects is reduced to “sum over reachable nodes” or single-pass traversal without SCC condensation, parity-state modeling, or DAG DP over components/states.",
+      "directive": "Risk of missing parity-manipulation and path-choice effects in cyclic graphs, producing incorrect maxima."
+    },
+    {
+      "id": "B0117",
+      "domain": "代码",
+      "name": "MISALIGNED_ALGORITHM_IMPLEMENTATION",
+      "definition": "The Programming Expert failed to accurately implement the algorithm as outlined by the Algorithm Designer. The resultant code wrongly uses a nested loop structure instead of incorporating the single-pass hash map strategy recommended in the pseudocode, leading to inefficiencies and potential failures.",
+      "condition": "When the algorithm design specifies a specific strategy or data structure that is not reflected in the final implementation...",
+      "directive": "Attention! Scrutinize the code's adherence to the outlined algorithmic strategy, especially when there are indications the implemented logic deviates significantly from the designed approach."
+    },
+    {
+      "id": "B0118",
+      "domain": "数学",
+      "name": "IMPROPER_RANGE_OF_ITERATION_FOR_VARIABLE_N",
+      "definition": "This checks if the iterative process in computation adheres to logical mathematical constraints necessary for correct calculation.",
+      "condition": "When the problem involves constraints or bounds for numerical variables determined by the problem conditions.",
+      "directive": "Attention! Check if the iterative range assignment respects all mathematically established constraints derived from the problem."
+    },
+    {
+      "id": "B0119",
+      "domain": "代码",
+      "name": "UNVERIFIED_INVARIANT_IN_REVIEW",
+      "definition": "During test analysis/review, any claimed invariant (path length, number of steps, constant denominator, monotonicity) must be validated via derivation or a minimal counterexample. Treat unverified invariants as high-risk because they can incorrectly justify wrong formulas and allow bugs to pass review.",
+      "condition": "When a reviewer/test analyst statement uses language like 'always', 'constant', or 'does not affect correctness' to justify a formula or simplification.",
+      "directive": "A false invariant may be masking a real bug; require a concrete derivation or a small constructed example to validate the claim."
+    },
+    {
+      "id": "B0120",
+      "domain": "数学",
+      "name": "PROBABILITY_COMPLEMENTATION_CHECK",
+      "definition": "This pattern involves scenarios with complex probability calculations where complementary probability is determined by evaluating unwanted events.",
+      "condition": "When the problem involves complex probability scenarios with indirect specification of events...",
+      "directive": "Attention! Check if complementary probability calculations use correct evaluation of unwanted event probability."
+    },
+    {
+      "id": "B0121",
+      "domain": "数学",
+      "name": "CALCULATION_CONDITION_MISMATCH",
+      "definition": "This error happens when the agent uses calculation conditions that do not align with the intended mathematical properties like specific powers or divisibility as per the problem's requirements.",
+      "condition": "When the agent performs transformations involving divisibility or powers that require specific integer properties.",
+      "directive": "Attention! Check if the calculation condition aligns with the mathematical requirements for transformations or properties involved."
+    },
+    {
+      "id": "B0122",
+      "domain": "代码",
+      "name": "ADJACENCY_CONSTRAINT_DROPPED_IN_MERGE_MODEL",
+      "definition": "Flags solutions that model a sequence-only reduction operation (must choose adjacent/consecutive elements in the evolving array) as an orderless multiset merge (e.g., repeatedly popping two smallest values from a heap). This drops the adjacency constraint and can produce costs that are unattainable under valid transformations, even if the local cost function resembles classic merge-cost problems.",
+      "condition": "When the proposed algorithm uses a heap/multiset to select merge candidates for an operation that is restricted to adjacent elements in a mutable sequence.",
+      "directive": "High risk of invalid optimization: the method may compute a minimum over illegal merge orders, causing wrong answers that still pass many cases."
+    },
+    {
+      "id": "B0123",
+      "domain": "数学",
+      "name": "UPPER_BOUNDARY_MISINTERPRETATION",
+      "definition": "This error occurs when the agent includes values at the end of the range without considering the precise logical conditions needed to satisfy the constraints at the upper boundary, potentially allowing erroneous values.",
+      "condition": "When the agent's output shows a computation involving an upper range boundary that must satisfy specific inclusion/exclusion conditions.",
+      "directive": "Attention! Verify the upper boundary of the range accurately captures any logical constraints or cuts, preventing unwarranted inclusions."
+    },
+    {
+      "id": "B0124",
+      "domain": "数学",
+      "name": "INCORRECT_COORDINATE_USAGE",
+      "definition": "This error occurs when the solution involves coordinate points, which are incorrectly computed or utilized, leading to errors in subsequent calculations.",
+      "condition": "When the agent's output involves calculations using distances derived from coordinates.",
+      "directive": "Attention! Check if all intermediate computations involving coordinates are valid before they are used in distance calculations."
+    },
+    {
+      "id": "B0125",
+      "domain": "代码",
+      "name": "DP_BASE_CASE_SEEDING_MISSING",
+      "definition": "When implementing a bottom-up DP over an ordered list where feasibility of position i depends on position i-1 (e.g., monotonic/adjacency constraints), the implementation must explicitly seed the first position with all valid starting variants (or introduce a sentinel previous state). If the first layer is never populated, later transitions have no reachable nonzero sources, and the final count collapses to zero or severe undercounting.",
+      "condition": "When an implementation uses sequential DP with comparisons against the previous element and lacks a dedicated initializer for i=1 (or a sentinel previous element).",
+      "directive": "Flag risk that the DP has no reachable nonzero states beyond the start, leading to constant-zero outputs or widespread undercounting."
+    },
+    {
+      "id": "B0126",
+      "domain": "数学",
+      "name": "EXPRESSION_SIMPLIFICATION_INVOLVING_IRRATIONAL_NUMBERS",
+      "definition": "This error occurs when an agent improperly simplifies or mismanages mathematical expressions involving irrational numbers, leading to potential mistakes in the final result. This includes issues with algebraic manipulation or misunderstandings of numerical transformations involving roots and powers.",
+      "condition": "When the agent handles expressions involving irrational numbers, such as $\\sqrt{}$ or powers.",
+      "directive": "Attention! Check if expression simplifications and algebraic transformations involving irrational numbers are consistent with mathematical rules."
+    },
+    {
+      "id": "B0127",
+      "domain": "代码",
+      "name": "DISCRETE_CANDIDATE_SET_IN_CONTINUOUS_GEOMETRY",
+      "definition": "When the solution space is continuous (points can be anywhere in a region), the feasibility/optimization check restricts candidates to a small discrete subset (e.g., polygon vertices) without proof, which can overestimate the optimum or miss feasible configurations.",
+      "condition": "When an algorithm for a continuous placement/geometry problem only enumerates input points (vertices) or a fixed tiny discrete set as candidates without a correctness argument.",
+      "directive": "High risk of Wrong Answer due to missing interior/edge optimal placements and returning an overestimated minimum."
+    },
+    {
+      "id": "B0128",
+      "domain": "代码",
+      "name": "INVALID_LOCAL_INEQUALITY_REDUCTION",
+      "definition": "Flags solutions that reduce a global multi-step feasibility problem on an array/graph to a simple adjacent-local inequality (e.g., checking each a_i <= a_{i+1} + c) plus a parity check, without proving necessity and sufficiency. This pattern often ignores global invariants (component-wise constraints after removals, prefix/alternating constraints, flow/matching structure) and produces both false positives and false negatives.",
+      "condition": "When the proposed algorithm claims full removability can be decided by checking only per-edge/per-adjacent inequalities (optionally after one swap) and a parity check, with no additional global invariant or constructive argument.",
+      "directive": "High risk of misclassification because local inequalities rarely capture component-splitting effects and global conservation laws of pair-removal operations."
+    },
+    {
+      "id": "B0129",
+      "domain": "代码",
+      "name": "PATCH_WITHOUT_SAMPLE_REGRESSION",
+      "definition": "Applies when a bug-fix patch changes core logic yet does not re-validate against the problem statement samples (or an equivalent minimal regression suite). This often allows an obviously incorrect simplification to ship even when a provided example contradicts it.",
+      "condition": "When a fix modifies the algorithmic formula or removes major computation steps and the author provides no evidence of re-checking statement samples.",
+      "directive": "High chance the patch breaks documented examples, indicating broader hidden-test failures."
+    },
+    {
+      "id": "B0130",
+      "domain": "数学",
+      "name": "INCORRECT_DAY_MAPPING_FOR_COMBINATION_REPETITION",
+      "definition": "This error occurs when an agent fails to accurately map sequential days from a given start point concerning combination possibilities and exhaustion, resulting in an incorrect determination of when repetitions start.",
+      "condition": "When the problem involves sequences of day mapping based on a start point and combination possibilities...",
+      "directive": "Check if the mapping of sequential days aligns with the combination possibilities and correctly determines when repetition occurs."
+    },
+    {
+      "id": "B0131",
+      "domain": "代码",
+      "name": "MISSING_INVERSE_PROCESS_REASONING",
+      "definition": "When a task provides multiple input streams plus one observed output stream of a constrained stochastic/dynamic process, and asks to reconstruct an unobserved output stream, the algorithm design must explicitly model the state transitions and explain how the observed stream constrains the unknown stream. This metric flags designs that present a forward simulation plan without an inference mechanism (e.g., reconstruction, backtracking, DP over states, or proof of determinism from the observation).",
+      "condition": "Apply when the solution approach for a reconstruction-from-observation problem is described as a direct simulation even though the operation order is unknown or randomized, and the approach lacks a concrete inference step driven by the provided observation stream.",
+      "directive": "High risk of ignoring the key observed output stream, leading to outputs that fail basic invariants and sample tests."
+    },
+    {
+      "id": "B0132",
+      "domain": "代码",
+      "name": "MISSING_PROOF_OR_BRUTE_FORCE_VALIDATION_FOR_GREEDY",
+      "definition": "Approves or forwards a greedy O(1) plan for an optimization problem without requiring a proof or a quick validation strategy (exhaustion/DP over small constraints), even when constraints are small enough to verify optimality conditions cheaply.",
+      "condition": "When a PM endorses a closed-form greedy formula for an exact-sum or knapsack-like problem with small input limits, and no proof/validation plan is specified.",
+      "directive": "Risk of shipping an unproven heuristic that fails on simple counterexamples."
+    },
+    {
+      "id": "B0133",
+      "domain": "数学",
+      "name": "IMPROPER_SUBSET_COUNTING_ALGORITHM",
+      "definition": "Occurs when an algorithm to determine the maximum subset size fails to account for all defining constraints, such as exclusion criteria based on differences between elements.",
+      "condition": "When the agent performs arithmetic manipulation related to subset counting without considering all constraints.",
+      "directive": "Attention! Check if the solution considers all constraints regarding differences between subset elements."
+    },
+    {
+      "id": "B0134",
+      "domain": "代码",
+      "name": "INCORRECT_BOOLEAN_ZERO_CHECK",
+      "definition": "The algorithm incorrectly treats boolean False as equivalent to integer zero, thus potentially misplacing booleans during the zero-moving operation.",
+      "condition": "When the task involves distinguishing between boolean values and integers...",
+      "directive": "Attention! Check the logic used for identifying zero elements to ensure it properly distinguishes boolean types from integers, as they should be treated differently in the context of this task."
+    },
+    {
+      "id": "B0135",
+      "domain": "数学",
+      "name": "INCOMPLETE_ANALYSIS_OF_ODD_SUM_SCENARIOS",
+      "definition": "This error manifests when an agent analyzes possible outcomes but fails to recognize or calculate all conditions leading to desired or specified results.",
+      "condition": "When the problem involves calculating cumulative probability with multiple conditional draws and stop circumstances...",
+      "directive": "Check if all possible combinations and scenarios resulting in the target outcome, such as an odd sum, have been thoroughly considered and calculated."
+    },
+    {
+      "id": "B0136",
+      "domain": "数学",
+      "name": "AREA_FORMULA_INCOMPATIBILITY_WITH_ROTATIONAL_GEOMETRY",
+      "definition": "Application of the standard area formula for triangle vertices can become incompatible when dealing with rotational geometry problems where angles between vertices must remain fixed.",
+      "condition": "When the problem involves rotating lines maintaining geometric properties such as fixed angles.",
+      "directive": "Attention! Check if the used area formula accounts for fixed-angle properties or requirements derived from rotational dynamics."
+    },
+    {
+      "id": "B0137",
+      "domain": "数学",
+      "name": "INCORRECT_ASSUMPTION_ABOUT_DIVISIBILITY",
+      "definition": "This error occurs when an agent assumes that a smaller or unrelated expression shares divisibility properties with another expression without proper mathematical justification. Specifically, when a compound expression involves exponential terms, incorrect assumptions about divisibility can lead to erroneous conclusions.",
+      "condition": "When the problem involves exponential expressions and requires analysis of divisibility conditions using algebraic identities or factorizations.",
+      "directive": "Check if the agent makes incorrect assumptions about the divisibility of expressions without properly using algebraic identities or factorization."
+    },
+    {
+      "id": "B0138",
+      "domain": "代码",
+      "name": "MISSING_SAMPLE_AND_MINIMAL_SOLVABLE_SMOKE_TESTS",
+      "definition": "Test plan fails to include immediate smoke tests that must pass for any valid solution: official samples (when provided) and minimal solvable instances designed to validate the claimed construction strategy. This includes not checking that the algorithm prints YES on known-solvable cases where total XOR condition holds.",
+      "condition": "When an implementation claims a constructive method for a problem with sample I/O and a simple feasibility condition.",
+      "directive": "High chance of shipping a construction that incorrectly rejects solvable inputs due to absent smoke tests."
+    },
+    {
+      "id": "B0139",
+      "domain": "代码",
+      "name": "FEASIBILITY_GUARD_USES_WRONG_REFERENCE",
+      "definition": "A fix that adds or refactors a feasibility guard must compare the achievable total against the correct statement-defined target. For baseline-plus-contribution problems, feasibility must evaluate (baseline + sum(contributions)) against the fixed target, or equivalently sum(contributions) against (target - baseline). Using an unrelated reference (such as comparing contributions to the baseline) invalidates both early-exit logic and subsequent search predicates.",
+      "condition": "Apply when a patch introduces a feasibility check or monotone predicate and the compared quantities omit the fixed threshold or omit baseline inclusion.",
+      "directive": "Flags false-negative feasibility checks that short-circuit to -1 and invalidate binary-search monotonicity assumptions."
+    },
+    {
+      "id": "B0140",
+      "domain": "代码",
+      "name": "OBJECTIVE_MISMODELED_AS_TRIVIAL_UNIQUE_COUNT",
+      "definition": "Fails to correctly model an optimization objective under structural constraints, incorrectly collapsing it into a trivial statistic (e.g., returning the number of globally unique labels/colors) while ignoring that required constraint-satisfying deletions/choices can force losing some labels or create tradeoffs among choices.",
+      "condition": "When the proposed solution reduces a constrained selection/deletion optimization to a global unique-count (or similarly trivial aggregate) without proving feasibility of retaining all uniques under the constraints.",
+      "directive": "High risk of systematically wrong answers due to missed tradeoffs between constraint satisfaction and objective maximization."
+    },
+    {
+      "id": "B0141",
+      "domain": "代码",
+      "name": "BFS_VISITED_PREMARK_DEQUEUE_SKIP",
+      "definition": "In queue/stack graph search, avoid marking a state as visited at enqueue time and then skipping processing at dequeue time solely because it is in the visited set. This pattern discards all queued work and prevents expansion. Use a consistent convention: either mark visited on push and never skip on pop, or mark visited on pop and allow duplicates in the queue with a skip-when-seen check.",
+      "condition": "When an evaluator sees BFS/DFS code that adds to `visited` at enqueue/push and also `continue`s on pop if the state is already in `visited`.",
+      "directive": "The search can fail to explore any moves and default to an incorrect answer while still passing many negative instances."
+    },
+    {
+      "id": "B0142",
+      "domain": "数学",
+      "name": "ASYMMETRIC_POLYNOMIAL_EXPANSION",
+      "definition": "This error occurs when complex expressions with potential symmetric or cyclic patterns are expanded incorrectly, resulting in an asymmetric polynomial form.",
+      "condition": "When the problem involves complex expressions that require cyclic or symmetric expansions.",
+      "directive": "Attention! Check if the final polynomial form aligns with expected symmetric properties and factorization patterns."
+    },
+    {
+      "id": "B0143",
+      "domain": "数学",
+      "name": "MISREPRESENTED_AREA_CALCULATIONS",
+      "definition": "This error pattern involves issues with summing or calculating areas based on misrepresented values in computational geometry problems.",
+      "condition": "When the agent performs calculations related to areas in geometry.",
+      "directive": "Attention! Check if the agent's calculations for areas align with established geometric principles."
+    },
+    {
+      "id": "B0144",
+      "domain": "代码",
+      "name": "INCORRECT_RANGE_ENDPOINT",
+      "definition": "The agent erroneously specifies a loop range's endpoint, causing an incomplete sequence generation for negative values. The range should include zero.",
+      "condition": "When code involves range-based loops for sequence generation without inclusive endpoint verification...",
+      "directive": "Attention! Ensure that all sequence generation logic correctly includes intended endpoints, especially in range loops dealing with negative values."
+    },
+    {
+      "id": "B0145",
+      "domain": "代码",
+      "name": "CODENAME_TREATED_AS_TRUE_IDENTITY",
+      "definition": "Fails to distinguish a codename/alias from the real entity the problem asks to identify, leading to an incorrect output specification (e.g., printing the codename instead of the discovered true name).",
+      "condition": "When the statement uses terms like \"codenamed\", \"alias\", \"mystery\", or \"figure out what this is\" and the plan/solution outputs the codename itself.",
+      "directive": "High risk of wrong answer due to conflating a placeholder label with the required discovered value."
+    },
+    {
+      "id": "B0146",
+      "domain": "数学",
+      "name": "INVALID_PRIME_FACTORIZATION_REQUIREMENT",
+      "definition": "This error happens when an agent incorrectly interprets or mismatches prime factorization requirements by introducing or omitting necessary restrictions to maintain specified mathematical conditions like exact GCF calculation.",
+      "condition": "When the problem involves verifying specific prime factorization constraints to maintain conditions like exact GCF calculation.",
+      "directive": "Check if all factorization evaluations accurately match the provided constraints without exceeding intended values due to additional or missing prime multiplications."
+    },
+    {
+      "id": "B0147",
+      "domain": "数学",
+      "name": "INCORRECT_TRANSFER_CALCULATION",
+      "definition": "This error arises when an agent calculates transfers between variables (e.g., items/values) based on erroneous assumptions or rules rather than adhering strictly to stipulated conditions in a word problem.",
+      "condition": "When the problem involves transfer-related calculations in scenarios with multiple comparative quantities having specific relative constraints.",
+      "directive": "Check if the calculated transfers are based strictly on the scenario-specific constraints rather than any erroneous assumptions."
+    },
+    {
+      "id": "B0148",
+      "domain": "代码",
+      "name": "INCORRECT_BASE_CASE_HANDLING",
+      "definition": "The function incorrectly handles base cases, returning the sum instead of the sum of minimum values of k subarrays when k is equal to the length of nums or when k is 1.",
+      "condition": "When implementing logic for specific base case scenarios in algorithms...",
+      "directive": "Attention! Check if the base case handling logic aligns with the problem statement, ensuring that the functionality truly conforms to definitions required by the task. For instance, consider if the operation reflects the intended subarray partitioning."
+    },
+    {
+      "id": "B0149",
+      "domain": "数学",
+      "name": "INCORRECT_SIMPLIFICATION_AND_CANCELLATION",
+      "definition": "The error occurs when there is a flawed application of term cancellation in telescoping series, leading to incorrect simplification. This can result in incorrect products of sequence adjustments in mathematical problems involving Fibonacci or similar sequences.",
+      "condition": "When the agent's output shows an attempt to telescope product series involving Fibonacci numbers...",
+      "directive": "Attention! Check if the cancellation of Fibonacci terms properly respects sequence continuation and correctly resolves to desired form."
+    },
+    {
+      "id": "B0150",
+      "domain": "数学",
+      "name": "INCORRECT_BOUNDARY_CONDITION_CHECK",
+      "definition": "Errors arising from assuming incorrect numeric boundaries for a set of numbers due to misunderstandings of power constraints or problem-specific conditions.",
+      "condition": "When the problem involves boundary conditions constrained by digit limits in a specific base or similar restrictions.",
+      "directive": "Attention! Check if the boundary conditions applied are consistent with the constraints and logic specified in the problem."
+    },
+    {
+      "id": "B0151",
+      "domain": "数学",
+      "name": "FINAL_DIVISION_CALCULATION_CONTEXT",
+      "definition": "This evaluates if the agent correctly performs the final division step to solve for a constant.",
+      "condition": "When the agent's output shows a final division or calculation step intended to solve for a constant...",
+      "directive": "Attention! Check if the divisor used for the final calculation of constant \\( N \\) matches the intended divisor in the derived equation setup."
+    },
+    {
+      "id": "B0152",
+      "domain": "代码",
+      "name": "IGNORES_OUTPUT_SIZE_IN_SEARCH_STRATEGY",
+      "definition": "Flags algorithm designs that solve a constructive-output problem via BFS/priority-queue enumeration while storing the full partially-constructed output in each state, and that omit output-length and value-size costs from the complexity analysis. This typically passes small tests, then times out or runs out of memory when the required output can be extremely long, because per-step work grows with the candidate's digit/string length.",
+      "condition": "When an evaluator sees a design that explores a state space (BFS/DFS/heap) where each state carries the entire built-so-far output (string or bigint), and the task constraints allow outputs with 10^5+ characters/digits.",
+      "directive": "Risk of TLE/memory blow-up from per-state value growth, heap operations on large values, and missing a direct constructive/counting solution."
+    },
+    {
+      "id": "B0153",
+      "domain": "数学",
+      "name": "INVALID_COMBINATORIAL_MODEL",
+      "definition": "The error occurs when an agent constructs an incorrect combinatorial model by either mistakenly choosing partial sets or using combinations instead of permutations where mismatched pair assignment is required.",
+      "condition": "When the problem involves matching multiple pairs with precise assignments (e.g., neckties and shirts)...",
+      "directive": "Ensure to check if permutations are properly used instead of combinations when the task requires complete pair matching."
+    },
+    {
+      "id": "B0154",
+      "domain": "代码",
+      "name": "EXPONENT_UPDATE_RULE_MISAPPLIED_AS_EXPONENT_MULTIPLICATION",
+      "definition": "When simulating multiplication/division of powers with the same base, exponent transitions follow exponent addition/subtraction: x^a * x^b -> x^(a+b), x^a / x^b -> x^(a-b) with a>b. A squaring step on x^a yields x^(2a). Any implementation that updates exponents via a*a for squaring, or treats division as integer halving of the exponent, violates the algebraic model and produces invalid step counts and reachability.",
+      "condition": "When code updates exponents with multiplication (a*a) for a squaring operation, or uses exponent halving (a//2) as a direct result of division between powers.",
+      "directive": "Algebra/semantics mismatch yields incorrect operation counts and invalid paths that can pass trivial cases yet fail broadly."
+    },
+    {
+      "id": "B0155",
+      "domain": "数学",
+      "name": "DISCRETE_VALUES_MISINTERPRETATION",
+      "definition": "The error arises when an agent treats a set of possible outcomes as a continuous range instead of discrete options that satisfy a given set of conditions. In algebraic problems where interpretations involve finite and countable options, such misinterpretation leads to incorrect conclusions.",
+      "condition": "When the problem involves selecting specific values from a finite set that must meet multiple conditions...",
+      "directive": "Attention! Verify if the solution requires discrete values instead of interpreting the set as a continuous range; ensure conditions specify discrete integer solutions."
+    },
+    {
+      "id": "B0156",
+      "domain": "代码",
+      "name": "IMPRACTICAL_ERROR_MESSAGE",
+      "definition": "The error message in the ValueError raised for negative inputs is not sufficiently informative and does not comply with the expected format based on the ground truth solution.",
+      "condition": "When raising exceptions for input validation, especially when the design specifies a particular format or wording for error messages.",
+      "directive": "Attention! Scrutinize the wording of error messages in exception raising to ensure they align with specified or expected error message formats."
+    },
+    {
+      "id": "B0157",
+      "domain": "数学",
+      "name": "MISAPPLICATION_OF_FRACTION_DIVISION_IN_PROBLEM_SOLVING",
+      "definition": "Occurs when an expression division intended to resolve a variable results mistakenly due to incorrect analytical handling of fractions or coefficients.",
+      "condition": "When the problem involves simplifying or resolving expressions through fractional division.",
+      "directive": "Verify that all divisions maintain algebraic consistency and yield logical equivalents necessary for accurate resolutions."
+    },
+    {
+      "id": "B0158",
+      "domain": "数学",
+      "name": "ERROR_IN_ALGEBRAIC_REARRANGEMENT_OR_SIMPLIFICATION",
+      "definition": "This error occurs when equations are incorrectly simplified or rearranged, leading to a miscalculation in subsequent steps. The variables and constants must be handled precisely according to algebraic rules, especially when setting expressions equal.",
+      "condition": "When the problem involves equating two expressions that represent the same quantity in different algebraic forms.",
+      "directive": "Check if the algebraic operations such as multiplication, distribution, or combining like terms have been executed correctly."
+    },
+    {
+      "id": "B0159",
+      "domain": "数学",
+      "name": "DISTANCE_CALCULATION_ERROR_DUE_TO_INCORRECT_OPERATION",
+      "definition": "This error occurs when an agent incorrectly subtracts or adds values during calculations related to movement over distances, leading to incorrect conclusions about lengths and other measurements required in algebraic problems involving motion.",
+      "condition": "When the problem involves calculating distances in scenarios where objects move over structures like bridges or tunnels.",
+      "directive": "Check if all components contributing to the total distance are correctly added, focusing on ensuring no mistaken subtraction instead of addition."
+    },
+    {
+      "id": "B0160",
+      "domain": "数学",
+      "name": "AREA_CALCULATION_CONTEXT",
+      "definition": "This metric identifies the context where the agent calculates the area of a figure, particularly in scenarios involving multiple units or grid-based figures.",
+      "condition": "When the agent's output involves calculating the area of figures with multiple units or grid-based figures.",
+      "directive": "Attention! Check if the dimensions and units used in area calculations are consistent with the problem statement."
+    },
+    {
+      "id": "B0161",
+      "domain": "数学",
+      "name": "DIRECT_COMPUTATION_WITH_CONDITIONAL_VALUES",
+      "definition": "This situation arises when the agent bases its calculations on specific values provided by tests or setups, potentially overlooking the broader logical reasoning required for mathematical accuracy.",
+      "condition": "When the agent's output is based on direct computation using specific setup or test values.",
+      "directive": "Attention! Check if the computations derived from specific values adhere to the overall mathematical logic required for the solution."
+    },
+    {
+      "id": "B0162",
+      "domain": "数学",
+      "name": "DIAGONAL_INTERSECTION_CALCULATION",
+      "definition": "Occurs when calculating the intersection point of line segments or diagonals in a geometric figure. Involves using parametric equations or trigonometry to derive a valid conclusion.",
+      "condition": "When the problem involves computing intersection points of diagonals or line segments using parametric equations.",
+      "directive": "Attention! Check if the parametric equations have been derived and solved for intersection correctly, ensuring coordinates align with geometric properties."
+    },
+    {
+      "id": "B0163",
+      "domain": "数学",
+      "name": "LACK_OF_EXPRESSION_SIMPLIFICATION_USING_POLYNOMIAL_PROPERTIES",
+      "definition": "This error involves miscalculating or oversimplifying mathematical expressions by disregarding established principles that could lead to algebraic simplification or identity manipulation.",
+      "condition": "When the problem involves algebraic manipulation or simplification using polynomial identities or properties...",
+      "directive": "Attention! Check if simplifying expressions using identities or polynomial properties could lead to more accurate results."
+    },
+    {
+      "id": "B0164",
+      "domain": "代码",
+      "name": "WRONG_PROBLEM_REDUCTION_TO_INTERVAL_SCHEDULING",
+      "definition": "Selects an inappropriate canonical algorithm pattern (e.g., interval scheduling) via an invalid reduction, without demonstrating that the original problem’s constraints match the pattern; commonly misses that the true structure is matching/flow/assignment rather than non-overlapping intervals.",
+      "condition": "When a high-level plan proposes a standard greedy template (interval scheduling/activity selection) for a task that involves per-item choice among discrete slots and one-to-one resource assignment.",
+      "directive": "High risk of invalid reduction: greedy non-overlap reasoning replaces an assignment/matching constraint system, producing incorrect results."
+    },
+    {
+      "id": "B0165",
+      "domain": "代码",
+      "name": "SAMPLE_AND_GRAMMAR_SMOKE_TEST_GAP",
+      "definition": "In problems with custom expression grammars, the test plan must include (1) executing the provided sample I/O end-to-end and (2) minimal grammar-smoke tests that exercise operator adjacency/overlap (e.g., '**' next to '*'). Missing these tests allows basic tokenization and parsing defects to pass review and reach execution.",
+      "condition": "When reviewing a solution to a grammar/parsing task and there is no evidence of running the exact sample input plus at least one operator-adjacency smoke test.",
+      "directive": "A trivial parse/runtime failure can remain undetected and result in 0 accepted cases."
+    },
+    {
+      "id": "B0166",
+      "domain": "代码",
+      "name": "INSUFFICIENT_SPEC_CONSISTENCY_CHECK",
+      "definition": "Approves a solution without validating that computed quantities align with the problem’s selection model and output semantics; relies on a single sample or informal intuition rather than constructing a minimal counterexample that isolates selection-cardinality errors.",
+      "condition": "When a reviewer claims correctness for a combinational minimization task yet provides no additional targeted tests for selection counts (one-per-group vs multi-pick) and the solution aggregates multiple items from a group.",
+      "directive": "False-positive validation: missing a basic model mismatch that invalidates the entire approach, allowing systematic WA to ship."
+    },
+    {
+      "id": "B0167",
+      "domain": "数学",
+      "name": "INCORRECT_ALGEBRAIC_INTERPRETATION",
+      "definition": "The agent incorrectly interprets algebraic expressions by mistaking multiplicative terms or powers (such as 'xx' meaning x squared) and simplifies them into additive forms, thus compromising the integrity of formulas.",
+      "condition": "When the problem involves algebraic expressions, particularly involving powers or products...",
+      "directive": "Attention! Verify if algebraic expressions are correctly interpreted, specifically checking the distinction between additive and multiplicative notations."
+    },
+    {
+      "id": "B0168",
+      "domain": "数学",
+      "name": "MISAPPLICATION_OF_PROFIT_PERCENTAGE_LOGIC",
+      "definition": "This error arises when an agent incorrectly applies a given profit percentage to derive cost price, leading to mathematically invalid calculations contradicting standard solutions.",
+      "condition": "When the problem involves determining cost price using profit percentage logic.",
+      "directive": "Check if the calculation of cost price using the specified profit percentage is according to mathematically approved methods."
+    },
+    {
+      "id": "B0169",
+      "domain": "数学",
+      "name": "QUADRATIC_GEOMETRIC_CONSISTENCY_CHECK",
+      "definition": "The metric addresses the use of quadratic equations in geometric contexts, ensuring that the solution logically aligns with the overall problem conditions and geometric relationships.",
+      "condition": "When quadratic equations are used in the context of solving geometric configurations.",
+      "directive": "Attention! Check if the solution to the quadratic equation is consistent with the intended geometric relationships in the problem setup."
+    },
+    {
+      "id": "B0170",
+      "domain": "数学",
+      "name": "CIRCLE_INTERSECTION_ALGORITHM_CHECK",
+      "definition": "This metric addresses errors arising from using an incorrect algorithm to evaluate the number of circular objects intersected by a diagonal line segment, especially when failing to account for granularity in proximity across a dense matrix grid.",
+      "condition": "When the agent simplifies intersection calculation for continuous shapes like circles in dense grids...",
+      "directive": "Attention! Check if the method properly accounts for lattice distribution impacts and verifies against geometric configuration."
+    },
+    {
+      "id": "B0171",
+      "domain": "代码",
+      "name": "MISSING_SINGULARITY_AND_PROBABILITY_MASS_SANITY_CHECKS",
+      "definition": "The test analysis omits basic validation for probabilistic linear-system solutions, such as checking matrix conditioning/singularity handling, verifying nonnegativity and sum-to-1 of per-room meet probabilities, and using small symmetric samples to catch modeling errors before submission.",
+      "condition": "When a solution relies on solving a linear system derived from probabilistic transitions (especially with absorption).",
+      "directive": "Risk of runtime errors (singular matrix) or silently invalid probabilities without sanity checks on mass conservation, conditioning, and output normalization."
+    },
+    {
+      "id": "B0172",
+      "domain": "代码",
+      "name": "MISUSE_OF_STRING_METHOD_ON_LIST_INPUT",
+      "definition": "The error occurs because the agent incorrectly uses a string method (regex and string slicing) on an input that is expected to be a list of numbers, resulting in a TypeError.",
+      "condition": "When the code expects operations or methods typically applied to strings but the input is specified as a list or other non-string sequence...",
+      "directive": "Attention! Scrutinize the input type assumptions and ensure the methods used are compatible with the expected sequence type. Verify that operations meant for strings are not erroneously applied to lists."
+    },
+    {
+      "id": "B0173",
+      "domain": "代码",
+      "name": "NO_POST_CONSTRUCTION_CONSTRAINT_VALIDATION",
+      "definition": "For constructive-output tasks, emits an assignment without implementing a linear-time validator for the stated constraints (or without testing the validator on random/adversarial cases), missing immediate detection of invalid constructions.",
+      "condition": "When a solution outputs a constructed labeling/arrangement and the code lacks an explicit verification pass for every constraint that can be checked in O(n).",
+      "directive": "Invalid outputs can slip through even when the construction idea is shaky; require a validator to catch mismatches between intended and actual constraint satisfaction."
+    },
+    {
+      "id": "B0174",
+      "domain": "数学",
+      "name": "MISINTERPRETATION_OF_BASE_HEX_NUMBER",
+      "definition": "This error involves misinterpreting or treating a base indication (such as hexadecimal input) as a string value equivalent in decimal. The problem arises from misunderstanding the nature of the base and its significance in digit conversion.",
+      "condition": "When the agent's output shows misunderstanding of the base number format as mere strings.",
+      "directive": "Attention! Check if the agent properly distinguishes between base representations and their numerical value before any computations."
+    },
+    {
+      "id": "B0175",
+      "domain": "数学",
+      "name": "MISINTERPRETATION_OF_CIRCLE_CONFIG",
+      "definition": "This error occurs when the agent misconstrues the given geometric configuration, treating identical or congruent circles inappropriately, such as confusing smaller circles with the largest one.",
+      "condition": "When the problem involves geometric configurations with multiple circles of varying sizes...",
+      "directive": "Attention! Check if the agent correctly identifies which circles are congruent or larger in complex configurations."
+    },
+    {
+      "id": "B0176",
+      "domain": "数学",
+      "name": "FLOATING_POINT_TO_INTEGER_CONVERSION_ERROR",
+      "definition": "Occurs when an agent uses integer conversion to truncate a floating-point calculation result, potentially losing important precision or fractional information that affects the correctness of the solution.",
+      "condition": "When the problem involves calculations that yield non-integer results crucial for accuracy...",
+      "directive": "Check if any floating-point values are being converted to integers without considering the need for precision in the context of the solution."
+    },
+    {
+      "id": "B0177",
+      "domain": "数学",
+      "name": "INCORRECT_WORK_COMPLETION_IN_PHASE",
+      "definition": "This error occurs when an agent incorrectly calculates that a subsection of collaborative work completes the entire task, contrary to phrased problem conditions requiring further efforts by additional participants. This can result in misjudgment about subsequent steps needed in multi-phase work problems.",
+      "condition": "When the problem involves collaborative task completion over separate phases...",
+      "directive": "Check if the calculations for each phase correctly reflect the contributions required by all participants as per the problem context."
+    },
+    {
+      "id": "B0178",
+      "domain": "数学",
+      "name": "VARIABLE_DEFINITION_CHECK",
+      "definition": "This metric identifies issues where variables are defined or calculated based on incorrect or irrelevant relationships, diverging from the problem's requirements.",
+      "condition": "When the agent is defining variables or calculating relationships in the solution.",
+      "directive": "Attention! Check if the defined variables align with the mathematical relationships required by the problem."
+    },
+    {
+      "id": "B0179",
+      "domain": "数学",
+      "name": "MISAPPLICATION_OF_CHAIN_RULE_LOGIC",
+      "definition": "The error results from overlooking or misapplying a fundamental method for problems requiring proportional adjustments in man-hour tasks, often solved using chain rules. Utilizing wrong operations like straightforward division leads to erroneous workforce numbers.",
+      "condition": "When the problem requires proportional adjustments in man-hour tasks...",
+      "directive": "Check whether proportional reasoning with chain rule logic (such as cross-multiplication) is correctly applied instead of simple division or ungrounded arithmetic operations."
+    },
+    {
+      "id": "B0180",
+      "domain": "代码",
+      "name": "FULL_ENUMERATION_OF_WILDCARDS_IGNORES_CONSTRAINT_SCALE",
+      "definition": "When inputs contain wildcard digits and constraints allow large n, avoid algorithms that enumerate all wildcard instantiations (O(10^k) per item) and then search over these sets. The design must align complexity with worst-case constraints using constructive/greedy digit-filling, digit-DP, or incremental comparison methods that operate on strings and bounds without exponential enumeration.",
+      "condition": "When an algorithm proposal for wildcard-pattern reconstruction includes precomputing all wildcard expansions or treating O(10^k) per item as feasible under large-n constraints.",
+      "directive": "The solution will be non-viable (TLE/MLE) and often leads to ad-hoc pruning that risks correctness, because the core search space is mis-sized relative to constraints."
+    },
+    {
+      "id": "B0181",
+      "domain": "数学",
+      "name": "INCORRECT_POINT_DISTANCE_CALCULATION",
+      "definition": "This error occurs when the agent calculates the distance to or between points that are irrelevant to the task at hand, thus leading to wrong solutions, especially when distance minimization is required between specified configurations.",
+      "condition": "When the problem involves minimizing distances on specific paths or shapes, leading to potential errors if irrelevant point calculations are performed.",
+      "directive": "Attention! Check if the distances calculated involve only the features of the problem described and avoid irrelevant point-to-point calculations."
+    },
+    {
+      "id": "B0182",
+      "domain": "数学",
+      "name": "INCONSISTENT_PATTERN_APPLICATION",
+      "definition": "This error pattern emerges when an agent calculates intermediate steps correctly but fails to consistently apply derived patterns across available choices, leading to an incorrect final selection.",
+      "condition": "When the problem involves arithmetic sequences where differences need extrapolation across multiple sequences...",
+      "directive": "Check if calculated patterns are consistently applied over all possible choices before making the final selection."
+    },
+    {
+      "id": "B0183",
+      "domain": "数学",
+      "name": "INEFFECTIVE_LOOP_OVER_FULL_RANGE",
+      "definition": "Failing to identify complete divisions or repetitive structures leads to inefficient computation as elements are processed individually instead of as part of larger repeating sets or blocks.",
+      "condition": "When the problem involves iteration over numbers or elements where potential cyclical patterns or larger repeating groups may exist.",
+      "directive": "Attention! Verify if the problem allows for optimization by leveraging cyclical patterns or groupings instead of processing all elements individually and sequentially."
+    },
+    {
+      "id": "B0184",
+      "domain": "数学",
+      "name": "INCOMPLETE_USE_OF_COLLINEARITY_CONDITION",
+      "definition": "This error occurs when an agent correctly identifies a necessary condition for collinearity, such as a determinant condition, but fails to use it effectively to solve the problem or verify all possibilities.",
+      "condition": "When the problem involves collinearity in 3D space among points...",
+      "directive": "Attention! Check if the agent’s solution utilizes the established condition completely and correctly to solve the problem or verify solutions against all required conditions."
+    },
+    {
+      "id": "B0185",
+      "domain": "数学",
+      "name": "INCORRECT_APPLICATION_OF_DIFFERENCE_OF_SQUARES_IDENTITY",
+      "definition": "This error occurs when an incorrect algebraic identity is applied to simplify expressions involving differences of squares. Specifically, it misrepresents \\(a^2-b^2\\) as \\((a+b)(b-a)\\) where logical simplification missteps may lead to incorrect results.",
+      "condition": "When the problem involves simplification using algebraic identities, particularly the difference of squares...",
+      "directive": "Attention! Verify whether the correct algebraic identity is applied for simplification, especially in expressions involving differences of squares."
+    },
+    {
+      "id": "B0186",
+      "domain": "代码",
+      "name": "INEFFICIENT_SORTING_STRATEGY",
+      "definition": "The code sorts the keys of the dictionary to determine the lexicographically smallest word, which is not optimal for performance given the problem requirements.",
+      "condition": "When iterating over dictionary keys in a frequency counting task, ensure that sorting is necessary for achieving correct results.",
+      "directive": "Attention! Check if sorting operations can be avoided to improve the efficiency of finding frequent elements when the problem constraints allow."
+    },
+    {
+      "id": "B0187",
+      "domain": "数学",
+      "name": "MISINTERPRETATION_OF_REMAINDER_GOAL",
+      "definition": "This error occurs when the agent's solution focuses on perfect divisibility but fails to address the calculation of the remainder in equal distribution problems.",
+      "condition": "When the agent performs equal distribution calculations, focusing on divisibility.",
+      "directive": "Attention! Check if the goal involves calculating a remainder; ensure the agent addresses any undivided residuals."
+    },
+    {
+      "id": "B0188",
+      "domain": "数学",
+      "name": "MISINTERPRETATION_OF_CONDITIONS_FOR_LARGEST_ANGLE",
+      "definition": "This error arises when the agent misinterprets or applies incorrect conditions to determine which angle or side should be the largest. Often happens when incorrect inequalities are applied or the logic around the largest angle relative to side lengths is flawed.",
+      "condition": "When the problem involves conditions for identifying the largest angle in relation to side lengths...",
+      "directive": "Attention! Check if the inequalities used to determine the largest angle and corresponding conditions are correctly applied in relation to the problem's constraints."
+    },
+    {
+      "id": "B0189",
+      "domain": "代码",
+      "name": "FLAWED_ELEMENT_REMOVAL_LOGIC",
+      "definition": "The removal logic in the stack relies on a condition checking the presence of element in a separate set ('seen') which is supposed to track stack contents. However, the timing and logic for updating 'seen' is mishandled, causing premature and incorrect removals.",
+      "condition": "Whenever using a stack to conditionally remove elements based on another data structure like a set...",
+      "directive": "Attention! Inspect the element removal logic from the stack and verify if conditions based on set membership ('seen') are correctly timed and logically sound to ensure proper subsequence formation."
+    },
+    {
+      "id": "B0190",
+      "domain": "代码",
+      "name": "INCORRECT_SPACING_LOGIC",
+      "definition": "The logic for adding spaces between Morse code words and letters is flawed. The current implementation appends extra spaces after each letter instead of ensuring proper separation based on word boundaries, which leads to improper parsing of Morse sequences.",
+      "condition": "When creating Morse code separation logic between encoded words and letters...",
+      "directive": "Attention! Verify that space management only adds one space between Morse letters and two spaces between Morse words, ensuring proper encoding and decoding alignment."
+    },
+    {
+      "id": "B0191",
+      "domain": "数学",
+      "name": "ERROR_IN_RATE_INTERPRETATION_AND_CALCULATION_SETUP",
+      "definition": "This pattern describes errors where wrong steps assemble around expected value allocations against specified multi-tiered rate criteria given in algebraic question settings, either incorrectly assuming cash outcomes from working structures derived therein, i.e., incorrect division among hours worked versus earned net income results.",
+      "condition": "When the problem involves rate interpretation, specifically differentiating between standard rate and overtime calculations.",
+      "directive": "Attention! Verify if each rate level, such as standard time versus overtime, is correctly calculated and distinctly separated to prevent misunderstandings in earning results."
+    },
+    {
+      "id": "B0192",
+      "domain": "代码",
+      "name": "BIGINT_DIGIT_APPEND_IN_TIGHT_LOOP",
+      "definition": "Flags implementations that build a potentially huge digit sequence by representing it as an unbounded integer and repeatedly appending digits via arithmetic (e.g., x = x*10 + d). For large output lengths, big-integer multiplication/addition and eventual decimal conversion dominate runtime, yielding timeouts even when the number of visited logical states is small.",
+      "condition": "When an evaluator observes digit-by-digit construction of a very large output using integer arithmetic (multiplying by 10 and adding digits) or any approach that forces repeated big-integer resizing during search/generation.",
+      "directive": "Risk of superlinear slowdown from bigint operations and conversion costs; recommend string construction from counts or streaming output instead."
+    },
+    {
+      "id": "B0193",
+      "domain": "代码",
+      "name": "INDEXING_MISMATCH_IN_DP_TABLE",
+      "definition": "The implementation of the dynamic programming solution uses incorrect indexing methods, combining 0-based indexing for the grid with 1-based indexing for the DP table, leading to failed initializations and incorrect path counts.",
+      "condition": "When transitioning between grid parameters and dynamic programming table, particularly if they seem to use different indexing schemas...",
+      "directive": "Warning! Carefully check the initialization and indexing consistency between the DP table and the input grid. Ensure both are using the same indexing base to avoid logic errors."
+    },
+    {
+      "id": "B0194",
+      "domain": "代码",
+      "name": "SECTOR_INTERVAL_CENTER_ANGLE_OMITTED",
+      "definition": "For probability-over-directions geometry tasks, each circle must yield an angular interval centered at angle_to_center = atan2(y_i - y0, x_i - x0), with endpoints (angle_to_center ± half_angle). The implementation must position intervals around their true center direction and normalize/split wrap-around intervals before union/merge.",
+      "condition": "When the proposed solution computes a union of angles/intervals representing directions that hit geometric targets.",
+      "directive": "Intervals may be detached from geometry (all centered at the same angle), causing systematically wrong probabilities even if merging logic exists."
+    },
+    {
+      "id": "B0195",
+      "domain": "代码",
+      "name": "UNSCALABLE_PER_PARAMETER_DP_ALLOCATION",
+      "definition": "When sweeping many small-parameter configurations over a very large input and the underlying system has a tiny state space, avoid allocating O(N * state) DP tables per configuration. Prefer constant-memory scans with precomputed small transition-cost tables (e.g., shortest paths on the small state graph) or rolling arrays when full history is unnecessary.",
+      "condition": "Apply when a solution allocates DP tables proportional to input length for each parameter setting, despite the process state being bounded by a small constant (e.g., modulo-10 states).",
+      "directive": "The solution will exceed memory/time limits and indicates missed reduction to a small-state shortest-path/precompute formulation."
+    },
+    {
+      "id": "B0196",
+      "domain": "数学",
+      "name": "VALIDITY_COUNTING_FOR_MODULAR_CONDITION",
+      "definition": "An agent may incorrectly implement the counting of valid values in modular arithmetic problems by assuming a uniform distribution, often leading to an inflated number of solutions.",
+      "condition": "When the agent handles modular arithmetic problems and calculates the distribution of valid values across a range.",
+      "directive": "Attention! Check if the agent's counting mechanism for valid values per digit in modular arithmetic is consistent and does not inflate the expected counts."
+    },
+    {
+      "id": "B0197",
+      "domain": "代码",
+      "name": "BOUNDED_PREFIX_EVENT_COUNT_MISMODELING",
+      "definition": "When proposing a counting strategy for prefix constraints under a maximum length N, do not define \"prefix strings\" as all strings or as strings that can be extended in the abstract; model the event \"x is a prefix of y\" only within the allowed domain (both strings length <= N) and account for boundary lengths (e.g., length N strings cannot be prefixes of any longer allowed string).",
+      "condition": "When the solution counts prefix-violating tuples using a standalone prefix_count derived from total string counts (e.g., sum_{i=1..N} K^i) without explicitly counting prefix relations within the bounded set.",
+      "directive": "Prefix violations are miscounted (often collapsing to a constant like 0) because the model ignores the length cap and the difference between 'string exists' and 'string is a prefix of another chosen string'."
+    },
+    {
+      "id": "B0198",
+      "domain": "代码",
+      "name": "FAILS_TO_MERGE_NESTED_OR_OVERLAPPING_SEGMENT_AREAS",
+      "definition": "Computes partial region metrics (areas/lengths) for local matches but omits the required merge/aggregation step for nested or overlapping regions, resulting in incorrect counts and wrong per-region outputs even if local matches are detected.",
+      "condition": "When the solution finds local matches (e.g., using a stack) but stores each match as an independent region without a rule to merge nested/contained regions before final reporting.",
+      "directive": "Incorrect per-region reporting and total area on inputs with nesting (common in bracket/slope matching problems)."
+    },
+    {
+      "id": "B0199",
+      "domain": "数学",
+      "name": "TRIANGLE_ANGLE_VALIDATION_NEEDED",
+      "definition": "This error arises when the agent identifies specific angle properties without validating the mathematical conditions, such as one angle being twice another, in relation to given side lengths.",
+      "condition": "When the agent assumes specific angle properties based on numeric testing.",
+      "directive": "Attention! Check if the angle conditions consistent with given constraints are correctly verified."
+    },
+    {
+      "id": "B0200",
+      "domain": "数学",
+      "name": "MISINTERPRETATION_OF_CONDITIONS_FOR_ZERO_PRODUCT",
+      "definition": "This error occurs when the agent fails to correctly interpret the conditions under which a mathematical product becomes zero, particularly in problems involving complex numbers or roots of unity. The agent may overlook geometrical aspects or specific cases where the condition is actually met.",
+      "condition": "When the problem involves complex numbers or roots of unity where specific angles or rotations result in zero values.",
+      "directive": "Attention! Check if the conditions for a product to be zero are fully considered, including geometric interpretations or special cases like specific multiples."
+    }
+  ]
+}

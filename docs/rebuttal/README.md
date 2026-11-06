@@ -1,5 +1,7 @@
 # MASRubric 实验交接入口
 
+首次接手请先看[接手速览与文件清单](START_HERE_ZH.md)：它区分仓库内文件、可下载/重建资产、私有历史记录，以及已实现和待完成的工作。本页保留详细运行命令。
+
 接手后先完成环境和资产检查，再跑小样本，最后选择完整实验。已准备的程序包括固定题集安装、失败轨迹收集与建库、主表和受控消融、重复运行、成对统计、训练/测试题面重叠检查，以及审计案例导出。
 
 ## 阅读顺序
@@ -12,6 +14,7 @@
 6. [机制对照与逐轮记录](review_mechanisms.md)：full、revise-only、withhold-only、audit-only，以及双人标注导出。
 7. [采样与投票对照](sampling_controls.md)：单 agent 生成的总 token 上限、无标准答案投票和成本匹配。
 8. [单 agent 同 bank 对照](single_agent_bank.md)：保留同一检索、审计和修订流程，比较 vanilla、full 与 revise-only。
+9. [准则双人独立标注](annotation/README.md)：200项空白xlsx模板、文本校验、独立标签合并与分歧裁决。
 
 ## 安装环境和模型服务
 
@@ -113,6 +116,7 @@ python scripts/rebuttal/summarize.py --paired \
 # 旧 AQuA 仅保存选项结果时，增加 --benchmark aqua。
 
 python scripts/rebuttal/audit_traces.py /path/to/result.json \
+  --mechanism-trace /path/to/mechanism.jsonl \
   --output-dir runs/audit-inspection --sample 100
 
 python scripts/rebuttal/check_split_overlap.py \
@@ -122,7 +126,7 @@ python scripts/rebuttal/check_split_overlap.py \
 
 摘要保留完整分母、已记录、正确、错误、缺失、未知和 usage 完成性。成对比较按题目 ID 对齐，输出差值、bootstrap 区间和 McNemar 检验，同时列出未配对和未知样本。`suite_repeats` 按模型、runtime、family、方法和 repeat 分组，只为完整的 9 项数学或 4 项代码计算宏平均；缺项、重复项、错误分母和 smoke 子集单列，宏平均留空。
 
-`audit_traces.py` 统计最终消息 score 记录；全部审计调用需要完整 trace。缺失或格式错误的 judgment 与实际空列表分别计数。`annotation_blind.json` 可交给独立核对者；对应模型判断保存在 `annotation_key.private.json`，核对完成后再合并。需要上游上下文才能判断的消息，在 `requires_additional_context` 中标记。建库和主表运行使用数据集现成标签，无需逐条人工写 criterion；该标注表用于额外衡量 auditor 的误判率。
+`audit_traces.py` 提供 `--mechanism-trace` 时保留修订版本与fallback清空前的记录；未提供时只能使用最终score里的可用信息。缺失或格式错误的judgment与实际空列表分别计数。将 `annotation_reviewer_a.json` 和 `annotation_reviewer_b.json` 交给不同核对者，协调者保留 `annotation_key.private.json`；填写及合并方法见[逐轮双人标注](review_mechanisms.md#double-review-of-revisions-and-false-positives)。建库和主表运行使用数据集现成标签；额外的人工标注用于衡量auditor误判和修订前后的消息正确性。
 
 题面重叠工具比较显式提供的训练/测试导出，使用 Unicode 和空白归一化后的精确文本。题面改写和模型预训练暴露需要另外的研究设计。
 

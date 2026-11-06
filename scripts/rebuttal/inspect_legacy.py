@@ -20,7 +20,7 @@ def main() -> int:
     parser.add_argument("--strict", action="store_true")
     args = parser.parse_args()
     catalog = json.loads((ROOT / "configs/rebuttal_legacy_programs.json").read_text(encoding="utf-8"))
-    if not any((args.archive_root, args.ac_root, args.fixed_root, args.training_root)):
+    if not args.strict and not any((args.archive_root, args.ac_root, args.fixed_root, args.training_root)):
         print(json.dumps(catalog, ensure_ascii=False, indent=2))
         return 0
     roots = {}

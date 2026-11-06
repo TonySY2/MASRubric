@@ -24,6 +24,33 @@ python scripts/rebuttal/prepare_assets.py install \
 
 `--report /path/to/new-assets-report.json` 保存机器可读盘点，报告文件也必须是新路径。检查包含记录数、题目 ID 重复、必要字段、criterion 名称、有限且非零的向量、统一维度和 bank/cache 的完整名称对应。`--embedding-dimension N` 可按实际 embedding 服务强制维度。cache 还须来自运行时使用的同一 embedding 模型及文本策略；改用新 embedding 模型时重新生成整个 cache。
 
+### 全新clone，没有原服务器资产时
+
+以下命令在仓库根目录执行，用于补齐三个外部文件。先部署与原bank一致的 `Qwen3-Embedding-8B` 服务，配置 `EMBEDDING_URL`、`EMBEDDING_MODEL`、`EMBEDDING_KEY`。缓存生成会调用该服务；不需要人工标签。
+
+```bash
+# 仅在LiveCodeBench尚未安装时下载。也可把main换成选定的上游revision。
+python scripts/rebuttal/prepare_assets.py fetch-livecode \
+  --assets-root paper/assets --source-revision main
+
+python scripts/rebuttal/build_bank.py embed \
+  --input-file paper/assets/pools/math/deduped-mixed_metrics_two_pool.json \
+  --output-dir runs/bootstrap/math-embeddings --execute
+python scripts/rebuttal/build_bank.py embed \
+  --input-file paper/assets/pools/code/deduplicated_metrics_pool.json \
+  --output-dir runs/bootstrap/code-embeddings --execute
+
+python scripts/rebuttal/prepare_assets.py install \
+  --assets-root "$PWD/paper/assets" \
+  --math-cache "$PWD/runs/bootstrap/math-embeddings/embeddings.jsonl" \
+  --code-cache "$PWD/runs/bootstrap/code-embeddings/embeddings.jsonl" \
+  --embedding-dimension 4096 --strict
+python scripts/rebuttal/prepare_assets.py inventory \
+  --assets-root "$PWD/paper/assets" --embedding-dimension 4096 --strict
+```
+
+重建缓存与原存档缓存分开标记。每步输出目录必须是新的；已完成时直接使用原输出。LiveCodeBench下载会检查保存的400题身份和顺序，所用上游revision下的题面/测试与历史导出的内容可能有差异；复查历史表格时使用原存档。
+
 ## 2. 固定评测集合
 
 以下路径均相对于 `paper/assets/` 或外部资产根目录。分母来自当前 `configs/paper_main.json`；新运行保留这些题目和顺序。
