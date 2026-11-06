@@ -1,3 +1,4 @@
+from masrubric.mechanism_trace import code_max_attempts
 import os
 from typing import AsyncGenerator, Sequence, Dict, List, Any, Tuple, Union
 import logging
@@ -110,6 +111,8 @@ class CodeWritingHumaneval(BaseChatAgent):
             print(f"[{self.name}] Detected {len(self.internal_tests)} internal test cases.")
 
         pruned_messages = self.supervisor.prune_info(self._message_history) if self.supervisor else self._message_history
+        if getattr(self.supervisor, "mechanism", None):
+            self.supervisor.mechanism.remember_context(self.name, pruned_messages)
         
         system_prompt, user_prompt = await self._process_inputs(task=question, input_messages=pruned_messages)
 
@@ -123,7 +126,7 @@ class CodeWritingHumaneval(BaseChatAgent):
         ]
 
         current_attempt = 0
-        max_attempts = 4 
+        max_attempts = code_max_attempts() 
         
         session_metrics = None
         last_agent_content = None

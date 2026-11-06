@@ -1,3 +1,4 @@
+from masrubric.mechanism_trace import code_max_attempts
 import os
 from typing import AsyncGenerator, Sequence, Dict, List, Any, Tuple
 import traceback 
@@ -148,6 +149,8 @@ class CodeWritingMbpp(BaseChatAgent):
         self.internal_tests = self.extract_example(question)
 
         pruned_messages = self.supervisor.prune_info(self._message_history) if self.supervisor else self._message_history
+        if getattr(self.supervisor, "mechanism", None):
+            self.supervisor.mechanism.remember_context(self.name, pruned_messages)
         
         system_prompt, user_prompt = await self._process_inputs(task=question, input_messages=pruned_messages)
 
@@ -180,7 +183,7 @@ class CodeWritingMbpp(BaseChatAgent):
         # ---------------------------------------------------------
         
         current_attempt = 0
-        max_attempts = 4 
+        max_attempts = code_max_attempts() 
         
         # [新增] 指标锁定
         session_metrics = None

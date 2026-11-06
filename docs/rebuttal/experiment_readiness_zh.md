@@ -1,6 +1,6 @@
 # Rebuttal 实验准备与证据清单
 
-本清单按 MASRubric 的论文主张组织实验。优先级用于评审发布前准备资源、程序和配置；收到实际问题后，再选择需要执行的任务。
+本清单按 MASRubric 的论文主张组织实验。先准备资源、程序和配置，再根据实际评审问题选择需要执行的任务。
 
 ## 先建立可用的运行基线
 
@@ -36,13 +36,13 @@
 | P1 | 离线构库成本 | rollout、miner、dedup、embedding 分阶段 | 训练轨迹、usage 日志、保留/删除计数 | 每阶段成本、累计 token、构库完成状态 |
 | P1 | 运行行为图复核 | 同一主实验输出集合 | audit/selection/repair trace 统计脚本 | Figure 3–5、Table 6–7 的可重算表 |
 | P1 | 审计 verdict 有效性 | 冻结中间消息；独立核对错误与适用性 | 固定样本、审计输出、可执行判定或独立标注表 | precision/recall、false pass/reject、覆盖率 |
-| P1 | 修正与 withholding 归因 | full / revise-only / withhold-only / pass-through | 明确三态开关与 fallback，保存下游重放轨迹 | 正确→错误、错误→正确、最终成功率 |
+| P1 | 修正与 withholding 归因 | full / revise-only / withhold-only / audit-only | `review_mechanism` 统一入口；逐轮 trace 保留选择、修正、传播与 fallback | 正确→错误、错误→正确、最终成功率 |
 | P2 | 字段与表示消融 | definition / applicability / directive 的受控删减 | 对应 bank 视图、检索和审计输入开关 | 哪个字段支持检索、诊断与修正 |
 | P2 | 检索策略 | direct / rerank；Kcand；embedding 表示 | 同一 runtime 的独立开关和缓存 | 检索质量、最终准确率、选择开销 |
 | P2 | bank 来源与规模 | 固定 teacher 后改变规模，或等规模改变 teacher | 可追溯子池和重算缓存、固定采样规则 | 来源效应与规模效应分开 |
 | P2 | 留一来源/领域迁移 | 去掉某训练来源；测试集合保持不变 | 按训练来源归属的 bank lineage | 同分布、跨分布、留一来源结果 |
 | P2 | Reasoner 与 auditor 分离 | 8B/14B reasoner × 8B/14B auditor；selector 固定 | 分角色 endpoint 配置、统一上限 | backbone 能力与审计能力分别的贡献 |
-| P2 | 预算匹配曲线 | 统一 token/call/time budget；多档预算 | 可中止并正确记录耗尽状态的 scheduler | accuracy–budget 曲线与成本 Pareto 前沿 |
+| P2 | 预算匹配曲线 | 统一 token/call/time budget；多档预算 | MATH-500/AQuA 的 `sampling_vote.py` 支持总 token 上限；调用数和时间预算另设协议 | accuracy–budget 曲线与成本 Pareto 前沿 |
 | P2 | 难度信号检验 | 冻结 audit depth、withholding 定义 | 逐题聚合与 held-out 统计脚本 | 与错误率的相关性、分组及跨模型稳定性 |
 | P2 | 误判与过度修正案例 | 使用主实验逐消息轨迹 | 前后答案解析、原题 grader、人工复核导出 | 可定位案例和总体发生率 |
 

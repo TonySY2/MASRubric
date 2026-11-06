@@ -1,3 +1,4 @@
+from masrubric.mechanism_trace import AuditMechanismRecorder
 #--- START OF FILE supervisor_reasoning_pick_metric.py ---
 
 from autogen_ext.models.openai import OpenAIChatCompletionClient
@@ -487,6 +488,9 @@ class Supervisor():
         use_llm_rerank: bool = True,  # 旧参数，仅作占位兼容
         max_metrics_count: int = 5    # 旧参数，仅作占位兼容
     ):
+        self.mechanism = AuditMechanismRecorder()
+        self._selection_trace = {}
+        self._audit_failures = []
         self.domain = domain.lower()
         self._model_client = AsyncOpenAI(
             api_key=api_key,
@@ -900,6 +904,7 @@ class Supervisor():
                 sampled_k = self.random_k
                 print(f"[Supervisor] Mode: Random Selection (k={sampled_k})")
             k = min(sampled_k, len(self.metrics))
+            self._selection_trace = {"method": "random", "candidate_count": len(self.metrics)}
             return random.sample(self.metrics, k)
         # =======================================================
 
@@ -956,6 +961,7 @@ class Supervisor():
             )
             if self.profile_hard_filter_enabled:
                 print(f"[Supervisor] Hard-filtered conflicting metrics: {filtered_count}")
+            self._selection_trace = {"method": "direct", "candidate_count": len(self.metrics), "filtered_count": filtered_count}
             return selected
             
         else:
@@ -1009,11 +1015,22 @@ class Supervisor():
                 selected_names = selection_data.get("selected_metrics", [])
 
                 # 5. 数量策略：默认保留旧的 1-Q 流动选择；固定 topN 模式下补齐到 Q。
-                return self._apply_select_q_policy(candidates, selected_names)
+                chosen = self._apply_select_q_policy(candidates, selected_names)
+                # Trace the same normalization as _apply_select_q_policy.
+                # Diagnostic fields must not turn a tolerated malformed/empty
+                # selection into an exception-triggered Top-Q fallback.
+                normalized_names = [str(name) for name in selected_names] if isinstance(selected_names, list) else []
+                self._selection_trace = {"method": "rerank", "candidate_count": len(candidates),
+                                         "selected_names_returned": selected_names,
+                                         "unknown_selected_names": [name for name in normalized_names if name not in {m["name"] for m in candidates}],
+                                         "filtered_count": filtered_count, "fallback": False}
+                return chosen
                 
             except Exception as e:
                 print(f"[Rerank Fallback] Using Direct Top-{self.select_q} due to: {e}")
                 # 保底：如果 LLM 挂了，直接从候选池里取前 Q 个
+                self._selection_trace = {"method": "rerank", "candidate_count": len(candidates),
+                                         "filtered_count": filtered_count, "fallback": True, "failure_type": type(e).__name__}
                 return candidates[:self.select_q]
    
    
@@ -1205,6 +1222,7 @@ class Supervisor():
 
                 except Exception as e:
                     if attempt == 4:
+                        self._audit_failures.append({"metric": metric["name"], "attempts": 5, "failure_type": type(e).__name__})
                         print(f"[Audit Fail] Metric '{metric['name']}' failed 5 times. Last Error: {e}")
 
         return judgements
@@ -1277,6 +1295,7 @@ class Supervisor():
             target_template = METRIC_TEMPLATE_SINGLE_AUDIT
         # -------------------------------------------------------------
         stage_name = "supervisor_simple_audit" if self.use_simple_audit > 0 else "supervisor_audit"
+        self._active_metrics = matched_metrics
         if not matched_metrics:
             return []
 
@@ -1308,56 +1327,26 @@ class Supervisor():
     
     # 1. 常规更新 (通常用于流式或单步调试，建议同步修改以防万一)
     async def update_scoreboard(self, task: str, message: TextMessage):
-        if not self.prune_flag:
-            self.scoreboard[message.id] = {
-                "message": message,
-                "judgements": [],
-                "is_pruned": False # <--- 强制 False
-            }
-        else:
-            judgements = await self._calc_score(task, message)
-            pass_cnt = 0
-            for judge in judgements:
-                if judge['verdict'].lower() == 'correct':
-                    pass_cnt += 1
-            
-            # 这里的 else False 很关键
-            is_pruned = (pass_cnt / len(judgements)) < self.pass_rate if judgements else False
-            
-            self.scoreboard[message.id] = {
-                "message": message,
-                "judgements": judgements,
-                "is_pruned": is_pruned
-            }
+        # This legacy fast path audits a reused code message once, with the
+        # same role/default matching behavior as before.
+        judgments = []
+        if self.prune_flag:
+            self._selection_trace, self._audit_failures = {}, []
+            judgments = await self._calc_score(task, message)
+            passed = (sum(j['verdict'].lower() == 'correct' for j in judgments) / len(judgments)) >= self.pass_rate if judgments else True
+            self.mechanism.record(task=task, message=message, attempt=1, role="Unknown",
+                                  metrics=getattr(self, "_active_metrics", []), judgments=judgments,
+                                  passed=passed, selection=self._selection_trace, failures=self._audit_failures)
+        self.update_scoreboard_with_results(message, judgments)
 
-    # 2. 结果回填更新 (这是 MathSolver_aqua 主要调用的方法，必须改！)
     def update_scoreboard_with_results(self, message: TextMessage, judgements: list[dict]):
-        # [新增] 防御性编程：如果全局没开剪枝，直接通过
-        if not self.prune_flag:
-            self.scoreboard[message.id] = {
-                "message": message,
-                "judgements": judgements, # 此时通常是 []
-                "is_pruned": False        # <--- 核心修正
-            }
-            return
+        passed = (sum(j['verdict'].lower() == 'correct' for j in judgements) / len(judgements)) >= self.pass_rate if judgements else True
+        is_pruned, details = self.mechanism.finalize(message, judgements, self.prune_flag, not passed)
+        self.scoreboard[message.id] = {"message": message, "judgements": judgements,
+                                      "is_pruned": is_pruned, **details}
 
-        pass_cnt = 0
-        for judge in judgements:
-            if judge['verdict'].lower() == 'correct':
-                pass_cnt += 1
-        
-        # [核心修正] 如果没有指标覆盖(judgements为空)，默认为 False (不剪枝/无罪释放)
-        is_pruned = (pass_cnt / len(judgements)) < self.pass_rate if judgements else False
-
-        self.scoreboard[message.id] = {
-            "message": message,
-            "judgements": judgements,
-            "is_pruned": is_pruned
-        }
-        
-# 此处逻辑基本保持，但需确保判定 correct 的逻辑稳健
-    # [修改] judge 方法签名，增加 session_metrics 用于回传
     async def judge(self, task: str, message: TextMessage, attempt_num: int, role: str = "Assistant", previous_metrics=None, session_metrics=None):
+        self._selection_trace, self._audit_failures = {}, []
         # 如果非剪枝模式，直接跳过
         if not self.prune_flag:
             return True, [], None, None 
@@ -1383,6 +1372,9 @@ class Supervisor():
                 if not should_audit:
                     print("[Cheap Precheck] PASS -> Skip full audit and let the message pass.")
                     print("="*80 + "\n")
+                    self.mechanism.record(task=task, message=message, attempt=attempt_num, role=role,
+                                          metrics=[], judgments=[], passed=True, selection={"method": "cheap_precheck"},
+                                          failures=[], skip_reason="cheap_precheck_pass")
                     return True, [], None, []
                 print("[Cheap Precheck] CHECK -> Continue to the main V2 audit pipeline.")
             except Exception as e:
@@ -1419,6 +1411,7 @@ class Supervisor():
             if self.lock_metrics_after_first_round and attempt_num > 1 and session_metrics:
                 print("[Supervisor] Using LOCKED metrics from Attempt 1.")
                 current_metrics = session_metrics
+                self._selection_trace = {"method": "locked_from_first_attempt"}
             else:
                 print("[Supervisor] Retrieving NEW metrics from Pool...")
                 current_metrics = await self._match_metrics(task, message_content)
@@ -1502,14 +1495,18 @@ class Supervisor():
             
         print("="*80 + "\n")
         
+        self.mechanism.record(task=task, message=message, attempt=attempt_num, role=role,
+                              metrics=current_metrics, judgments=judgements, passed=pass_flag,
+                              selection=self._selection_trace, failures=self._audit_failures, feedback=feedback)
         return pass_flag, judgements, feedback, current_metrics
     
     
     
         
-    def prune_info(self, all_messages: List[TextMessage]) -> List[TextMessage]:
+    def prune_info(self, all_messages: List[TextMessage], recipient=None) -> List[TextMessage]:
         # if self.threshold == 0.0:
         if not self.prune_flag:
+            self.mechanism.remember_context(recipient, all_messages)
             return all_messages
         pruned_messages = []
         for msg in all_messages:
@@ -1528,6 +1525,7 @@ class Supervisor():
                 if msg.source != "user":
                     print(f"Warning: Message ID {msg.id} not found in scoreboard. Passing by default...")
                 pruned_messages.append(msg)
+        self.mechanism.remember_context(recipient, pruned_messages)
         return pruned_messages
     
     def get_messages_above_threshold(self) -> List[TextMessage]:
@@ -1550,8 +1548,10 @@ class Supervisor():
                 # 'scores': {**{metric: self.scoreboard[entry][metric] for metric in self.metrics}, 'avg': self.scoreboard[entry]['avg']},
                 'judgements': self.scoreboard[entry]['judgements'],
                 'is_pruned': self.scoreboard[entry]['is_pruned'],
+                **{key: value for key, value in self.scoreboard[entry].items() if key not in ('message', 'judgements', 'is_pruned')},
             }
         return ret_scores
     
     def reset(self):
+        self.mechanism.reset(self.scoreboard)
         self.scoreboard = {}

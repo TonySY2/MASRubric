@@ -9,6 +9,9 @@
 3. 本页的运行命令：环境、实验计划、启动、续跑和汇总。
 4. [实验准备与证据清单](experiment_readiness_zh.md)：按评审问题选实验，查历史证据的使用条件。
 5. [历史程序目录](historical_programs.md)：Fixed-MAS、比较方法、旧消融和分析程序的入口。
+6. [机制对照与逐轮记录](review_mechanisms.md)：full、revise-only、withhold-only、audit-only，以及双人标注导出。
+7. [采样与投票对照](sampling_controls.md)：单 agent 生成的总 token 上限、无标准答案投票和成本匹配。
+8. [单 agent 同 bank 对照](single_agent_bank.md)：保留同一检索、审计和修订流程，比较 vanilla、full 与 revise-only。
 
 ## 安装环境和模型服务
 
@@ -79,6 +82,7 @@ python scripts/rebuttal/run_matrix.py run --plan runs/math-main-3repeats.json
 | `fixed_extension` | 当前固定 FullGraph baseline / MASRubric | configurable |
 | `pool_control` | 去重库 / 未去重库 | configurable |
 | `random_1to5_extension` | contextual / 随机 1–5 项 | configurable |
+| `review_mechanism` | baseline / full / revise-only / withhold-only / audit-only | reference |
 
 例如，只跑 AIME24、MATH-500 的 Kctx 对照：
 

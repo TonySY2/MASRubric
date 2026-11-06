@@ -105,6 +105,8 @@ class MathSolverAqua(BaseChatAgent):
 
         # 使用 Supervisor 过滤历史消息 (Pruning)
         pruned_messages = self.supervisor.prune_info(self._message_history) if self.supervisor else self._message_history
+        if getattr(self.supervisor, "mechanism", None):
+            self.supervisor.mechanism.remember_context(self.name, pruned_messages)
         system_prompt, user_prompt = await self._process_inputs(task=question, input_messages=pruned_messages)
         
         current_attempt = 0

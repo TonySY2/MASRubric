@@ -121,6 +121,21 @@
         "masrubric_math_random_1to5"
       ],
       "interpretation": "Current configurable-runtime variable-size random control; preserve distinction from reference-runtime comparisons."
+    },
+    "review_mechanism": {
+      "runtime": "paper",
+      "domains": [
+        "math",
+        "code"
+      ],
+      "methods": [
+        "baseline",
+        "masrubric",
+        "revise_only",
+        "withhold_only",
+        "audit_only"
+      ],
+      "interpretation": "Same recovered Dynamic-MAS runtime: full vs revise_only changes only terminal withholding policy, retaining rubric retrieval and revision budget. withhold_only and audit_only use zero revisions. Whole-task fallback remains enabled."
     }
   },
   "reference_variants": {
@@ -187,6 +202,20 @@
     "code_threshold06": [
       "--pass-rate",
       "0.6"
+    ],
+    "revise_only": [
+      "--withholding-policy",
+      "broadcast"
+    ],
+    "withhold_only": [
+      "--retry-budget",
+      "0"
+    ],
+    "audit_only": [
+      "--retry-budget",
+      "0",
+      "--withholding-policy",
+      "broadcast"
     ]
   },
   "archive_required": [
@@ -205,7 +234,6 @@
     "equal_total_token_budget",
     "adversarial_corruption",
     "auditor_false_positive_false_negative_annotation",
-    "no_withholding_control",
     "strict_empty_audit_policy"
   ],
   "selection": "See docs/rebuttal/experiment_readiness_zh.md for questions, metrics and priority."

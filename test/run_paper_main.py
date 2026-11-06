@@ -100,6 +100,8 @@ def parser():
     p.add_argument("--variant-name", help="Explicit name for a controlled experiment differing from the main preset.")
     p.add_argument("--pass-rate", type=float)
     p.add_argument("--retry-budget", type=int)
+    p.add_argument("--withholding-policy", choices=("withhold", "broadcast"),
+                   help="Terminal failed-audit communication policy; revision and auditing are unchanged.")
     p.add_argument("--retrieve-p", type=positive)
     p.add_argument("--select-q", type=positive)
     p.add_argument("--direct-k", type=positive, help="Code direct retrieval only.")
@@ -112,7 +114,7 @@ def build_plan(args, config, benchmark, out_dir):
     spec = config["benchmarks"][benchmark]
     domain = "code" if args.suite == "code_8b" else "math"
     variants = {name: getattr(args, name, None) for name in
-                ("pass_rate", "retry_budget", "retrieve_p", "select_q", "direct_k", "simple_audit", "random_k")}
+                ("pass_rate", "retry_budget", "retrieve_p", "select_q", "direct_k", "simple_audit", "random_k", "withholding_policy")}
     changed = {name: value for name, value in variants.items() if value is not None}
     if changed and not getattr(args, "variant_name", None):
         raise ValueError("Parameter overrides require --variant-name so they are recorded as a distinct experiment")
@@ -122,7 +124,7 @@ def build_plan(args, config, benchmark, out_dir):
         raise ValueError("--pass-rate must be between 0 and 1")
     if variants["retry_budget"] is not None and variants["retry_budget"] < 0:
         raise ValueError("--retry-budget cannot be negative")
-    if domain == "code" and any(variants[k] is not None for k in ("retry_budget", "retrieve_p", "select_q", "simple_audit", "random_k")):
+    if domain == "code" and any(variants[k] is not None for k in ("retrieve_p", "select_q", "simple_audit", "random_k")):
         raise ValueError("These overrides currently apply to math; code preserves its participant retry protocol")
     if domain == "math" and variants["direct_k"] is not None:
         raise ValueError("--direct-k applies to code")
@@ -142,6 +144,9 @@ def build_plan(args, config, benchmark, out_dir):
     env.update(LOCKED_ENV)
     env["MASRUBRIC_MATH_TEAM_VARIANT"] = "verifier" if domain == "math" else ""
     env["MASRUBRIC_PROFILE_AWARE_RETRIEVAL"] = "1" if domain == "code" else "0"
+    env["MASRUBRIC_WITHHOLDING_POLICY"] = variants["withholding_policy"] or "withhold"
+    env["MASRUBRIC_CODE_RETRY_BUDGET"] = str(variants["retry_budget"] if variants["retry_budget"] is not None else 3)
+    env["MASRUBRIC_MECHANISM_TRACE"] = str(output / "mechanism.jsonl")
     env["MASRUBRIC_USAGE_LOG"] = str(output / "usage.jsonl")
     for role in ROLES:
         env[f"MASRUBRIC_{role.upper()}_API_KEY"] = os.environ.get(f"{role.upper()}_KEY", "EMPTY")

@@ -146,7 +146,7 @@ asyncio.run(main())
 
 
 class PaperRuntimeIntegrationTests(unittest.TestCase):
-    def run_fixture(self, benchmark, endpoint, directory):
+    def run_fixture(self, benchmark, endpoint, directory, flags=()):
         config = json.loads((ROOT / "configs/paper_main.json").read_text(encoding="utf-8"))
         is_code = benchmark == "mbpp"
         suite = "code_8b" if is_code else "math_8b"
@@ -192,6 +192,7 @@ class PaperRuntimeIntegrationTests(unittest.TestCase):
                    "--benchmark", benchmark, "--in-file", str(dataset), "--metric-pool-file", str(pool),
                    "--embedding-cache-file", str(cache), "--output-dir", str(directory / "output"),
                    "--limit", "1", "--timeout", "90", "--allow-model-override"]
+        command += list(flags)
         completed = subprocess.run(command, cwd=ROOT, env=environment, capture_output=True,
                                    text=True, encoding="utf-8", errors="replace", timeout=120)
         logs = "\n".join(path.read_text(encoding="utf-8", errors="replace")
