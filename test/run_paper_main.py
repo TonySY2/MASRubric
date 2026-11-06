@@ -217,15 +217,18 @@ def build_plan(args, config, benchmark, out_dir):
 
 def preflight(manifest, missing_env, args):
     errors = [f"Missing environment: {name}" for name in missing_env]
-    if manifest["suite"] != "math_14b":
-        mismatches = []
-        for role, expected in manifest["historical_reference"]["model_roles"].items():
-            actual = manifest["models_and_endpoints"][role]["model"].replace("\\", "/").rsplit("/", 1)[-1]
-            if actual != expected:
-                mismatches.append(f"{role}: expected {expected}, configured {actual}")
-        manifest["model_name_mismatches"] = mismatches
-        if mismatches and not args.allow_model_override:
-            errors.append("Historical model mapping differs: " + "; ".join(mismatches) + ". Use --allow-model-override only for an intentional variant.")
+    expected_roles = dict(manifest["historical_reference"]["model_roles"])
+    if manifest["suite"] == "math_14b":
+        expected_roles.update(reasoning="Qwen3-14B", supervisor="Qwen3-14B")
+    manifest["expected_model_roles"] = expected_roles
+    mismatches = []
+    for role, expected in expected_roles.items():
+        actual = manifest["models_and_endpoints"][role]["model"].replace("\\", "/").rsplit("/", 1)[-1]
+        if actual != expected:
+            mismatches.append(f"{role}: expected {expected}, configured {actual}")
+    manifest["model_name_mismatches"] = mismatches
+    if mismatches and not args.allow_model_override:
+        errors.append("Expected model mapping differs: " + "; ".join(mismatches) + ". Use --allow-model-override only for an intentional variant.")
     for key in ("dataset", "metric_pool", "embedding_cache"):
         if not Path(manifest[key]).is_file():
             errors.append(f"Missing {key}: {manifest[key]}")

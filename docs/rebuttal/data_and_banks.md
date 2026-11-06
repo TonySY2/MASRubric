@@ -82,6 +82,19 @@ python scripts/rebuttal/prepare_assets.py fetch-livecode \
 
 当前两个公开 bank 都没有完整 `match_profile.interface_shape` / `io_contract` 字段。代码 runtime 对缺少 profile 的 criterion 使用 `any`；`complete_match_profiles` 会在盘点中显示。研究 profile 过滤效果时，应先生成并保存 profile 扩充版本，再与原 bank 分开比较。
 
+非去重数学池消融另用 `test/metrics_pool/two_pool/mixed_metrics_two_pool.json`，含 2,597 条criterion。服务器交接包同时保存其匹配的 `mixed_embeddings_cache_two_pool.jsonl`（2,597 个4096维向量）。当前release扩展入口使用 `test/metrics_pool/` 下的cache路径，可将三个cache分别链接到对应位置：
+
+```bash
+ln -s "$PWD/paper/assets/pools/math/deduped-mixed_two_pool-trigger.jsonl" \
+  test/metrics_pool/two_pool/deduped-mixed_two_pool-trigger.jsonl
+ln -s "$PWD/paper/assets/pools/code/deduplicated_embeddings-trigger.jsonl" \
+  test/metrics_pool/code_mixed/deduplicated_embeddings-trigger.jsonl
+ln -s /path/to/preserved/mixed_embeddings_cache_two_pool.jsonl \
+  test/metrics_pool/two_pool/mixed_embeddings_cache_two_pool.jsonl
+```
+
+已存在的链接保留即可。缺少非去重cache时，使用下面的`embed`命令，将输入改为上述2,597条bank，生成独立cache。
+
 ### 直接为现有 bank 生成 embedding
 
 先按 [主实验说明](../paper_main_reproduction.md) 安装 Python 3.10 环境并设置 `EMBEDDING_URL`、`EMBEDDING_MODEL`、`EMBEDDING_KEY`。计划默认只打印；加 `--execute` 后调用服务。每步使用新的输出目录。
