@@ -228,7 +228,8 @@ def preflight(manifest, missing_env, args):
             mismatches.append(f"{role}: expected {expected}, configured {actual}")
     manifest["model_name_mismatches"] = mismatches
     if mismatches and not args.allow_model_override:
-        errors.append("Expected model mapping differs: " + "; ".join(mismatches) + ". Use --allow-model-override only for an intentional variant.")
+        label = "Expected" if manifest["suite"] == "math_14b" else "Historical"
+        errors.append(label + " model mapping differs: " + "; ".join(mismatches) + ". Use --allow-model-override only for an intentional variant.")
     for key in ("dataset", "metric_pool", "embedding_cache"):
         if not Path(manifest[key]).is_file():
             errors.append(f"Missing {key}: {manifest[key]}")
