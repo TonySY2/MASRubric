@@ -1,0 +1,212 @@
+{
+  "families": {
+    "main": {
+      "runtime": "paper",
+      "domains": [
+        "math",
+        "code"
+      ],
+      "methods": [
+        "baseline",
+        "masrubric"
+      ],
+      "interpretation": "Same recovered Dynamic-MAS runtime; new control and MASRubric measurements. math_14b uses explicitly configured 14B model services."
+    },
+    "revision": {
+      "runtime": "paper",
+      "domains": [
+        "math"
+      ],
+      "methods": [
+        "masrubric",
+        "retry0",
+        "retry1",
+        "retry2",
+        "retry4"
+      ],
+      "interpretation": "Change only retry budget; retry0 is audit plus withholding with no revision."
+    },
+    "rubric_size": {
+      "runtime": "paper",
+      "domains": [
+        "math"
+      ],
+      "methods": [
+        "masrubric",
+        "top3",
+        "top7"
+      ],
+      "interpretation": "Change only selected rubric maximum; retain threshold0.6, candidates20, retry budget3."
+    },
+    "threshold": {
+      "runtime": "paper",
+      "domains": [
+        "math"
+      ],
+      "methods": [
+        "masrubric",
+        "threshold04",
+        "threshold08",
+        "threshold10"
+      ],
+      "interpretation": "Change only rubric satisfaction threshold."
+    },
+    "candidate_size": {
+      "runtime": "paper",
+      "domains": [
+        "math"
+      ],
+      "methods": [
+        "masrubric",
+        "candidates10",
+        "candidates40"
+      ],
+      "interpretation": "Change only semantic candidate count; selected maximum5."
+    },
+    "retrieval_control": {
+      "runtime": "paper",
+      "domains": [
+        "math"
+      ],
+      "methods": [
+        "masrubric",
+        "random5",
+        "simple_audit"
+      ],
+      "interpretation": "Random fixed5 and generic auditing controls; fixed5 differs from the historical random1-5 experiment."
+    },
+    "code_sensitivity": {
+      "runtime": "paper",
+      "domains": [
+        "code"
+      ],
+      "methods": [
+        "masrubric",
+        "code_top1",
+        "code_top5",
+        "code_threshold06"
+      ],
+      "interpretation": "Code-specific direct-retrieval size and threshold changes on the reference runtime."
+    },
+    "fixed_extension": {
+      "runtime": "release",
+      "domains": [
+        "math"
+      ],
+      "methods": [
+        "fixed_baseline",
+        "masrubric_math_main"
+      ],
+      "interpretation": "Current fixed FullGraph extension; recover the historical fixed-runner snapshot for comparisons to the paper Fixed-MAS rows.",
+      "framework": "fixed"
+    },
+    "pool_control": {
+      "runtime": "release",
+      "domains": [
+        "math"
+      ],
+      "methods": [
+        "masrubric_math_main",
+        "masrubric_math_nondedup_pool"
+      ],
+      "interpretation": "Deduplicated vs non-deduplicated math bank on the same configurable runtime. Install both matching caches."
+    },
+    "random_1to5_extension": {
+      "runtime": "release",
+      "domains": [
+        "math"
+      ],
+      "methods": [
+        "masrubric_math_main",
+        "masrubric_math_random_1to5"
+      ],
+      "interpretation": "Current configurable-runtime variable-size random control; preserve distinction from reference-runtime comparisons."
+    }
+  },
+  "reference_variants": {
+    "retry0": [
+      "--retry-budget",
+      "0"
+    ],
+    "retry1": [
+      "--retry-budget",
+      "1"
+    ],
+    "retry2": [
+      "--retry-budget",
+      "2"
+    ],
+    "retry4": [
+      "--retry-budget",
+      "4"
+    ],
+    "top3": [
+      "--select-q",
+      "3"
+    ],
+    "top7": [
+      "--select-q",
+      "7"
+    ],
+    "threshold04": [
+      "--pass-rate",
+      "0.4"
+    ],
+    "threshold08": [
+      "--pass-rate",
+      "0.8"
+    ],
+    "threshold10": [
+      "--pass-rate",
+      "1.0"
+    ],
+    "candidates10": [
+      "--retrieve-p",
+      "10"
+    ],
+    "candidates40": [
+      "--retrieve-p",
+      "40"
+    ],
+    "random5": [
+      "--random-k",
+      "5"
+    ],
+    "simple_audit": [
+      "--simple-audit",
+      "1"
+    ],
+    "code_top1": [
+      "--direct-k",
+      "1"
+    ],
+    "code_top5": [
+      "--direct-k",
+      "5"
+    ],
+    "code_threshold06": [
+      "--pass-rate",
+      "0.6"
+    ]
+  },
+  "archive_required": [
+    "historical_fixed_mas",
+    "single_agent",
+    "self_refine",
+    "agent_dropout",
+    "agent_prune",
+    "agent_auditor",
+    "mad_architectures",
+    "gemma_bank_transfer",
+    "bank_size",
+    "original_failure_mining"
+  ],
+  "specialist_extensions": [
+    "equal_total_token_budget",
+    "adversarial_corruption",
+    "auditor_false_positive_false_negative_annotation",
+    "no_withholding_control",
+    "strict_empty_audit_policy"
+  ],
+  "selection": "See docs/rebuttal/experiment_readiness_zh.md for questions, metrics and priority."
+}

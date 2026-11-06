@@ -31,3 +31,6 @@ jobs:
           python test/run_release_experiment.py --list
           python test/run_release_experiment.py --benchmark gsm8k --method masrubric_math_main --model-profile math_8b --limit 2 --dry-run
           python test/run_release_experiment.py --benchmark gsm8k --method masrubric_math_main --framework fixed --model-profile math_8b --limit 2 --dry-run
+          python scripts/rebuttal/run_matrix.py plan --family rubric_size --suite math_8b --benchmarks aime24 --limit 2 --plan runs/ci-plan.json --output-dir runs/ci
+          python scripts/rebuttal/run_matrix.py check --plan runs/ci-plan.json
+          python scripts/rebuttal/prepare_assets.py inventory

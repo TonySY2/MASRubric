@@ -10,6 +10,7 @@ import argparse
 import json
 import os
 from pathlib import Path
+import re
 import subprocess
 import sys
 from datetime import datetime, timezone
@@ -59,6 +60,18 @@ def iter_records(path):
         yield from records(path)
 
 
+def input_sample_id(row, index, benchmark):
+    keys = {
+        "humaneval": ("task_id", "name"),
+        "mbpp": ("task_id",),
+        "livecode": ("question_id", "id"),
+        "codecontest": ("id", "name"),
+        "olymmath_easy": ("unique_id", "id"),
+        "olymmath_hard": ("unique_id", "id"),
+    }.get(benchmark, ("id", "task_id", "problem_id", "question_id"))
+    return str(next((row[k] for k in keys if isinstance(row, dict) and k in row), index))
+
+
 def positive(value):
     value = int(value)
     if value < 1:
@@ -84,12 +97,35 @@ def parser():
     p.add_argument("--dry-run", action="store_true")
     p.add_argument("--preflight", action="store_true")
     p.add_argument("--list", action="store_true")
+    p.add_argument("--variant-name", help="Explicit name for a controlled experiment differing from the main preset.")
+    p.add_argument("--pass-rate", type=float)
+    p.add_argument("--retry-budget", type=int)
+    p.add_argument("--retrieve-p", type=positive)
+    p.add_argument("--select-q", type=positive)
+    p.add_argument("--direct-k", type=positive, help="Code direct retrieval only.")
+    p.add_argument("--simple-audit", type=int, choices=(1, 2))
+    p.add_argument("--random-k", type=positive, help="Math fixed-size random retrieval control.")
     return p
 
 
 def build_plan(args, config, benchmark, out_dir):
     spec = config["benchmarks"][benchmark]
     domain = "code" if args.suite == "code_8b" else "math"
+    variants = {name: getattr(args, name, None) for name in
+                ("pass_rate", "retry_budget", "retrieve_p", "select_q", "direct_k", "simple_audit", "random_k")}
+    changed = {name: value for name, value in variants.items() if value is not None}
+    if changed and not getattr(args, "variant_name", None):
+        raise ValueError("Parameter overrides require --variant-name so they are recorded as a distinct experiment")
+    if changed and args.method == "baseline":
+        raise ValueError("Audit overrides do not apply to the baseline")
+    if variants["pass_rate"] is not None and not 0 <= variants["pass_rate"] <= 1:
+        raise ValueError("--pass-rate must be between 0 and 1")
+    if variants["retry_budget"] is not None and variants["retry_budget"] < 0:
+        raise ValueError("--retry-budget cannot be negative")
+    if domain == "code" and any(variants[k] is not None for k in ("retry_budget", "retrieve_p", "select_q", "simple_audit", "random_k")):
+        raise ValueError("These overrides currently apply to math; code preserves its participant retry protocol")
+    if domain == "math" and variants["direct_k"] is not None:
+        raise ValueError("--direct-k applies to code")
     if spec["domain"] != domain:
         raise ValueError(f"{benchmark} does not belong to {args.suite}")
     assets = args.assets_root.resolve()
@@ -126,11 +162,16 @@ def build_plan(args, config, benchmark, out_dir):
            "--log_file", str(output / "detailed.log"),
            "--metric_pool_file", str(pool), "--embedding_cache_file", str(cache),
            "--max_turns", "7", "--concurrency_limit", str(args.concurrency),
-           "--pass_rate", "1.0" if domain == "code" else "0.6"]
+           "--pass_rate", str(variants["pass_rate"] if variants["pass_rate"] is not None else (1.0 if domain == "code" else 0.6))]
     if domain == "code":
-        cmd += ["--task", benchmark, "--force_direct_search", "--direct_k", "3"]
+        cmd += ["--task", benchmark, "--force_direct_search", "--direct_k", str(variants["direct_k"] or 3)]
     else:
-        cmd += ["--retrieve_p", "20", "--select_q", "5", "--retries_times", "3"]
+        cmd += ["--retrieve_p", str(variants["retrieve_p"] or 20), "--select_q", str(variants["select_q"] or 5),
+                "--retries_times", str(variants["retry_budget"] if variants["retry_budget"] is not None else 3)]
+        if variants["simple_audit"] is not None:
+            cmd += ["--use_simple_audit", str(variants["simple_audit"])]
+        if variants["random_k"] is not None:
+            cmd += ["--random_k", str(variants["random_k"])]
     if args.method == "baseline":
         cmd.append("--baseline_only")
     if args.limit:
@@ -166,7 +207,11 @@ def build_plan(args, config, benchmark, out_dir):
         "final_decision": spec["final_decision"],
         "historical_reference": spec["historical"],
         "model_override_allowed": args.allow_model_override,
+        "experiment_variant": getattr(args, "variant_name", None),
+        "parameter_overrides": changed,
     }
+    if changed:
+        manifest["scope"] = "controlled_variant_of_recovered_dynamic_runtime"
     return cmd, env, manifest, missing_env
 
 
@@ -190,13 +235,15 @@ def preflight(manifest, missing_env, args):
             for i, row in enumerate(iter_records(manifest["dataset"])):
                 count += 1
                 if args.limit is None or i < args.limit:
-                    sample_ids.append(str(next((row[k] for k in ("id", "task_id", "problem_id", "question_id")
-                                                if isinstance(row, dict) and k in row), i)))
+                    sample_ids.append(input_sample_id(row, i, manifest["benchmark"]))
             manifest["input_records"] = count
             if count != manifest["benchmark_total"]:
                 errors.append(f"Dataset has {count} records; expected full benchmark {manifest['benchmark_total']}")
             manifest["selected_samples"] = len(sample_ids)
             manifest["sample_ids"] = sample_ids
+            manifest["sample_id_policy"] = "CodeContests numeric IDs are matched to the runner's existing suffixed IDs; other task IDs are exact."
+            if len(sample_ids) != len(set(sample_ids)):
+                errors.append("Selected input sample IDs are duplicated")
         except (ValueError, TypeError) as exc:
             errors.append(f"Invalid dataset: {exc}")
     if Path(manifest["metric_pool"]).is_file() and Path(manifest["embedding_cache"]).is_file():
@@ -252,9 +299,23 @@ def result_summary(manifest, returncode):
         rows = [dict(row, id=row.get("id", key)) for key, row in value.items()] if isinstance(value, dict) else value
     else:
         rows = records(result) if result.is_file() else []
-    ids = [str(row.get("id", i)) for i, row in enumerate(rows)]
+    def result_id(row, index):
+        value = str(row.get("id", index))
+        if manifest["benchmark"] == "codecontest":
+            match = re.fullmatch(r"([0-9]+)_[0-9a-fA-F]{8}", value)
+            if match:
+                return match.group(1)
+        return value
+    ids = [result_id(row, i) for i, row in enumerate(rows)]
     duplicates = len(ids) != len(set(ids))
+    selected_ids = manifest.get("sample_ids")
+    expected_ids = set(map(str, selected_ids)) if selected_ids is not None else None
+    unexpected_ids = sorted(set(ids) - expected_ids) if expected_ids is not None else []
+    missing_ids = sorted(expected_ids - set(ids)) if expected_ids is not None else []
+    malformed_expected = selected_ids is not None and (len(selected_ids) != manifest["selected_samples"] or len(expected_ids) != len(selected_ids))
     def correct(row):
+        if row.get("status") in ("failed", "timeout", "interrupted", "no_result") or row.get("timed_out") or row.get("exception") or row.get("error") in ("sample_timeout", "api_error", "generation_failed"):
+            return None
         if manifest["benchmark"] == "aqua":
             # The historical AQuA runner writes the extracted option directly,
             # without the boolean grading field used by other runners.
@@ -263,13 +324,18 @@ def result_summary(manifest, returncode):
                 gold = gold[0] if gold else ""
             return bool(str(gold or "").strip()) and str(gold).strip().upper() == str(pred or "").strip().upper()
         return row.get("is_correct", row.get("is_solved", False)) is True
-    solved = sum(correct(row) for row in rows)
+    outcomes = [correct(row) for identity, row in zip(ids, rows) if identity not in unexpected_ids]
+    solved = sum(value is True for value in outcomes)
+    unknown = sum(value is None for value in outcomes)
     expected = manifest["selected_samples"]
-    complete = returncode == 0 and len(rows) == expected and not duplicates
+    complete = returncode == 0 and len(rows) == expected and not duplicates and not unexpected_ids and not missing_ids and not malformed_expected and not unknown
     return {
         "benchmark": manifest["benchmark"], "returncode": returncode,
         "completed_samples": len(rows), "expected_samples": expected,
-        "correct": solved, "missing_samples": max(0, expected - len(rows)),
+        "correct": solved, "missing_samples": len(missing_ids) if expected_ids is not None else max(0, expected - len(rows)),
+        "unknown_samples": unknown,
+        "missing_sample_ids": missing_ids, "unexpected_sample_ids": unexpected_ids,
+        "identity_validation": "unavailable" if expected_ids is None else ("passed" if not missing_ids and not unexpected_ids and not malformed_expected and not duplicates else "failed"),
         "duplicate_sample_ids": duplicates, "complete": complete,
         "accuracy_percent": 100 * solved / expected if expected else None,
         "benchmark_total": manifest["benchmark_total"],

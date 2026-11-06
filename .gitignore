@@ -37,3 +37,11 @@ Thumbs.db
 *.usage.jsonl
 *.usage.summary.json
 *.samples.jsonl
+
+# Rebuttal plans, private archives, endpoint configuration, and fresh runs.
+/runs/
+/private-assets/
+/environment/
+/validation/
+/handoff.local.json
+configs/rebuttal.env

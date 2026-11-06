@@ -16,7 +16,6 @@ from masrubric.prompt.prompt_set_registry import PromptSetRegistry
 from masrubric.agents.agent_registry import AgentRegistry
 from masrubric.agents.supervisor import Supervisor
 from openai import AsyncOpenAI, APITimeoutError, APIConnectionError
-from transformers import AutoTokenizer
 
 @AgentRegistry.register('MathSolver_math500')
 class MathSolverMath500(BaseChatAgent):

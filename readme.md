@@ -17,10 +17,16 @@
   <a href="#paper-and-citation">Manuscript</a> &nbsp;|&nbsp;
   <a href="docs/paper_main_reproduction.md">Runbook</a> &nbsp;|&nbsp;
   <a href="docs/experiment_matrix.md">Experiments</a> &nbsp;|&nbsp;
+  <a href="docs/rebuttal/README.md">Experiment handoff / 实验交接</a> &nbsp;|&nbsp;
   <a href="#reported-results">Reported results</a>
 </p>
 
 ## Overview
+
+For reproducibility work and follow-up experiments, start with the
+[experiment handoff guide](docs/rebuttal/README.md). It includes preserved-data
+setup, controlled parameter sweeps, repeated runs, paired statistics, bank
+construction, and a guide to the revised manuscript.
 
 MASRubric audits intermediate messages before errors propagate through a
 multi-agent system. It distills recurring reasoning pitfalls from failed

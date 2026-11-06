@@ -1,0 +1,1786 @@
+{
+  "roots": {
+    "ac": "july-rebuttal/reference_packages/main_method_reference_20260711/source_workspace",
+    "fixed": "historical-projects/26.3.24rebuttal/V2forV1",
+    "training": "historical-projects/26.4.9开始-改进V2/metric_training_workspace"
+  },
+  "inspection": "Source and argparse inspection; no legacy launchers executed",
+  "programs": [
+    {
+      "root_key": "ac",
+      "path": "scripts/run_v2_math_task.py",
+      "purpose": "Dynamic math, MASRubric, baseline, vanilla, Self-Refine, Multi-TAG, PRM, ablations",
+      "arguments": [
+        {
+          "flags": [
+            "--task"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--exp-name"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--reasoning-url"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--supervisor-url"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--embedding-url"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--reasoning-model"
+          ]
+        },
+        {
+          "flags": [
+            "--supervisor-model"
+          ]
+        },
+        {
+          "flags": [
+            "--embedding-model"
+          ]
+        },
+        {
+          "flags": [
+            "--selector-model"
+          ]
+        },
+        {
+          "flags": [
+            "--selector-url"
+          ]
+        },
+        {
+          "flags": [
+            "--selector-api-key"
+          ]
+        },
+        {
+          "flags": [
+            "--metric-pool-file"
+          ]
+        },
+        {
+          "flags": [
+            "--embedding-cache-file"
+          ]
+        },
+        {
+          "flags": [
+            "--python-bin"
+          ]
+        },
+        {
+          "flags": [
+            "--concurrency-limit"
+          ]
+        },
+        {
+          "flags": [
+            "--max-turns"
+          ]
+        },
+        {
+          "flags": [
+            "--retries-times"
+          ]
+        },
+        {
+          "flags": [
+            "--pass-rate"
+          ]
+        },
+        {
+          "flags": [
+            "--direct-k"
+          ]
+        },
+        {
+          "flags": [
+            "--retrieve-p"
+          ]
+        },
+        {
+          "flags": [
+            "--select-q"
+          ]
+        },
+        {
+          "flags": [
+            "--random-k"
+          ]
+        },
+        {
+          "flags": [
+            "--random-k-min"
+          ]
+        },
+        {
+          "flags": [
+            "--random-k-max"
+          ]
+        },
+        {
+          "flags": [
+            "--agent-mode"
+          ]
+        },
+        {
+          "flags": [
+            "--prm-url"
+          ]
+        },
+        {
+          "flags": [
+            "--prm-n-samples"
+          ]
+        },
+        {
+          "flags": [
+            "--mode"
+          ]
+        },
+        {
+          "flags": [
+            "--baseline-only"
+          ],
+          "action": "store_true"
+        },
+        {
+          "flags": [
+            "--force-direct-search"
+          ],
+          "action": "store_true"
+        },
+        {
+          "flags": [
+            "--disable-log-buffer"
+          ],
+          "action": "store_true"
+        },
+        {
+          "flags": [
+            "--method-dir-name"
+          ]
+        },
+        {
+          "flags": [
+            "--lock-metrics-after-first-round"
+          ],
+          "action": "store_true"
+        },
+        {
+          "flags": [
+            "--batch-audit-metrics"
+          ],
+          "action": "store_true"
+        },
+        {
+          "flags": [
+            "--disable-atomic-trace"
+          ],
+          "action": "store_true"
+        },
+        {
+          "flags": [
+            "--cheap-precheck"
+          ],
+          "action": "store_true"
+        },
+        {
+          "flags": [
+            "--cheap-precheck-model"
+          ]
+        },
+        {
+          "flags": [
+            "--cheap-precheck-url"
+          ]
+        },
+        {
+          "flags": [
+            "--cheap-precheck-api-key"
+          ]
+        },
+        {
+          "flags": [
+            "--limit"
+          ]
+        },
+        {
+          "flags": [
+            "--dataset-path-override"
+          ]
+        }
+      ]
+    },
+    {
+      "root_key": "ac",
+      "path": "scripts/run_v2_code_task.py",
+      "purpose": "Dynamic code, MASRubric, baseline, Self-Refine, Multi-TAG, PRM, ablations",
+      "arguments": [
+        {
+          "flags": [
+            "--task"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--exp-name"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--reasoning-url"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--supervisor-url"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--embedding-url"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--reasoning-model"
+          ]
+        },
+        {
+          "flags": [
+            "--supervisor-model"
+          ]
+        },
+        {
+          "flags": [
+            "--embedding-model"
+          ]
+        },
+        {
+          "flags": [
+            "--selector-model"
+          ]
+        },
+        {
+          "flags": [
+            "--selector-url"
+          ]
+        },
+        {
+          "flags": [
+            "--selector-api-key"
+          ]
+        },
+        {
+          "flags": [
+            "--metric-pool-file"
+          ]
+        },
+        {
+          "flags": [
+            "--embedding-cache-file"
+          ]
+        },
+        {
+          "flags": [
+            "--python-bin"
+          ]
+        },
+        {
+          "flags": [
+            "--concurrency-limit"
+          ]
+        },
+        {
+          "flags": [
+            "--max-turns"
+          ]
+        },
+        {
+          "flags": [
+            "--pass-rate"
+          ]
+        },
+        {
+          "flags": [
+            "--direct-k"
+          ]
+        },
+        {
+          "flags": [
+            "--retrieve-p"
+          ]
+        },
+        {
+          "flags": [
+            "--select-q"
+          ]
+        },
+        {
+          "flags": [
+            "--random-k"
+          ]
+        },
+        {
+          "flags": [
+            "--agent-mode"
+          ],
+          "choices": [
+            "supervisor",
+            "prm",
+            "self_refine",
+            "self-refine",
+            "multi_tag",
+            "multi-tag"
+          ]
+        },
+        {
+          "flags": [
+            "--prm-url"
+          ]
+        },
+        {
+          "flags": [
+            "--prm-n-samples"
+          ]
+        },
+        {
+          "flags": [
+            "--agent-mode-note"
+          ]
+        },
+        {
+          "flags": [
+            "--mode"
+          ]
+        },
+        {
+          "flags": [
+            "--baseline-only"
+          ],
+          "action": "store_true"
+        },
+        {
+          "flags": [
+            "--use-simple-audit"
+          ]
+        },
+        {
+          "flags": [
+            "--force-direct-search"
+          ],
+          "action": "store_true"
+        },
+        {
+          "flags": [
+            "--disable-log-buffer"
+          ],
+          "action": "store_true"
+        },
+        {
+          "flags": [
+            "--sample-timeout-seconds"
+          ]
+        },
+        {
+          "flags": [
+            "--method-dir-name"
+          ]
+        },
+        {
+          "flags": [
+            "--cheap-precheck"
+          ],
+          "action": "store_true"
+        },
+        {
+          "flags": [
+            "--cheap-precheck-model"
+          ]
+        },
+        {
+          "flags": [
+            "--cheap-precheck-url"
+          ]
+        },
+        {
+          "flags": [
+            "--cheap-precheck-api-key"
+          ]
+        },
+        {
+          "flags": [
+            "--limit"
+          ]
+        },
+        {
+          "flags": [
+            "--dataset-path"
+          ]
+        },
+        {
+          "flags": [
+            "--skip-aligned-eval"
+          ],
+          "action": "store_true"
+        }
+      ]
+    },
+    {
+      "root_key": "ac",
+      "path": "scripts/run_cot_mad_task.py",
+      "purpose": "CoT and multi-agent debate, math and code",
+      "arguments": [
+        {
+          "flags": [
+            "--domain"
+          ],
+          "choices": [
+            "math",
+            "code"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--task"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--method"
+          ],
+          "choices": [
+            "cot",
+            "mad"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--exp-name"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--reasoning-url"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--reasoning-model"
+          ]
+        },
+        {
+          "flags": [
+            "--dataset-path"
+          ]
+        },
+        {
+          "flags": [
+            "--method-dir-name"
+          ]
+        },
+        {
+          "flags": [
+            "--python-bin"
+          ]
+        },
+        {
+          "flags": [
+            "--concurrency-limit"
+          ]
+        },
+        {
+          "flags": [
+            "--limit"
+          ]
+        },
+        {
+          "flags": [
+            "--max-tokens"
+          ]
+        },
+        {
+          "flags": [
+            "--max-debate-rounds"
+          ]
+        },
+        {
+          "flags": [
+            "--min-debate-rounds"
+          ]
+        },
+        {
+          "flags": [
+            "--disable-moderator-stop"
+          ],
+          "action": "store_true"
+        },
+        {
+          "flags": [
+            "--mad-anchor-fallback"
+          ],
+          "action": "store_true"
+        },
+        {
+          "flags": [
+            "--sample-timeout-seconds"
+          ]
+        },
+        {
+          "flags": [
+            "--max-retries"
+          ]
+        },
+        {
+          "flags": [
+            "--resume"
+          ],
+          "action": "store_true"
+        },
+        {
+          "flags": [
+            "--save-debate-trace"
+          ],
+          "action": "store_true"
+        }
+      ]
+    },
+    {
+      "root_key": "ac",
+      "path": "scripts/run_v2_code_vanilla_eval.py",
+      "purpose": "Single-agent code",
+      "arguments": [
+        {
+          "flags": [
+            "--task"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--in_file"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--out_file"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--log_file"
+          ]
+        },
+        {
+          "flags": [
+            "--reasoning_url"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--reasoning_model"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--concurrency_limit"
+          ]
+        },
+        {
+          "flags": [
+            "--limit"
+          ]
+        },
+        {
+          "flags": [
+            "--sample_timeout_seconds"
+          ]
+        },
+        {
+          "flags": [
+            "--disable_log_buffer"
+          ],
+          "action": "store_true"
+        }
+      ]
+    },
+    {
+      "root_key": "ac",
+      "path": "scripts/prepare_offline_code_train_pool.py",
+      "purpose": "MBPP train and CodeContest sampled training inputs; archived path mapping required",
+      "arguments": [
+        {
+          "flags": [
+            "--out-dir"
+          ]
+        },
+        {
+          "flags": [
+            "--sample-size"
+          ]
+        },
+        {
+          "flags": [
+            "--seed"
+          ]
+        },
+        {
+          "flags": [
+            "--shards"
+          ]
+        }
+      ]
+    },
+    {
+      "root_key": "ac",
+      "path": "scripts/finalize_offline_code_train_pool.py",
+      "purpose": "Aggregate collected code failures and completion coverage",
+      "arguments": [
+        {
+          "flags": [
+            "--method-dir"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--append-missing-failures"
+          ],
+          "action": "store_true"
+        },
+        {
+          "flags": [
+            "--aggregate-output"
+          ]
+        }
+      ]
+    },
+    {
+      "root_key": "ac",
+      "path": "scripts/prepare_profileaware_metric_generation.py",
+      "purpose": "Historical profile annotation chunks",
+      "arguments": [
+        {
+          "flags": [
+            "--source-file"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--work-dir"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--chunk-count"
+          ]
+        }
+      ]
+    },
+    {
+      "root_key": "ac",
+      "path": "scripts/merge_profileaware_metric_profiles.py",
+      "purpose": "Historical annotated profile merge",
+      "arguments": [
+        {
+          "flags": [
+            "--source-file"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--manifest-file"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--output-file"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--report-file"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "root_key": "ac",
+      "path": "scripts/build_profileaware_embeddings.py",
+      "purpose": "Embedding for profile-enriched bank",
+      "arguments": [
+        {
+          "flags": [
+            "--input-file"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--output-file"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--model"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--base-url"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--api-key"
+          ]
+        },
+        {
+          "flags": [
+            "--concurrency"
+          ]
+        }
+      ]
+    },
+    {
+      "root_key": "ac",
+      "path": "scripts/render_atomic_trace_log.py",
+      "purpose": "Readable audit/revision/withhold traces",
+      "arguments": [
+        {
+          "flags": [
+            "--trace-file"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--output-log"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--summary-json"
+          ]
+        }
+      ]
+    },
+    {
+      "root_key": "ac",
+      "path": "scripts/export_v2_launch_csv.py",
+      "purpose": "Legacy result-table CSV",
+      "arguments": [
+        {
+          "flags": [
+            "--exp-prefix"
+          ]
+        },
+        {
+          "flags": [
+            "--exp-glob"
+          ]
+        },
+        {
+          "flags": [
+            "--all-v2"
+          ],
+          "action": "store_true"
+        },
+        {
+          "flags": [
+            "--output"
+          ]
+        }
+      ]
+    },
+    {
+      "root_key": "ac",
+      "path": "scripts/fetch_aime26_dataset.py",
+      "purpose": "AIME26 extension input",
+      "arguments": [
+        {
+          "flags": [
+            "--out-file"
+          ]
+        },
+        {
+          "flags": [
+            "--meta-file"
+          ]
+        }
+      ]
+    },
+    {
+      "root_key": "ac",
+      "path": "scripts/prepare_taco_dataset.py",
+      "purpose": "TACO extension input",
+      "arguments": [
+        {
+          "flags": [
+            "--raw-dir"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--metric-out-dir"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--eval-out-dir"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--expected-train-rows"
+          ]
+        },
+        {
+          "flags": [
+            "--expected-test-rows"
+          ]
+        },
+        {
+          "flags": [
+            "--batch-size"
+          ]
+        }
+      ]
+    },
+    {
+      "root_key": "ac",
+      "path": "scripts/prepare_apps_competition_dataset.py",
+      "purpose": "APPS competition extension input",
+      "arguments": [
+        {
+          "flags": [
+            "--raw-dir"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--metric-out-dir"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--eval-out-dir"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "root_key": "fixed",
+      "path": "experiments/run_math_benchmark_v2forv1.py",
+      "arguments": [
+        {
+          "flags": [
+            "--domain"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--dataset_json"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--train_dataset_json"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--result-bucket"
+          ]
+        },
+        {
+          "flags": [
+            "--result_file"
+          ]
+        },
+        {
+          "flags": [
+            "--summary_file"
+          ]
+        },
+        {
+          "flags": [
+            "--llm_name"
+          ]
+        },
+        {
+          "flags": [
+            "--reasoning-url"
+          ]
+        },
+        {
+          "flags": [
+            "--supervisor-model"
+          ]
+        },
+        {
+          "flags": [
+            "--supervisor-url"
+          ]
+        },
+        {
+          "flags": [
+            "--mode"
+          ]
+        },
+        {
+          "flags": [
+            "--lr"
+          ]
+        },
+        {
+          "flags": [
+            "--delta"
+          ]
+        },
+        {
+          "flags": [
+            "--batch_size"
+          ]
+        },
+        {
+          "flags": [
+            "--train_batch_size"
+          ]
+        },
+        {
+          "flags": [
+            "--imp_per_iterations"
+          ]
+        },
+        {
+          "flags": [
+            "--num_rounds"
+          ]
+        },
+        {
+          "flags": [
+            "--pruning_rate"
+          ]
+        },
+        {
+          "flags": [
+            "--dropout_rate"
+          ]
+        },
+        {
+          "flags": [
+            "--train_limit"
+          ]
+        },
+        {
+          "flags": [
+            "--eval_limit"
+          ]
+        },
+        {
+          "flags": [
+            "--agent_name"
+          ]
+        },
+        {
+          "flags": [
+            "--agent_nums"
+          ]
+        },
+        {
+          "flags": [
+            "--decision_method"
+          ]
+        },
+        {
+          "flags": [
+            "--optimized_spatial"
+          ],
+          "action": "store_true"
+        },
+        {
+          "flags": [
+            "--optimized_temporal"
+          ],
+          "action": "store_true"
+        },
+        {
+          "flags": [
+            "--seed"
+          ]
+        },
+        {
+          "flags": [
+            "--retries-times"
+          ]
+        },
+        {
+          "flags": [
+            "--pass-rate"
+          ]
+        },
+        {
+          "flags": [
+            "--reject-failed-outputs"
+          ],
+          "action": "store_true"
+        },
+        {
+          "flags": [
+            "--agent-mode",
+            "--agent_mode"
+          ]
+        },
+        {
+          "flags": [
+            "--prm-url",
+            "--prm_url"
+          ]
+        },
+        {
+          "flags": [
+            "--prm-n-samples",
+            "--prm_n_samples"
+          ]
+        }
+      ]
+    },
+    {
+      "root_key": "fixed",
+      "path": "experiments/run_humaneval.py",
+      "arguments": [
+        {
+          "flags": [
+            "--task"
+          ]
+        },
+        {
+          "flags": [
+            "--domain"
+          ]
+        },
+        {
+          "flags": [
+            "--dataset_json"
+          ]
+        },
+        {
+          "flags": [
+            "--train_dataset_json"
+          ]
+        },
+        {
+          "flags": [
+            "--result-bucket"
+          ]
+        },
+        {
+          "flags": [
+            "--result_file"
+          ]
+        },
+        {
+          "flags": [
+            "--summary_file"
+          ]
+        },
+        {
+          "flags": [
+            "--llm_name"
+          ]
+        },
+        {
+          "flags": [
+            "--mode"
+          ]
+        },
+        {
+          "flags": [
+            "--lr"
+          ]
+        },
+        {
+          "flags": [
+            "--delta"
+          ]
+        },
+        {
+          "flags": [
+            "--batch_size"
+          ]
+        },
+        {
+          "flags": [
+            "--train_batch_size"
+          ]
+        },
+        {
+          "flags": [
+            "--imp_per_iterations"
+          ]
+        },
+        {
+          "flags": [
+            "--num_rounds"
+          ]
+        },
+        {
+          "flags": [
+            "--pruning_rate"
+          ]
+        },
+        {
+          "flags": [
+            "--dropout_rate"
+          ]
+        },
+        {
+          "flags": [
+            "--train_limit"
+          ]
+        },
+        {
+          "flags": [
+            "--eval_limit"
+          ]
+        },
+        {
+          "flags": [
+            "--agent_names"
+          ],
+          "nargs": "+"
+        },
+        {
+          "flags": [
+            "--agent_nums"
+          ],
+          "nargs": "+"
+        },
+        {
+          "flags": [
+            "--decision_method"
+          ]
+        },
+        {
+          "flags": [
+            "--optimized_spatial"
+          ],
+          "action": "store_true"
+        },
+        {
+          "flags": [
+            "--optimized_temporal"
+          ],
+          "action": "store_true"
+        },
+        {
+          "flags": [
+            "--diff"
+          ],
+          "action": "store_true"
+        },
+        {
+          "flags": [
+            "--seed"
+          ]
+        },
+        {
+          "flags": [
+            "--agent-mode",
+            "--agent_mode"
+          ]
+        },
+        {
+          "flags": [
+            "--prm-url",
+            "--prm_url"
+          ]
+        },
+        {
+          "flags": [
+            "--prm-n-samples",
+            "--prm_n_samples"
+          ]
+        }
+      ]
+    },
+    {
+      "root_key": "fixed",
+      "path": "experiments/run_math_benchmark.py",
+      "arguments": [
+        {
+          "flags": [
+            "--domain"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--dataset_json"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--train_dataset_json"
+          ]
+        },
+        {
+          "flags": [
+            "--result-bucket"
+          ]
+        },
+        {
+          "flags": [
+            "--result_file"
+          ]
+        },
+        {
+          "flags": [
+            "--summary_file"
+          ]
+        },
+        {
+          "flags": [
+            "--llm_name"
+          ]
+        },
+        {
+          "flags": [
+            "--mode"
+          ]
+        },
+        {
+          "flags": [
+            "--lr"
+          ]
+        },
+        {
+          "flags": [
+            "--delta"
+          ]
+        },
+        {
+          "flags": [
+            "--batch_size"
+          ]
+        },
+        {
+          "flags": [
+            "--train_batch_size"
+          ]
+        },
+        {
+          "flags": [
+            "--imp_per_iterations"
+          ]
+        },
+        {
+          "flags": [
+            "--num_rounds"
+          ]
+        },
+        {
+          "flags": [
+            "--pruning_rate"
+          ]
+        },
+        {
+          "flags": [
+            "--dropout_rate"
+          ]
+        },
+        {
+          "flags": [
+            "--train_limit"
+          ]
+        },
+        {
+          "flags": [
+            "--eval_limit"
+          ]
+        },
+        {
+          "flags": [
+            "--agent_name"
+          ]
+        },
+        {
+          "flags": [
+            "--agent_nums"
+          ]
+        },
+        {
+          "flags": [
+            "--decision_method"
+          ]
+        },
+        {
+          "flags": [
+            "--optimized_spatial"
+          ],
+          "action": "store_true"
+        },
+        {
+          "flags": [
+            "--optimized_temporal"
+          ],
+          "action": "store_true"
+        },
+        {
+          "flags": [
+            "--seed"
+          ]
+        },
+        {
+          "flags": [
+            "--agent-mode",
+            "--agent_mode"
+          ]
+        },
+        {
+          "flags": [
+            "--prm-url",
+            "--prm_url"
+          ]
+        },
+        {
+          "flags": [
+            "--prm-n-samples",
+            "--prm_n_samples"
+          ]
+        }
+      ]
+    },
+    {
+      "root_key": "fixed",
+      "path": "scripts/serve_qwen25_math_prm.py",
+      "arguments": [
+        {
+          "flags": [
+            "--model"
+          ]
+        },
+        {
+          "flags": [
+            "--host"
+          ]
+        },
+        {
+          "flags": [
+            "--port"
+          ]
+        },
+        {
+          "flags": [
+            "--device"
+          ]
+        },
+        {
+          "flags": [
+            "--device-map"
+          ]
+        },
+        {
+          "flags": [
+            "--dtype"
+          ]
+        },
+        {
+          "flags": [
+            "--attn-implementation"
+          ]
+        },
+        {
+          "flags": [
+            "--max-length"
+          ]
+        }
+      ]
+    },
+    {
+      "root_key": "fixed",
+      "path": "experiments/run_math_benchmark_v2forv1_metric.py",
+      "arguments": [
+        {
+          "flags": [
+            "--domain"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--dataset_json"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--train_dataset_json"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--result-bucket"
+          ]
+        },
+        {
+          "flags": [
+            "--result_file"
+          ]
+        },
+        {
+          "flags": [
+            "--summary_file"
+          ]
+        },
+        {
+          "flags": [
+            "--llm_name"
+          ]
+        },
+        {
+          "flags": [
+            "--reasoning-url"
+          ]
+        },
+        {
+          "flags": [
+            "--supervisor-model"
+          ]
+        },
+        {
+          "flags": [
+            "--supervisor-url"
+          ]
+        },
+        {
+          "flags": [
+            "--embedding-model"
+          ]
+        },
+        {
+          "flags": [
+            "--embedding-url"
+          ]
+        },
+        {
+          "flags": [
+            "--metric-pool-file"
+          ]
+        },
+        {
+          "flags": [
+            "--embedding-cache-file"
+          ]
+        },
+        {
+          "flags": [
+            "--retrieve-p"
+          ]
+        },
+        {
+          "flags": [
+            "--select-q"
+          ]
+        },
+        {
+          "flags": [
+            "--direct-k"
+          ]
+        },
+        {
+          "flags": [
+            "--force-direct-search"
+          ],
+          "action": "store_true"
+        },
+        {
+          "flags": [
+            "--exact-select-q"
+          ],
+          "action": "store_true"
+        },
+        {
+          "flags": [
+            "--batch-audit-metrics"
+          ],
+          "action": "store_true"
+        },
+        {
+          "flags": [
+            "--random-k"
+          ]
+        },
+        {
+          "flags": [
+            "--random-k-min"
+          ]
+        },
+        {
+          "flags": [
+            "--random-k-max"
+          ]
+        },
+        {
+          "flags": [
+            "--mode"
+          ]
+        },
+        {
+          "flags": [
+            "--lr"
+          ]
+        },
+        {
+          "flags": [
+            "--delta"
+          ]
+        },
+        {
+          "flags": [
+            "--batch_size"
+          ]
+        },
+        {
+          "flags": [
+            "--train_batch_size"
+          ]
+        },
+        {
+          "flags": [
+            "--imp_per_iterations"
+          ]
+        },
+        {
+          "flags": [
+            "--num_rounds"
+          ]
+        },
+        {
+          "flags": [
+            "--pruning_rate"
+          ]
+        },
+        {
+          "flags": [
+            "--dropout_rate"
+          ]
+        },
+        {
+          "flags": [
+            "--train_limit"
+          ]
+        },
+        {
+          "flags": [
+            "--eval_limit"
+          ]
+        },
+        {
+          "flags": [
+            "--agent_name"
+          ]
+        },
+        {
+          "flags": [
+            "--agent_nums"
+          ]
+        },
+        {
+          "flags": [
+            "--decision_method"
+          ]
+        },
+        {
+          "flags": [
+            "--optimized_spatial"
+          ],
+          "action": "store_true"
+        },
+        {
+          "flags": [
+            "--optimized_temporal"
+          ],
+          "action": "store_true"
+        },
+        {
+          "flags": [
+            "--seed"
+          ]
+        },
+        {
+          "flags": [
+            "--retries-times"
+          ]
+        },
+        {
+          "flags": [
+            "--pass-rate"
+          ]
+        },
+        {
+          "flags": [
+            "--reject-failed-outputs"
+          ],
+          "action": "store_true"
+        },
+        {
+          "flags": [
+            "--agent-mode",
+            "--agent_mode"
+          ]
+        },
+        {
+          "flags": [
+            "--prm-url",
+            "--prm_url"
+          ]
+        },
+        {
+          "flags": [
+            "--prm-n-samples",
+            "--prm_n_samples"
+          ]
+        }
+      ]
+    },
+    {
+      "root_key": "training",
+      "path": "scripts/run_oldparadigm_dedup_dataset.py",
+      "arguments": [
+        {
+          "flags": [
+            "--dataset"
+          ],
+          "required": true
+        },
+        {
+          "flags": [
+            "--embedding-port"
+          ]
+        },
+        {
+          "flags": [
+            "--embedding-gpu"
+          ]
+        },
+        {
+          "flags": [
+            "--threshold"
+          ]
+        },
+        {
+          "flags": [
+            "--top-k"
+          ]
+        },
+        {
+          "flags": [
+            "--review-timeout"
+          ]
+        },
+        {
+          "flags": [
+            "--dataset"
+          ]
+        }
+      ]
+    },
+    {
+      "root_key": "training",
+      "path": "scripts/run_oldparadigm_metric_generation.py",
+      "arguments": [
+        {
+          "flags": [
+            "--model"
+          ]
+        },
+        {
+          "flags": [
+            "--mbpp-batch-size"
+          ]
+        },
+        {
+          "flags": [
+            "--codecontest-batch-size"
+          ]
+        },
+        {
+          "flags": [
+            "--base-cap"
+          ]
+        },
+        {
+          "flags": [
+            "--remaining-cap"
+          ]
+        },
+        {
+          "flags": [
+            "--max-attempts"
+          ]
+        },
+        {
+          "flags": [
+            "--poll-seconds"
+          ]
+        }
+      ]
+    }
+  ]
+}

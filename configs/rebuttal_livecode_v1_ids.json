@@ -1,0 +1,2407 @@
+{
+  "dataset": "livecodebench/code_generation_lite",
+  "version_tag": "release_v1",
+  "selection": "Preserved historical MASRubric 400-record export; original order",
+  "records": [
+    {
+      "platform": "codeforces",
+      "question_id": "1873_A",
+      "question_title": "A. Short Sort",
+      "contest_date": "2023-08-21T00:00:00"
+    },
+    {
+      "platform": "codeforces",
+      "question_id": "1873_B",
+      "question_title": "B. Good Kid",
+      "contest_date": "2023-08-21T00:00:00"
+    },
+    {
+      "platform": "codeforces",
+      "question_id": "1873_D",
+      "question_title": "D. 1D Eraser",
+      "contest_date": "2023-08-21T00:00:00"
+    },
+    {
+      "platform": "codeforces",
+      "question_id": "1883_B",
+      "question_title": "B. Chemistry",
+      "contest_date": "2023-09-22T00:00:00"
+    },
+    {
+      "platform": "codeforces",
+      "question_id": "1883_C",
+      "question_title": "C. Raspberries",
+      "contest_date": "2023-09-22T00:00:00"
+    },
+    {
+      "platform": "codeforces",
+      "question_id": "1899_A",
+      "question_title": "A. Game with Integers",
+      "contest_date": "2023-10-17T00:00:00"
+    },
+    {
+      "platform": "codeforces",
+      "question_id": "1899_B",
+      "question_title": "B. 250 Thousand Tons of TNT",
+      "contest_date": "2023-10-17T00:00:00"
+    },
+    {
+      "platform": "codeforces",
+      "question_id": "1899_C",
+      "question_title": "C. Yarik and Array",
+      "contest_date": "2023-10-17T00:00:00"
+    },
+    {
+      "platform": "codeforces",
+      "question_id": "1899_D",
+      "question_title": "D. Yarik and Musical Notes",
+      "contest_date": "2023-10-17T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2727",
+      "question_title": "number-of-senior-citizens",
+      "contest_date": "2023-05-13T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2728",
+      "question_title": "sum-in-a-matrix",
+      "contest_date": "2023-05-13T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2730",
+      "question_title": "maximum-or",
+      "contest_date": "2023-05-13T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2754",
+      "question_title": "maximum-strength-of-a-group",
+      "contest_date": "2023-05-27T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2755",
+      "question_title": "extra-characters-in-a-string",
+      "contest_date": "2023-05-27T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2756",
+      "question_title": "buy-two-chocolates",
+      "contest_date": "2023-05-27T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2757",
+      "question_title": "count-of-integers",
+      "contest_date": "2023-06-04T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2777",
+      "question_title": "find-the-distinct-difference-array",
+      "contest_date": "2023-05-07T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2779",
+      "question_title": "number-of-adjacent-elements-with-the-same-color",
+      "contest_date": "2023-05-07T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2784",
+      "question_title": "power-of-heroes",
+      "contest_date": "2023-05-13T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2785",
+      "question_title": "semi-ordered-permutation",
+      "contest_date": "2023-06-04T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2786",
+      "question_title": "find-the-longest-semi-repetitive-substring",
+      "contest_date": "2023-06-10T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2791",
+      "question_title": "find-the-losers-of-the-circular-game",
+      "contest_date": "2023-05-14T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2792",
+      "question_title": "neighboring-bitwise-xor",
+      "contest_date": "2023-05-14T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2800",
+      "question_title": "minimum-string-length-after-removing-substrings",
+      "contest_date": "2023-05-21T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2802",
+      "question_title": "find-the-punishment-number-of-an-integer",
+      "contest_date": "2023-05-21T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2808",
+      "question_title": "painting-the-walls",
+      "contest_date": "2023-06-18T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2810",
+      "question_title": "collecting-chocolates",
+      "contest_date": "2023-06-11T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2811",
+      "question_title": "determine-the-minimum-sum-of-a-k-avoiding-array",
+      "contest_date": "2023-08-20T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2812",
+      "question_title": "find-the-maximum-achievable-number",
+      "contest_date": "2023-07-09T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2816",
+      "question_title": "lexicographically-smallest-palindrome",
+      "contest_date": "2023-05-21T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2817",
+      "question_title": "minimum-cost-to-make-all-characters-equal",
+      "contest_date": "2023-05-28T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2819",
+      "question_title": "remove-trailing-zeros-from-a-string",
+      "contest_date": "2023-05-28T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2824",
+      "question_title": "check-if-the-number-is-fascinating",
+      "contest_date": "2023-06-10T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2825",
+      "question_title": "minimize-string-length",
+      "contest_date": "2023-06-04T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2827",
+      "question_title": "greatest-common-divisor-traversal",
+      "contest_date": "2023-05-27T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2828",
+      "question_title": "lexicographically-smallest-string-after-substring-operation",
+      "contest_date": "2023-06-11T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2831",
+      "question_title": "number-of-beautiful-pairs",
+      "contest_date": "2023-06-25T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2832",
+      "question_title": "find-the-longest-equal-subarray",
+      "contest_date": "2023-08-20T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2833",
+      "question_title": "count-zero-request-servers",
+      "contest_date": "2023-06-24T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2834",
+      "question_title": "relocate-marbles",
+      "contest_date": "2023-07-08T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2837",
+      "question_title": "minimum-operations-to-make-the-integer-zero",
+      "contest_date": "2023-06-25T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2839",
+      "question_title": "maximum-sum-queries",
+      "contest_date": "2023-06-11T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2844",
+      "question_title": "sum-of-squares-of-special-elements",
+      "contest_date": "2023-07-16T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2845",
+      "question_title": "find-the-value-of-the-partition",
+      "contest_date": "2023-06-18T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2847",
+      "question_title": "find-maximum-number-of-string-pairs",
+      "contest_date": "2023-06-24T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2848",
+      "question_title": "special-permutations",
+      "contest_date": "2023-06-18T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2849",
+      "question_title": "sum-of-imbalance-numbers-of-all-subarrays",
+      "contest_date": "2023-07-02T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2850",
+      "question_title": "construct-the-longest-new-string",
+      "contest_date": "2023-06-24T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2854",
+      "question_title": "decremental-string-concatenation",
+      "contest_date": "2023-06-24T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2855",
+      "question_title": "maximum-number-of-jumps-to-reach-the-last-index",
+      "contest_date": "2023-07-09T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2856",
+      "question_title": "count-complete-subarrays-in-an-array",
+      "contest_date": "2023-07-30T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2857",
+      "question_title": "total-distance-traveled",
+      "contest_date": "2023-06-18T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2866",
+      "question_title": "longest-even-odd-subarray-with-threshold",
+      "contest_date": "2023-07-02T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2867",
+      "question_title": "ways-to-split-array-into-good-subarrays",
+      "contest_date": "2023-06-25T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2868",
+      "question_title": "continuous-subarrays",
+      "contest_date": "2023-07-02T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2869",
+      "question_title": "longest-non-decreasing-subarray-from-two-arrays",
+      "contest_date": "2023-07-09T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2870",
+      "question_title": "longest-alternating-subarray",
+      "contest_date": "2023-07-08T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2872",
+      "question_title": "largest-element-in-an-array-after-merge-operations",
+      "contest_date": "2023-07-23T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2873",
+      "question_title": "prime-pairs-with-target-sum",
+      "contest_date": "2023-07-02T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2876",
+      "question_title": "number-of-employees-who-met-the-target",
+      "contest_date": "2023-07-30T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2877",
+      "question_title": "shortest-string-that-contains-three-strings",
+      "contest_date": "2023-07-30T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2878",
+      "question_title": "apply-operations-to-make-all-array-elements-equal-to-zero",
+      "contest_date": "2023-07-09T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2879",
+      "question_title": "minimum-changes-to-make-k-semi-palindromes",
+      "contest_date": "2023-10-22T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2881",
+      "question_title": "split-strings-by-separator",
+      "contest_date": "2023-07-23T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2882",
+      "question_title": "ways-to-express-an-integer-as-sum-of-powers",
+      "contest_date": "2023-07-22T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2883",
+      "question_title": "partition-string-into-minimum-beautiful-substrings",
+      "contest_date": "2023-07-08T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2884",
+      "question_title": "length-of-the-longest-valid-substring",
+      "contest_date": "2023-07-16T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2886",
+      "question_title": "faulty-keyboard",
+      "contest_date": "2023-08-06T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2887",
+      "question_title": "sort-vowels-in-a-string",
+      "contest_date": "2023-07-22T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2888",
+      "question_title": "minimum-index-of-a-valid-split",
+      "contest_date": "2023-07-16T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2891",
+      "question_title": "maximum-beauty-of-an-array-after-applying-operation",
+      "contest_date": "2023-07-16T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2892",
+      "question_title": "check-if-array-is-good",
+      "contest_date": "2023-07-22T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2893",
+      "question_title": "visit-array-positions-to-maximize-score",
+      "contest_date": "2023-07-22T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2902",
+      "question_title": "max-pair-sum-in-an-array",
+      "contest_date": "2023-08-13T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2915",
+      "question_title": "count-of-interesting-subarrays",
+      "contest_date": "2023-09-03T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2916",
+      "question_title": "check-if-it-is-possible-to-split-array",
+      "contest_date": "2023-08-06T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2917",
+      "question_title": "count-pairs-whose-sum-is-less-than-target",
+      "contest_date": "2023-08-19T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2919",
+      "question_title": "maximum-number-of-groups-with-increasing-length",
+      "contest_date": "2023-07-23T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2920",
+      "question_title": "minimum-seconds-to-equalize-a-circular-array",
+      "contest_date": "2023-08-05T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2921",
+      "question_title": "count-stepping-numbers-in-range",
+      "contest_date": "2023-07-30T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2952",
+      "question_title": "minimum-time-to-make-array-sum-at-most-x",
+      "contest_date": "2023-08-05T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2953",
+      "question_title": "count-pairs-of-points-with-distance-k",
+      "contest_date": "2023-09-16T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2954",
+      "question_title": "maximum-sum-of-almost-unique-subarray",
+      "contest_date": "2023-09-02T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2955",
+      "question_title": "account-balance-after-rounded-purchase",
+      "contest_date": "2023-08-05T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2977",
+      "question_title": "check-if-a-string-is-an-acronym-of-words",
+      "contest_date": "2023-08-20T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2979",
+      "question_title": "maximize-the-profit-as-the-salesman",
+      "contest_date": "2023-08-20T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2998",
+      "question_title": "count-symmetric-integers",
+      "contest_date": "2023-09-03T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "2999",
+      "question_title": "check-if-strings-can-be-made-equal-with-operations-i",
+      "contest_date": "2023-09-02T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3000",
+      "question_title": "minimum-absolute-difference-between-elements-with-constraint",
+      "contest_date": "2023-08-13T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3017",
+      "question_title": "number-of-beautiful-integers-in-the-range",
+      "contest_date": "2023-08-19T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3018",
+      "question_title": "make-string-a-subsequence-using-cyclic-increments",
+      "contest_date": "2023-08-19T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3019",
+      "question_title": "furthest-point-from-origin",
+      "contest_date": "2023-08-27T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3024",
+      "question_title": "string-transformation",
+      "contest_date": "2023-09-10T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3025",
+      "question_title": "minimum-operations-to-form-subsequence-with-target-sum",
+      "contest_date": "2023-08-27T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3031",
+      "question_title": "construct-product-matrix",
+      "contest_date": "2023-10-15T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3032",
+      "question_title": "maximize-value-of-function-in-a-ball-passing-game",
+      "contest_date": "2023-08-27T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3033",
+      "question_title": "apply-operations-to-make-two-strings-equal",
+      "contest_date": "2023-10-08T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3034",
+      "question_title": "points-that-intersect-with-cars",
+      "contest_date": "2023-09-10T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3044",
+      "question_title": "minimum-operations-to-collect-elements",
+      "contest_date": "2023-09-30T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3045",
+      "question_title": "minimum-right-shifts-to-sort-the-array",
+      "contest_date": "2023-09-16T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3046",
+      "question_title": "minimum-operations-to-make-a-special-number",
+      "contest_date": "2023-09-03T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3047",
+      "question_title": "maximum-element-sum-of-a-complete-subset-of-indices",
+      "contest_date": "2023-09-17T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3055",
+      "question_title": "maximum-odd-binary-number",
+      "contest_date": "2023-09-24T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3080",
+      "question_title": "split-array-into-maximum-number-of-subarrays",
+      "contest_date": "2023-09-30T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3081",
+      "question_title": "minimum-array-length-after-pair-removals",
+      "contest_date": "2023-09-16T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3091",
+      "question_title": "count-of-sub-multisets-with-bounded-sum",
+      "contest_date": "2023-10-14T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3093",
+      "question_title": "sum-of-values-at-indices-with-k-set-bits",
+      "contest_date": "2023-09-17T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3094",
+      "question_title": "minimum-number-of-operations-to-make-array-empty",
+      "contest_date": "2023-09-30T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3104",
+      "question_title": "happy-students",
+      "contest_date": "2023-09-17T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3106",
+      "question_title": "length-of-the-longest-subsequence-that-sums-to-target",
+      "contest_date": "2023-10-28T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3114",
+      "question_title": "beautiful-towers-i",
+      "contest_date": "2023-09-24T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3141",
+      "question_title": "minimum-size-subarray-in-infinite-array",
+      "contest_date": "2023-10-01T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3150",
+      "question_title": "shortest-and-lexicographically-smallest-beautiful-string",
+      "contest_date": "2023-10-15T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3151",
+      "question_title": "minimum-processing-time",
+      "contest_date": "2023-10-08T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3153",
+      "question_title": "apply-operations-on-array-to-maximize-sum-of-squares",
+      "contest_date": "2023-10-08T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3154",
+      "question_title": "maximum-value-of-an-ordered-triplet-i",
+      "contest_date": "2023-10-01T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3163",
+      "question_title": "subarrays-distinct-element-sum-of-squares-i",
+      "contest_date": "2023-10-28T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3164",
+      "question_title": "last-visited-integers",
+      "contest_date": "2023-10-14T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3166",
+      "question_title": "minimum-number-of-groups-to-create-a-valid-assignment",
+      "contest_date": "2023-10-22T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3171",
+      "question_title": "minimum-equal-sum-of-two-arrays-after-replacing-zeros",
+      "contest_date": "2023-10-29T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3172",
+      "question_title": "divisible-and-non-divisible-sums-difference",
+      "contest_date": "2023-10-08T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3174",
+      "question_title": "minimum-number-of-changes-to-make-binary-string-beautiful",
+      "contest_date": "2023-10-28T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3176",
+      "question_title": "minimum-sum-of-mountain-triplets-i",
+      "contest_date": "2023-10-22T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3183",
+      "question_title": "find-the-k-or-of-an-array",
+      "contest_date": "2023-10-29T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3184",
+      "question_title": "maximum-balanced-subsequence-sum",
+      "contest_date": "2023-11-05T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3188",
+      "question_title": "find-champion-i",
+      "contest_date": "2023-11-05T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3190",
+      "question_title": "minimum-operations-to-maximize-last-elements-in-arrays",
+      "contest_date": "2023-11-12T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3192",
+      "question_title": "maximum-xor-product",
+      "contest_date": "2023-11-18T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3193",
+      "question_title": "maximum-strong-pair-xor-i",
+      "contest_date": "2023-11-12T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3194",
+      "question_title": "find-words-containing-character",
+      "contest_date": "2023-11-25T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3195",
+      "question_title": "separate-black-and-white-balls",
+      "contest_date": "2023-11-18T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3196",
+      "question_title": "apply-operations-to-maximize-frequency-score",
+      "contest_date": "2023-12-16T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3199",
+      "question_title": "distribute-candies-among-children-i",
+      "contest_date": "2023-11-11T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3200",
+      "question_title": "number-of-strings-which-can-be-rearranged-to-contain-substring",
+      "contest_date": "2023-11-11T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3203",
+      "question_title": "palindrome-rearrangement-queries",
+      "contest_date": "2023-12-30T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3206",
+      "question_title": "find-common-elements-between-two-arrays",
+      "contest_date": "2023-12-09T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3207",
+      "question_title": "make-three-strings-equal",
+      "contest_date": "2023-11-18T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3209",
+      "question_title": "minimum-number-of-coins-for-fruits",
+      "contest_date": "2023-11-25T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3210",
+      "question_title": "count-beautiful-substrings-i",
+      "contest_date": "2023-11-25T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3211",
+      "question_title": "find-maximum-non-decreasing-array-length",
+      "contest_date": "2023-11-25T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3212",
+      "question_title": "count-the-number-of-good-partitions",
+      "contest_date": "2023-12-09T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3213",
+      "question_title": "count-subarrays-where-max-element-appears-at-least-k-times",
+      "contest_date": "2023-12-09T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3219",
+      "question_title": "make-lexicographically-smallest-array-by-swapping-elements",
+      "contest_date": "2023-11-25T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3220",
+      "question_title": "count-tested-devices-after-test-operations",
+      "contest_date": "2023-12-09T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3221",
+      "question_title": "find-the-peaks",
+      "contest_date": "2023-12-02T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3223",
+      "question_title": "count-complete-substrings",
+      "contest_date": "2023-12-02T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3224",
+      "question_title": "count-the-number-of-infection-sequences",
+      "contest_date": "2023-12-02T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3225",
+      "question_title": "length-of-longest-subarray-with-at-most-k-frequency",
+      "contest_date": "2023-12-09T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3226",
+      "question_title": "minimum-number-game",
+      "contest_date": "2023-12-23T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3227",
+      "question_title": "find-missing-and-repeated-values",
+      "contest_date": "2023-12-16T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3228",
+      "question_title": "maximum-size-of-a-set-after-removals",
+      "contest_date": "2024-01-06T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3229",
+      "question_title": "minimum-cost-to-make-array-equalindromic",
+      "contest_date": "2023-12-16T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3230",
+      "question_title": "remove-adjacent-almost-equal-characters",
+      "contest_date": "2023-12-09T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3231",
+      "question_title": "minimum-number-of-coins-to-be-added",
+      "contest_date": "2023-12-02T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3233",
+      "question_title": "maximize-the-number-of-partitions-after-operations",
+      "contest_date": "2024-01-06T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3234",
+      "question_title": "double-modular-exponentiation",
+      "contest_date": "2023-12-09T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3235",
+      "question_title": "minimum-cost-to-convert-string-i",
+      "contest_date": "2023-12-23T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3236",
+      "question_title": "smallest-missing-integer-greater-than-sequential-prefix-sum",
+      "contest_date": "2024-01-06T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3239",
+      "question_title": "minimum-number-of-operations-to-make-x-and-y-equal",
+      "contest_date": "2024-01-06T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3240",
+      "question_title": "maximum-number-that-sum-of-the-prices-is-less-than-or-equal-to-k",
+      "contest_date": "2024-01-13T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3242",
+      "question_title": "count-elements-with-maximum-frequency",
+      "contest_date": "2024-01-13T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3243",
+      "question_title": "count-the-number-of-powerful-integers",
+      "contest_date": "2024-01-06T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3244",
+      "question_title": "minimize-length-of-array-using-operations",
+      "contest_date": "2024-01-20T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3245",
+      "question_title": "find-beautiful-indices-in-the-given-array-i",
+      "contest_date": "2024-01-13T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3246",
+      "question_title": "check-if-bitwise-or-has-trailing-zeros",
+      "contest_date": "2023-12-30T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3249",
+      "question_title": "minimum-number-of-operations-to-make-array-xor-equal-to-k",
+      "contest_date": "2024-01-06T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3251",
+      "question_title": "maximum-area-of-longest-diagonal-rectangle",
+      "contest_date": "2024-01-06T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3252",
+      "question_title": "count-the-number-of-incremovable-subarrays-i",
+      "contest_date": "2023-12-23T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3261",
+      "question_title": "minimize-or-of-remaining-elements-using-operations",
+      "contest_date": "2024-01-27T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3262",
+      "question_title": "find-polygon-with-the-largest-perimeter",
+      "contest_date": "2023-12-23T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3263",
+      "question_title": "divide-an-array-into-subarrays-with-minimum-cost-i",
+      "contest_date": "2024-01-20T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3265",
+      "question_title": "maximum-good-subarray-sum",
+      "contest_date": "2024-02-03T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3267",
+      "question_title": "find-longest-special-substring-that-occurs-thrice-i",
+      "contest_date": "2023-12-30T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3269",
+      "question_title": "number-of-subarrays-that-match-a-pattern-i",
+      "contest_date": "2024-02-10T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3279",
+      "question_title": "alice-and-bob-playing-flower-game",
+      "contest_date": "2024-01-27T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3291",
+      "question_title": "find-if-array-can-be-sorted",
+      "contest_date": "2024-01-20T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3292",
+      "question_title": "earliest-second-to-mark-indices-i",
+      "contest_date": "2024-02-24T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3297",
+      "question_title": "minimum-time-to-revert-word-to-initial-state-i",
+      "contest_date": "2024-02-03T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3298",
+      "question_title": "maximize-consecutive-elements-in-an-array-after-modification",
+      "contest_date": "2024-02-17T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3299",
+      "question_title": "find-the-maximum-number-of-elements-in-subset",
+      "contest_date": "2024-01-27T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3308",
+      "question_title": "apply-operations-to-make-string-empty",
+      "contest_date": "2024-02-17T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3309",
+      "question_title": "count-prefix-and-suffix-pairs-i",
+      "contest_date": "2024-02-17T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3311",
+      "question_title": "ant-on-the-boundary",
+      "contest_date": "2024-02-03T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3312",
+      "question_title": "number-of-changing-keys",
+      "contest_date": "2024-01-27T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3317",
+      "question_title": "maximum-palindromes-after-operations",
+      "contest_date": "2024-02-10T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3320",
+      "question_title": "maximum-number-of-operations-with-the-same-score-i",
+      "contest_date": "2024-02-17T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3324",
+      "question_title": "split-the-array",
+      "contest_date": "2024-02-24T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3329",
+      "question_title": "find-the-length-of-the-longest-common-prefix",
+      "contest_date": "2024-02-17T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3331",
+      "question_title": "minimum-operations-to-exceed-threshold-value-i",
+      "contest_date": "2024-03-02T00:00:00"
+    },
+    {
+      "platform": "leetcode",
+      "question_id": "3347",
+      "question_title": "distribute-elements-into-two-arrays-i",
+      "contest_date": "2024-03-02T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc301_a",
+      "question_title": "Overall Winner",
+      "contest_date": "2023-05-13T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc301_b",
+      "question_title": "Fill the Gaps",
+      "contest_date": "2023-05-13T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc301_c",
+      "question_title": "AtCoder Cards",
+      "contest_date": "2023-05-13T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc301_d",
+      "question_title": "Bitmask",
+      "contest_date": "2023-05-13T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc301_e",
+      "question_title": "Pac",
+      "contest_date": "2023-05-13T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc301_f",
+      "question_title": "Anti",
+      "contest_date": "2023-05-13T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc302_a",
+      "question_title": "Attack",
+      "contest_date": "2023-05-20T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc302_b",
+      "question_title": "Find snuke",
+      "contest_date": "2023-05-20T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc302_c",
+      "question_title": "Almost Equal",
+      "contest_date": "2023-05-20T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc302_d",
+      "question_title": "Impartial Gift",
+      "contest_date": "2023-05-20T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc302_e",
+      "question_title": "Isolation",
+      "contest_date": "2023-05-20T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc302_f",
+      "question_title": "Merge Set",
+      "contest_date": "2023-05-20T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc303_a",
+      "question_title": "Similar String",
+      "contest_date": "2023-05-27T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc303_b",
+      "question_title": "Discord",
+      "contest_date": "2023-05-27T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc303_c",
+      "question_title": "Dash",
+      "contest_date": "2023-05-27T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc303_d",
+      "question_title": "Shift vs. CapsLock",
+      "contest_date": "2023-05-27T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc303_e",
+      "question_title": "A Gift From the Stars",
+      "contest_date": "2023-05-27T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc304_a",
+      "question_title": "First Player",
+      "contest_date": "2023-06-03T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc304_b",
+      "question_title": "Subscribers",
+      "contest_date": "2023-06-03T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc304_c",
+      "question_title": "Virus",
+      "contest_date": "2023-06-03T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc304_d",
+      "question_title": "A Piece of Cake",
+      "contest_date": "2023-06-03T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc304_e",
+      "question_title": "Good Graph",
+      "contest_date": "2023-06-03T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc305_a",
+      "question_title": "Water Station",
+      "contest_date": "2023-06-10T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc305_b",
+      "question_title": "ABCDEFG",
+      "contest_date": "2023-06-10T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc305_c",
+      "question_title": "Snuke the Cookie Picker",
+      "contest_date": "2023-06-10T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc305_d",
+      "question_title": "Sleep Log",
+      "contest_date": "2023-06-10T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc305_e",
+      "question_title": "Art Gallery on Graph",
+      "contest_date": "2023-06-10T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc306_a",
+      "question_title": "Echo",
+      "contest_date": "2023-06-17T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc306_b",
+      "question_title": "Base 2",
+      "contest_date": "2023-06-17T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc306_c",
+      "question_title": "Centers",
+      "contest_date": "2023-06-17T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc306_d",
+      "question_title": "Poisonous Full",
+      "contest_date": "2023-06-17T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc306_e",
+      "question_title": "Best Performances",
+      "contest_date": "2023-06-17T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc307_a",
+      "question_title": "Weekly Records",
+      "contest_date": "2023-06-24T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc307_b",
+      "question_title": "racecar",
+      "contest_date": "2023-06-24T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc307_c",
+      "question_title": "Ideal Sheet",
+      "contest_date": "2023-06-24T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc307_d",
+      "question_title": "Mismatched Parentheses",
+      "contest_date": "2023-06-24T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc307_e",
+      "question_title": "Distinct Adjacent",
+      "contest_date": "2023-06-24T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc308_a",
+      "question_title": "New Scheme",
+      "contest_date": "2023-07-01T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc308_b",
+      "question_title": "Default Price",
+      "contest_date": "2023-07-01T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc308_c",
+      "question_title": "Standings",
+      "contest_date": "2023-07-01T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc308_d",
+      "question_title": "Snuke Maze",
+      "contest_date": "2023-07-01T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc308_e",
+      "question_title": "MEX",
+      "contest_date": "2023-07-01T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc308_f",
+      "question_title": "Vouchers",
+      "contest_date": "2023-07-01T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc309_a",
+      "question_title": "Nine",
+      "contest_date": "2023-07-08T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc309_b",
+      "question_title": "Rotate",
+      "contest_date": "2023-07-08T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc309_c",
+      "question_title": "Medicine",
+      "contest_date": "2023-07-08T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc309_d",
+      "question_title": "Add One Edge",
+      "contest_date": "2023-07-08T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc309_e",
+      "question_title": "Family and Insurance",
+      "contest_date": "2023-07-08T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc310_a",
+      "question_title": "Order Something Else",
+      "contest_date": "2023-07-15T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc310_b",
+      "question_title": "Strictly Superior",
+      "contest_date": "2023-07-15T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc310_c",
+      "question_title": "Reversible",
+      "contest_date": "2023-07-15T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc310_d",
+      "question_title": "Peaceful Teams",
+      "contest_date": "2023-07-15T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc310_e",
+      "question_title": "NAND repeatedly",
+      "contest_date": "2023-07-15T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc310_f",
+      "question_title": "Make 10 Again",
+      "contest_date": "2023-07-15T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc311_a",
+      "question_title": "First ABC",
+      "contest_date": "2023-07-22T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc311_b",
+      "question_title": "Vacation Together",
+      "contest_date": "2023-07-22T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc311_c",
+      "question_title": "Find it!",
+      "contest_date": "2023-07-22T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc311_d",
+      "question_title": "Grid Ice Floor",
+      "contest_date": "2023-07-22T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc311_e",
+      "question_title": "Defect",
+      "contest_date": "2023-07-22T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc312_a",
+      "question_title": "Chord",
+      "contest_date": "2023-07-29T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc312_b",
+      "question_title": "TaK Code",
+      "contest_date": "2023-07-29T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc312_c",
+      "question_title": "Invisible Hand",
+      "contest_date": "2023-07-29T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc312_d",
+      "question_title": "Count Bracket Sequences",
+      "contest_date": "2023-07-29T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc312_e",
+      "question_title": "Tangency of Cuboids",
+      "contest_date": "2023-07-29T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc312_f",
+      "question_title": "Cans and Openers",
+      "contest_date": "2023-07-29T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc313_a",
+      "question_title": "To Be Saikyo",
+      "contest_date": "2023-08-05T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc313_b",
+      "question_title": "Who is Saikyo?",
+      "contest_date": "2023-08-05T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc313_c",
+      "question_title": "Approximate Equalization 2",
+      "contest_date": "2023-08-05T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc314_a",
+      "question_title": "3.14",
+      "contest_date": "2023-08-12T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc314_b",
+      "question_title": "Roulette",
+      "contest_date": "2023-08-12T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc314_c",
+      "question_title": "Rotate Colored Subsequence",
+      "contest_date": "2023-08-12T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc314_d",
+      "question_title": "LOWER",
+      "contest_date": "2023-08-12T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc314_e",
+      "question_title": "Roulettes",
+      "contest_date": "2023-08-12T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc314_f",
+      "question_title": "A Certain Game",
+      "contest_date": "2023-08-12T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc315_a",
+      "question_title": "tcdr",
+      "contest_date": "2023-08-19T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc315_b",
+      "question_title": "The Middle Day",
+      "contest_date": "2023-08-19T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc315_c",
+      "question_title": "Flavors",
+      "contest_date": "2023-08-19T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc315_d",
+      "question_title": "Magical Cookies",
+      "contest_date": "2023-08-19T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc315_e",
+      "question_title": "Prerequisites",
+      "contest_date": "2023-08-19T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc315_f",
+      "question_title": "Shortcuts",
+      "contest_date": "2023-08-19T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc318_a",
+      "question_title": "Full Moon",
+      "contest_date": "2023-09-02T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc318_b",
+      "question_title": "Overlapping sheets",
+      "contest_date": "2023-09-02T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc318_c",
+      "question_title": "Blue Spring",
+      "contest_date": "2023-09-02T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc318_d",
+      "question_title": "General Weighted Max Matching",
+      "contest_date": "2023-09-02T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc318_e",
+      "question_title": "Sandwiches",
+      "contest_date": "2023-09-02T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc319_b",
+      "question_title": "Measure",
+      "contest_date": "2023-09-09T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc319_c",
+      "question_title": "False Hope",
+      "contest_date": "2023-09-09T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc319_d",
+      "question_title": "Minimum Width",
+      "contest_date": "2023-09-09T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc319_e",
+      "question_title": "Bus Stops",
+      "contest_date": "2023-09-09T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc320_a",
+      "question_title": "Leyland Number",
+      "contest_date": "2023-09-16T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc320_b",
+      "question_title": "Longest Palindrome",
+      "contest_date": "2023-09-16T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc320_c",
+      "question_title": "Slot Strategy 2 (Easy)",
+      "contest_date": "2023-09-16T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc320_d",
+      "question_title": "Relative Position",
+      "contest_date": "2023-09-16T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc320_e",
+      "question_title": "Somen Nagashi",
+      "contest_date": "2023-09-16T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc321_a",
+      "question_title": "321",
+      "contest_date": "2023-09-23T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc321_b",
+      "question_title": "Cutoff",
+      "contest_date": "2023-09-23T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc321_c",
+      "question_title": "321",
+      "contest_date": "2023-09-23T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc321_d",
+      "question_title": "Set Menu",
+      "contest_date": "2023-09-23T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc321_e",
+      "question_title": "Complete Binary Tree",
+      "contest_date": "2023-09-23T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc322_a",
+      "question_title": "First ABC 2",
+      "contest_date": "2023-09-30T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc322_b",
+      "question_title": "Prefix and Suffix",
+      "contest_date": "2023-09-30T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc322_c",
+      "question_title": "Festival",
+      "contest_date": "2023-09-30T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc322_d",
+      "question_title": "Polyomino",
+      "contest_date": "2023-09-30T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc322_e",
+      "question_title": "Product Development",
+      "contest_date": "2023-09-30T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc323_a",
+      "question_title": "Weak Beats",
+      "contest_date": "2023-10-07T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc323_b",
+      "question_title": "Round",
+      "contest_date": "2023-10-07T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc323_c",
+      "question_title": "World Tour Finals",
+      "contest_date": "2023-10-07T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc323_d",
+      "question_title": "Merge Slimes",
+      "contest_date": "2023-10-07T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc323_e",
+      "question_title": "Playlist",
+      "contest_date": "2023-10-07T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc324_a",
+      "question_title": "Same",
+      "contest_date": "2023-10-14T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc324_b",
+      "question_title": "3",
+      "contest_date": "2023-10-14T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc324_c",
+      "question_title": "Error Correction",
+      "contest_date": "2023-10-14T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc324_d",
+      "question_title": "Square Permutation",
+      "contest_date": "2023-10-14T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc324_e",
+      "question_title": "Joint Two Strings",
+      "contest_date": "2023-10-14T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc324_f",
+      "question_title": "Beautiful Path",
+      "contest_date": "2023-10-14T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc325_a",
+      "question_title": "Takahashi san",
+      "contest_date": "2023-10-21T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc325_b",
+      "question_title": "World Meeting",
+      "contest_date": "2023-10-21T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc325_c",
+      "question_title": "Sensors",
+      "contest_date": "2023-10-21T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc325_d",
+      "question_title": "Printing Machine",
+      "contest_date": "2023-10-21T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc325_e",
+      "question_title": "Our clients, please wait a moment",
+      "contest_date": "2023-10-21T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc325_f",
+      "question_title": "Sensor Optimization Dilemma",
+      "contest_date": "2023-10-21T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc326_a",
+      "question_title": "2UP3DOWN",
+      "contest_date": "2023-10-28T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc326_b",
+      "question_title": "326",
+      "contest_date": "2023-10-28T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc326_c",
+      "question_title": "Peak",
+      "contest_date": "2023-10-28T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc326_d",
+      "question_title": "ABC Puzzle",
+      "contest_date": "2023-10-28T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc326_e",
+      "question_title": "Revenge of \"The Salary of AtCoder Inc.\"",
+      "contest_date": "2023-10-28T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc327_a",
+      "question_title": "ab",
+      "contest_date": "2023-11-04T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc327_b",
+      "question_title": "A^A",
+      "contest_date": "2023-11-04T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc327_c",
+      "question_title": "Number Place",
+      "contest_date": "2023-11-04T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc327_d",
+      "question_title": "Good Tuple Problem",
+      "contest_date": "2023-11-04T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc327_e",
+      "question_title": "Maximize Rating",
+      "contest_date": "2023-11-04T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc328_a",
+      "question_title": "Not Too Hard",
+      "contest_date": "2023-11-11T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc328_b",
+      "question_title": "11/11",
+      "contest_date": "2023-11-11T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc328_c",
+      "question_title": "Consecutive",
+      "contest_date": "2023-11-11T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc328_d",
+      "question_title": "Take ABC",
+      "contest_date": "2023-11-11T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc328_e",
+      "question_title": "Modulo MST",
+      "contest_date": "2023-11-11T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc329_a",
+      "question_title": "Spread",
+      "contest_date": "2023-11-18T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc329_b",
+      "question_title": "Next",
+      "contest_date": "2023-11-18T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc329_c",
+      "question_title": "Count xxx",
+      "contest_date": "2023-11-18T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc329_d",
+      "question_title": "Election Quick Report",
+      "contest_date": "2023-11-18T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc329_e",
+      "question_title": "Stamp",
+      "contest_date": "2023-11-18T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc329_f",
+      "question_title": "Colored Ball",
+      "contest_date": "2023-11-18T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc330_a",
+      "question_title": "Counting Passes",
+      "contest_date": "2023-11-25T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc330_b",
+      "question_title": "Minimize Abs 1",
+      "contest_date": "2023-11-25T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc330_c",
+      "question_title": "Minimize Abs 2",
+      "contest_date": "2023-11-25T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc330_d",
+      "question_title": "Counting Ls",
+      "contest_date": "2023-11-25T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc330_e",
+      "question_title": "Mex and Update",
+      "contest_date": "2023-11-25T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc331_a",
+      "question_title": "Tomorrow",
+      "contest_date": "2023-12-02T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc331_b",
+      "question_title": "Buy One Carton of Milk",
+      "contest_date": "2023-12-02T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc331_c",
+      "question_title": "Sum of Numbers Greater Than Me",
+      "contest_date": "2023-12-02T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc331_d",
+      "question_title": "Tile Pattern",
+      "contest_date": "2023-12-02T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc331_e",
+      "question_title": "Set Meal",
+      "contest_date": "2023-12-02T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc332_a",
+      "question_title": "Online Shopping",
+      "contest_date": "2023-12-10T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc332_b",
+      "question_title": "Glass and Mug",
+      "contest_date": "2023-12-10T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc332_c",
+      "question_title": "T",
+      "contest_date": "2023-12-10T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc332_d",
+      "question_title": "Swapping Puzzle",
+      "contest_date": "2023-12-10T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc333_a",
+      "question_title": "Three Threes",
+      "contest_date": "2023-12-16T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc333_b",
+      "question_title": "Pentagon",
+      "contest_date": "2023-12-16T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc333_c",
+      "question_title": "Repunit Trio",
+      "contest_date": "2023-12-16T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc333_d",
+      "question_title": "Erase Leaves",
+      "contest_date": "2023-12-16T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc333_e",
+      "question_title": "Takahashi Quest",
+      "contest_date": "2023-12-16T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc334_a",
+      "question_title": "Christmas Present",
+      "contest_date": "2023-12-23T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc334_b",
+      "question_title": "Christmas Trees",
+      "contest_date": "2023-12-23T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc334_c",
+      "question_title": "Socks 2",
+      "contest_date": "2023-12-23T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc334_d",
+      "question_title": "Reindeer and Sleigh",
+      "contest_date": "2023-12-23T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc334_e",
+      "question_title": "Christmas Color Grid 1",
+      "contest_date": "2023-12-23T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc335_a",
+      "question_title": "202<s>3</s>",
+      "contest_date": "2024-01-06T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc335_b",
+      "question_title": "Tetrahedral Number",
+      "contest_date": "2024-01-06T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc335_c",
+      "question_title": "Loong Tracking",
+      "contest_date": "2024-01-06T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc335_d",
+      "question_title": "Loong and Takahashi",
+      "contest_date": "2024-01-06T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc336_a",
+      "question_title": "Long Loong",
+      "contest_date": "2024-01-14T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc336_b",
+      "question_title": "CTZ",
+      "contest_date": "2024-01-14T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc336_c",
+      "question_title": "Even Digits",
+      "contest_date": "2024-01-14T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc336_d",
+      "question_title": "Pyramid",
+      "contest_date": "2024-01-14T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc337_a",
+      "question_title": "Scoreboard",
+      "contest_date": "2024-01-20T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc337_b",
+      "question_title": "Extended ABC",
+      "contest_date": "2024-01-20T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc337_c",
+      "question_title": "Lining Up 2",
+      "contest_date": "2024-01-20T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc337_d",
+      "question_title": "Cheating Gomoku Narabe",
+      "contest_date": "2024-01-20T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc337_e",
+      "question_title": "Bad Juice",
+      "contest_date": "2024-01-20T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc338_a",
+      "question_title": "Capitalized?",
+      "contest_date": "2024-01-27T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc338_b",
+      "question_title": "Frequency",
+      "contest_date": "2024-01-27T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc338_c",
+      "question_title": "Leftover Recipes",
+      "contest_date": "2024-01-27T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc338_d",
+      "question_title": "Island Tour",
+      "contest_date": "2024-01-27T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc338_e",
+      "question_title": "Chords",
+      "contest_date": "2024-01-27T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc338_f",
+      "question_title": "Negative Traveling Salesman",
+      "contest_date": "2024-01-27T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc339_a",
+      "question_title": "TLD",
+      "contest_date": "2024-02-03T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc339_b",
+      "question_title": "Langton's Takahashi",
+      "contest_date": "2024-02-03T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc339_c",
+      "question_title": "Perfect Bus",
+      "contest_date": "2024-02-03T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc339_d",
+      "question_title": "Synchronized Players",
+      "contest_date": "2024-02-03T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc340_a",
+      "question_title": "Arithmetic Progression",
+      "contest_date": "2024-02-10T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc340_b",
+      "question_title": "Append",
+      "contest_date": "2024-02-10T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc340_c",
+      "question_title": "Divide and Divide",
+      "contest_date": "2024-02-10T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc340_d",
+      "question_title": "Super Takahashi Bros.",
+      "contest_date": "2024-02-10T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc340_e",
+      "question_title": "Mancala 2",
+      "contest_date": "2024-02-10T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc341_a",
+      "question_title": "Print 341",
+      "contest_date": "2024-02-17T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc341_b",
+      "question_title": "Foreign Exchange",
+      "contest_date": "2024-02-17T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc341_c",
+      "question_title": "Takahashi Gets Lost",
+      "contest_date": "2024-02-17T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc341_d",
+      "question_title": "Only one of two",
+      "contest_date": "2024-02-17T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc341_e",
+      "question_title": "Alternating String",
+      "contest_date": "2024-02-17T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc341_f",
+      "question_title": "Breakdown",
+      "contest_date": "2024-02-17T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc342_a",
+      "question_title": "Yay!",
+      "contest_date": "2024-02-24T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc342_b",
+      "question_title": "Which is ahead?",
+      "contest_date": "2024-02-24T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc342_c",
+      "question_title": "Many Replacement",
+      "contest_date": "2024-02-24T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc342_d",
+      "question_title": "Square Pair",
+      "contest_date": "2024-02-24T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc342_e",
+      "question_title": "Last Train",
+      "contest_date": "2024-02-24T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc343_a",
+      "question_title": "Wrong Answer",
+      "contest_date": "2024-03-02T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc343_b",
+      "question_title": "Adjacency Matrix",
+      "contest_date": "2024-03-02T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc343_c",
+      "question_title": "343",
+      "contest_date": "2024-03-02T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc343_d",
+      "question_title": "Diversity of Scores",
+      "contest_date": "2024-03-02T00:00:00"
+    },
+    {
+      "platform": "atcoder",
+      "question_id": "abc343_e",
+      "question_title": "7x7x7",
+      "contest_date": "2024-03-02T00:00:00"
+    }
+  ]
+}

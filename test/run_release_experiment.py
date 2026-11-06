@@ -39,8 +39,8 @@ ENDPOINTS = [
 SECRET_FLAGS = {"--selector_key", "--reasoning_key", "--supervisor_key", "--embedding_key"}
 
 
-def load_config() -> dict[str, Any]:
-    with CONFIG_PATH.open("r", encoding="utf-8") as f:
+def load_config(path: Path = CONFIG_PATH) -> dict[str, Any]:
+    with path.open("r", encoding="utf-8") as f:
         return json.load(f)
 
 
@@ -201,8 +201,12 @@ def build_command(args: argparse.Namespace, config: dict[str, Any]) -> list[str]
 
 
 def main() -> int:
-    config = load_config()
+    preliminary = argparse.ArgumentParser(add_help=False)
+    preliminary.add_argument("--config", type=Path, default=CONFIG_PATH)
+    selected, _ = preliminary.parse_known_args()
+    config = load_config(selected.config)
     parser = argparse.ArgumentParser(description="Run one public MASRubric experiment preset.")
+    parser.add_argument("--config", type=Path, default=CONFIG_PATH)
     parser.add_argument("--benchmark", choices=sorted(config["benchmarks"]), help="Benchmark id.")
     parser.add_argument("--method", choices=sorted(config["method_presets"]), help="Method preset id.")
     parser.add_argument("--model-profile", choices=sorted(config["model_profiles"]), default=None)
